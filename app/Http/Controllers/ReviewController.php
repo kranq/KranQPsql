@@ -34,6 +34,7 @@ class ReviewController extends Controller
     protected $deletemsg = 'main.review.deletesuccess';
     protected $activemsg = 'main.review.activesuccess';
     protected $inactivemsg = 'main.review.inactivesuccess';
+    protected $referencemsg = 'main.review.deletereference';
     /**
      * Display a listing of the resource.
      *
@@ -157,8 +158,15 @@ class ReviewController extends Controller
     public function destroy($id)
     {
         $review = Review::findorFail($id);
-      $review->delete();
-      return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));
+        $serviceProvider = ServiceProvider::where('id', '=', $review->service_provider_id)->get();
+        //echo '<pre>';print_r();exit;
+        if (count($serviceProvider)) {
+            return Redirect::back()->with($this->success, trans($this->referencemsg));    
+        } else {
+            $review->delete();
+            return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));    
+        }
+        
     }
 
 

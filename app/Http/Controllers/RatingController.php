@@ -30,6 +30,7 @@ class RatingController extends Controller
     protected $createmsg = 'main.rating.createsuccess';
     protected $updatemsg = 'main.rating.updatesuccess';
     protected $deletemsg = 'main.rating.deletesuccess';
+    protected $referencemsg = 'main.rating.referencesuccess';
     /**
      * Display a listing of the resource.
      *
@@ -49,7 +50,6 @@ class RatingController extends Controller
               ])
         ->processLine(function($row){
             $row['postted_on'] = KranHelper::dateTimeFormat($row);
-            $row['rating_value'] = KranHelper::ratings($row);
             return $row;
         });
          $Grid->actionFields([
@@ -145,7 +145,12 @@ class RatingController extends Controller
     public function destroy($id)
     {
         $rating = Rating::findorFail($id);
-      $rating->delete();
-      return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));
+        $serviceProvider = ServiceProvider::where('id', '=', $rating->service_provider_id)->get();
+        if (count($serviceProvider) > 0) {
+            return Redirect::route($this->route)->with($this->success, trans($this->referencemsg));
+        } else {
+            $rating->delete();
+            return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));
+        }
     }
 }

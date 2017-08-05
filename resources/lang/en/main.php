@@ -20,6 +20,7 @@ $lang['confirm_password'] = "Confirm Password";
 $lang['send_password_link']	= "Send password reset link";
 $lang['generate_password'] = "Click here to generate password";
 $lang['status'] = 'Status';
+$lang['logoutsuccessmsg'] = 'Logged out successfully.';
 // Common
 $lang['site_name'] = 'KranQ';
 $lang['site'] = 'KranQ';
@@ -56,7 +57,7 @@ $lang['user.user']	= 'User';
 $lang['user.fullname'] = 'Full Name';
 $lang['user.username'] = 'User Name';
 $lang['user.profile'] = 'Profile';
-$lang['user.updateprofile'] = 'Update Profile';
+$lang['user.updateprofile'] = 'Profile Picture';
 $lang['user.first_name'] = 'First Name';
 $lang['user.last_name'] = 'Last Name';
 $lang['user.email'] = 'Email';
@@ -119,6 +120,7 @@ $lang['review.updatesuccess'] = 'Review has been updated successfully';
 $lang['review.deletesuccess'] = 'Review has been deleted successfully';
 $lang['review.activesuccess'] = 'Review has been Active successfully';
 $lang['review.inactivesuccess'] = 'Review has been Inactive successfully';
+$lang['review.deletereference'] = 'This record is refrenced with service provider could not delete!.';
 
 // Employee
 $lang['employee.title'] = 'Employee';
@@ -154,7 +156,7 @@ $lang['city.status'] = 'Status';
 $lang['city.createsuccess'] = 'City has been created successfully';
 $lang['city.updatesuccess'] = 'City has been updated successfully';
 $lang['city.deletesuccess'] = 'City has been deleted successfully';
-$lang['city.referencesuccess'] = 'The Record is referenced with Locations could not delete!.';
+$lang['city.referencesuccess'] = 'The record is referenced with Locations could not delete!.';
 // Rating
 $lang['rating.title'] = 'Ratings';
 $lang['rating.serviceprovider'] = 'Service Provider';
@@ -164,6 +166,7 @@ $lang['rating.postedon'] = 'Posted On';
 $lang['rating.createsuccess'] = 'Rating has been created successfully';
 $lang['rating.updatesuccess'] = 'Rating has been updated successfully';
 $lang['rating.deletesuccess'] = 'Rating has been deleted successfully';
+$lang['rating.referencesuccess'] = 'This record is refrenced with service provider could not delete!.';
 
 // Bookmarks
 $lang['bookmark.title'] = 'Bookmarks';

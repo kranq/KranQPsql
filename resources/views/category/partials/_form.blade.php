@@ -40,7 +40,7 @@
             <div class="col-lg-6">
                 <a href="#" >
                 @if($category->category_image)
-                    <img src="{!! URL::to('../uploads/category') !!}/{!! @$category->category_image !!}"  alt="{!! @$category->category_image !!}" width="50px" height="50px" title="{!! @$category->category_image !!}" />
+                    <img src="{!! URL::to('../uploads/category') !!}/{!! @$category->category_image !!}"  alt="{!! @$category->category_image !!}" title="{!! @$category->category_image !!}" />
                 @endif
                 </a>
             </div>    

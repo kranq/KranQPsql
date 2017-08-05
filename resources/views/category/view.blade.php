@@ -28,8 +28,7 @@
 				<div class="col-lg-6">
 					<p class="form-control-static"> 
 					@if($category->category_image)
-                        <img src="{!! URL::to('../uploads/category') !!}/{!! @$category->category_image !!}"  alt="{!! @$category->category_image !!}" width="50px" height="50px" title="{!! @$category->category_image !!}" />
-                    @else
+                        <img src="{!! URL::to('../uploads/category') !!}/{!! @$category->category_image !!}"  alt="{!! @$category->category_image !!}" title="{!! @$category->category_image !!}" />                    @else
                     	<img src="{!! URL::to('images') !!}/noimage.jpg"  alt="No Image" width="150px" height="150px" title="No Image" />
                     @endif
 					</p>

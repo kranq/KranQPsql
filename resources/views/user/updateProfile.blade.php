@@ -83,7 +83,7 @@
                         <div class="col-lg-6">
                             <a href="#" >
                             @if($user->profile_picture)
-                                <img src="{!! URL::to('../uploads/userProfile') !!}/{!! @$user->profile_picture !!}"  alt="{!! @$user->profile_picture !!}" width="50px" height="50px" title="{!! @$user->profile_picture !!}" />
+                                <img src="{!! URL::to('../uploads/userProfile') !!}/{!! @$user->profile_picture !!}"  alt="{!! @$user->profile_picture !!}" title="{!! @$user->profile_picture !!}" />
                             @endif
                             </a>
                         </div>    
