@@ -12,4 +12,10 @@ class City extends Model
 	public $incrementing=false;
 	use SoftDeletes;
     protected $fillable = array('id','city_code', 'city_name','status');
+
+    public static function getCityNameById($id) {
+    	$city = City::where('id', '=', $id)->get();
+    	$city_name = $city[0]->city_name;
+    	return $city_name;
+    }
 }

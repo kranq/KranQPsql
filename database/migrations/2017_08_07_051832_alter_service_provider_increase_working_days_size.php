@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterCategoryTableIncreaseDescriptionSize extends Migration
+class AlterServiceProviderIncreaseWorkingDaysSize extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class AlterCategoryTableIncreaseDescriptionSize extends Migration
      */
     public function up()
     {
+        //
         try {
-            if (Schema::hasTable('categories')) {
-                Schema::table('categories', function(Blueprint $table) {
-                    $table->string('description', 1000)->change();
+            if (Schema::hasTable('service_providers')) {
+                Schema::table('service_providers', function(Blueprint $table) {
+                    $table->string('working_days', 200)->change();
                 });
             }
         } catch (Exception $e) {}

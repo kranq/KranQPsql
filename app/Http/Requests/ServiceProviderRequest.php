@@ -30,8 +30,10 @@ class ServiceProviderRequest extends FormRequest
      */
     public function rules()
     {
-      //  $rules['slug'] = 'required';
         $rules['status'] = 'required';
+        $rules['category_id'] = 'required';
+        $rules['location_id'] = 'required';
+        $rules['city'] = 'required';
         switch ($this->method()) {
             case 'GET':
             case 'DELETE':
@@ -41,9 +43,9 @@ class ServiceProviderRequest extends FormRequest
             break;
             case 'POST':
             {
-                $rules['category_id'] = 'required';
-              //  $rules['slug'] = 'required';
-                $rules['status'] = 'required';
+                $rules['password'] = 'required|max:64';
+                $rules['name_sp'] = 'required|unique:service_providers,name_sp';
+                $rules['email'] = 'required|unique:service_providers,email';
             }
             case 'PUT':
             case 'PATCH':

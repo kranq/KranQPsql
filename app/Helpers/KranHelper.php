@@ -123,4 +123,33 @@ class KranHelper
     public static function convertString($str){
       return str_replace(' ', '-', strtolower($str));
     }
+	
+	/**
+	* To convert the base64 encrypted string to image
+	*
+	* @param string $imageString
+	* @param string $imageName
+	* @return string 
+	*/
+	public static function convertStringToImage($imageString,$imageName){
+		$imageData = base64_decode($imageString);
+        $photo = imagecreatefromstring($imageData);
+		$dateval = date('Ymdhis');
+        if ($photo) {
+			$file = $imageName.  '-' . $dateval . '.jpg';
+            $path = base_path() . "/uploads/user/"; //file upload path
+            //$data['profile_picture'] = $path . $imageName. '-' . $dateval . '.jpg';
+            if (!is_dir($path)) {
+                @mkdir($path);
+            }
+            if (imagejpeg($photo, $path . $file, 100)) {
+				return $file;
+            } else {
+				return '';
+			}
+		}
+            
+	}
+	
+	
 }

@@ -52,4 +52,10 @@ class Category extends Model
         return $filename;
     }
 
+    public static function getCategoryNameById($id)
+    {
+        $category = Category::where('id', '=', $id)->get();
+        return $category[0]->category_name;
+    }
+
 }

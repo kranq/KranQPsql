@@ -195,6 +195,13 @@ $lang['provider.name'] = 'Name of the Service Provider';
 $lang['provider.createsuccess'] = 'Rating has been created successfully';
 $lang['provider.updatesuccess'] = 'Rating has been updated successfully';
 $lang['provider.deletesuccess'] = 'Rating has been deleted successfully';
+$lang['provider.basicdetails'] = 'Basic Details';
+$lang['provider.services'] = 'Services';
+$lang['provider.reviews'] = 'Reviews';
+$lang['provider.ratings'] = 'Ratings';
+$lang['provider.accountdetails'] = 'Account Details';
+$lang['provider.submittedon'] = 'Submitted On';
+$lang['provider.images'] = 'Images';
 
 $lang['placeholder'] = 'Enter :Name';
 $lang['image_upload_notes'] = '<b>Upload:</b> jpg, png &#xa; <br> <b>Dimension:</b> 50 * 50 &#xa; <br> <b>Max Size:</b> 1MB';

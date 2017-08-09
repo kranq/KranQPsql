@@ -25,6 +25,7 @@ Route::auth('/login');
 // Home page redirection
 Route::get('/home', 'HomeController@index');
 // Group
+
 Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
 	$controllers = array(
 			'employee' => 'EmployeeController',
@@ -36,9 +37,9 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
             'rating' => 'RatingController',
             'user' => 'UserController',
             'bookmark' => 'BookmarkController',
-            'provider' => 'ServiceProviderController',
+            'provider' => 'ServiceProviderController',			
             'review' => 'ReviewController',
-			'webservice' => 'WebServiceController'
+			'cms' => 'CmsPagesController'
 		);
 	foreach ($controllers as $key => $controller){
         //Will generates Crud functions (index,create, edit, delete, update, store)
@@ -47,6 +48,7 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
         Route::post($key . '/index', array('as' => $key . '.search', 'uses' => $controller . '@index'));
         Route::post($key . '/rest', array('as' => $key . '.rest')); // here applied rest route
     }
+		
     // Employee
     Route::get('employee/edit/{id}', array('as' => 'employee.edit', 'uses' => 'EmployeeController@edit'));
     Route::delete('employee/destroy/{id}', array('as' => 'employee.destroy', 'uses' => 'EmployeeController@destroy'));
@@ -91,6 +93,11 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
     Route::delete('provider/destroy/{id}', array('as' => 'provider.destroy', 'uses' => 'ServiceProviderController@destroy'));
 
 });
+
+//Route::resource('webservice', 'WebServiceController');
+Route::get('webservice/index', array('as' => 'webservice.index', 'uses' => 'WebServiceController@index'));
+Route::get('webservice/getcms/{slug}', array('as' => 'webservice.getcms', 'uses' => 'WebServiceController@getCms'));
+Route::post('webservice/register', array('as' => 'webservice.register', 'uses' => 'WebServiceController@register'));
 
 // Route::post('store', 'EmployeeController@store');
 Route::get('/logout', 'Auth\LoginController@logout');

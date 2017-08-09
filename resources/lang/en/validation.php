@@ -136,6 +136,9 @@ return [
         'password' => [
             'required' => 'Password field is required',
         ],
+        'name_sp' => [
+            'required' => 'Service Provider Name field is required',
+        ],
     ],
 
     /*

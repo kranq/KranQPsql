@@ -32,4 +32,19 @@ class Location extends Model {
     {
         return $this->belongsTo('App\City','city_id');
     }
+
+    /**
+     * To get the Locality Name
+     */
+    public static function getLocationNameById($id)
+    {
+        $location = Location::where('id', '=', $id)->get();
+        $location_name = '';
+        if (count($location) > 0) {
+            $location_name = ($location[0]->locality_name) ? $location[0]->locality_name : 'Nil';   
+        }
+        
+        return $location_name;
+    }
+
 }

@@ -220,6 +220,13 @@ ul.sidebar-menu {
 #sidebar .sub-menu>.sub li a {
     padding-left:46px;
 }
+
+#sidebar .side-menu-color {
+   background:#202025;
+}
+#sidebar .menu-left  {
+   padding-left:26px;
+}
 #sidebar>ul>li.active>ul.sub,#sidebar>ul>li>ul.sub>li>a {
     display:block;
 }

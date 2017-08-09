@@ -10,12 +10,18 @@ use Image;
 use Session;
 use Response;
 use Redirect;
-use Rafwell\Simplegrid\Grid;
-use App\Helpers\KranHelper;
-use App\Models\Category;
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\City;
+use App\Models\Rating;
+use App\Models\Review;
+use App\Models\Bookmark;
+use App\Models\Category;
 use App\Models\Location;
+use App\Helpers\KranHelper;
+use Rafwell\Simplegrid\Grid;
 use App\Http\Requests\UserRequest;
+use App\Models\ServiceProviderDetails;
 
 //use Illuminate\Support\ServiceProvider;
 
@@ -37,29 +43,29 @@ class ServiceProviderController extends Controller
      */
     public function index()
     {
-      // To get the records details from the table
-       $providers = ServiceProvider::join('categories','category_id','=','categories.id')->join('localities','location_id','=','localities.id')->join('cities','city','=','cities.id');
+        // To get the records details from the table
+        $providers = ServiceProvider::join('categories','category_id','=','categories.id')->join('localities','location_id','=','localities.id')->join('cities','city','=','cities.id');
 
-       $Grid = new Grid($providers,'');
+        $Grid = new Grid($providers,'');
 
-       // To have header for the values
-         $Grid->fields([
+        // To have header for the values
+            $Grid->fields([
                   'name_sp'=>'Service Provider',
                  'locality_name'=>'Locality',
                  'city_name'=>'City',
                  'service_providers.created_at' => 'Submitted On',
                  'service_providers.status'=>'Status'
-             ])
-             ->processLine(function($row){
+            ])
+            ->processLine(function($row){
                //This function will be called for each row
                $row['status'] = KranHelper::getProviderStatus($row);
                $row['created_at'] = KranHelper::dateTime($row['created_at']);
                return $row;
-           });
-             $Grid->actionFields([
+            });
+            $Grid->actionFields([
                  'service_providers.id' //The fields used for process actions. those not are showed
                ]);
-           // To have actions for the records
+            // To have actions for the records
                $Grid->action('View', URL::to('provider/show/{id}'))
                    ->action('Edit', URL::to('provider/edit/{id}'))
                    ->action('Delete', URL::to('provider/destroy/{id}'), [
@@ -120,7 +126,18 @@ class ServiceProviderController extends Controller
      */
     public function show($id)
     {
-        //
+        $data['provider'] = ServiceProvider::findorfail($id);
+        $created_at = $data['provider']->created_at;
+        $data['provider']->created_date = Carbon::parse($created_at)->format('d/m/Y, h.i a');
+        $data['provider']->category_id = Category::getCategoryNameById($data['provider']->category_id);
+        $data['provider']->city = City::getCityNameById($data['provider']->city);
+        $data['provider']->location_id = Location::getLocationNameById($data['provider']->location_id);
+        $data['ratings'] = Rating::where('service_provider_id', '=', $id)->get();
+        $data['users'] = User::orderBy('fullname', 'asc')->pluck('fullname', 'id');
+        $data['reviews'] = Review::getServiceProviderReviewDetails($id);
+        $data['service_providers'] = ServiceProviderDetails::where('service_provider_id', '=', $id)->get();
+        //echo '<pre>';print_r($data['bookmarks']);exit;
+        return view('service_provider.view', $data);
     }
 
     /**

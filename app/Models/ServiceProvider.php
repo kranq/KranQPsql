@@ -49,33 +49,34 @@ class ServiceProvider extends Model
       return $this->belongsTo('App\Location','location_id');
   }
 
-  public static function upload_file($request, $file, $id =  false)
-  {
-    $destinationPath = base_path() . trans('main.provider_path');
-      if (!empty($id)) {
-          $fileDetails = ServiceProvider::where('id', '=', $id)->get();
-          $oldFileName = $fileDetails[0]->logo;
-          if ($request->hasFile($file) && $request->file($file)->getSize() > 0) {
+    public static function upload_file($request, $file, $id =  false)
+    {
+        $destinationPath = base_path() . trans('main.provider_path');
 
-              if (!file_exists($destinationPath)) {
-                  mkdir($destinationPath, 0700);
-              }
-              // To unlink the old file
-              if ($oldFileName) {
-                      @unlink($destinationPath.'/'.$oldFileName);
-              }
-              $filename   = $request->file($file)->getClientOriginalName();
-              $request->file($file)->move($destinationPath, $filename);
-          }
-      } else {
-          if ($request->hasFile($file) && $request->file($file)->getSize() > 0) {
-              if (!file_exists($destinationPath)) {
-                  mkdir($destinationPath, 0700);
-              }
-              $filename   = $request->file($file)->getClientOriginalName();
-              $request->file($file)->move($destinationPath, $filename);
-          }
-      }
-      return $filename;
-  }
+        if (!empty($id)) {
+            $fileDetails = ServiceProvider::where('id', '=', $id)->get();
+            $oldFileName = $fileDetails[0]->logo;
+            if ($request->hasFile($file) && $request->file($file)->getSize() > 0) {
+
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0700);
+                }
+                // To unlink the old file
+                if ($oldFileName) {
+                    @unlink($destinationPath.'/'.$oldFileName);
+                }
+                $filename   = $request->file($file)->getClientOriginalName();
+                $request->file($file)->move($destinationPath, $filename);
+            }
+        } else {
+            if ($request->hasFile($file) && $request->file($file)->getSize() > 0) {
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0700);
+                }
+                $filename   = $request->file($file)->getClientOriginalName();
+                $request->file($file)->move($destinationPath, $filename);
+            }
+        }
+        return $filename;
+    }
 }
