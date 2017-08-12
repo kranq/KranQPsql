@@ -39,12 +39,12 @@
 					@endif
 				@endforeach
 		      	<input type="text" name="search" class="form-control input-search" placeholder="@lang('Simplegrid::grid.Search by...')" value="{{$searchedValue}}">
-		        <button class="btn-search btn btn-default" type="submit" title="@lang('Simplegrid::grid.Search')"><i class="fa fa-search" aria-hidden="true"> </i></button>		      	
+		        <button class="btn-search btn btn-primary" type="submit" title="@lang('Simplegrid::grid.Search')"><i class="fa fa-search" aria-hidden="true"> </i></button>		      	
 		      	@if (isset($searchedValue) && $searchedValue<>'')				      		
-			       	<button class="btn-clear-search btn btn-default" type="button" title="@lang('Simplegrid::grid.Clear search')"><i class="fa fa-refresh" aria-hidden="true"> </i></button>
+			       	<button class="btn-clear-search btn btn-primary" type="button" title="@lang('Simplegrid::grid.Clear search')"><i class="fa fa-refresh" aria-hidden="true"> </i></button>
 		      	@endif
 		      	@if ($advancedSearch && $advancedSearchOpened === false)
-					<a href="{{$urlAdvancedSearch}}" class="btn-advanced-search btn btn-default" title="@lang('Simplegrid::grid.Advanced Search')"><span class="glyphicon glyphicon-zoom-in"></span></a>
+					<a href="{{$urlAdvancedSearch}}" class="btn-advanced-search btn btn-primary" title="@lang('Simplegrid::grid.Advanced Search')"><span class="glyphicon glyphicon-zoom-in"></span></a>
 		      	@endif
 		    </form>
 			@if ($totalRows>0)
@@ -76,7 +76,7 @@
 		<div class="col-md-4">
 			<div class="showing-rows-info pull-right">
 				<span>@lang('Simplegrid::grid.Showing') </span>
-				<select name="rows-per-page" data-url="{{$urlRowsPerPage}}">
+				<select name="rows-per-page" data-url="{{$urlRowsPerPage}}" class="list-page-select">
 					@foreach($rowsPerPage as $nr)
 					<option value="{!!$nr!!}" {!!$nr==$currentRowsPerPage ? 'selected' : '' !!}>{!!$nr!!}</option>
 					@endforeach
@@ -107,7 +107,7 @@
 						@endif				
 					@endforeach
 					@if (isset($actions))
-						<th class="actions">@lang('Simplegrid::grid.Actions')</th>
+						<th class="actions" width="10%">@lang('Simplegrid::grid.Actions')</th>
 					@endif
 				</tr>
 			</thead>			
@@ -131,11 +131,24 @@
 								<td class="actions">
 									@foreach ($row['gridActions'] as $action)	
 										@if($action['method']=='GET')								
-											<a href="{!!$action['url']!!}" title="{{$action['title']}}" class="btn btn-xs action btn-default" target="{{$action['target']}}">
-												@if (isset($action['icone']))
+											<a href="{!!$action['url']!!}" title="{{$action['title']}}" class="btn btn-xs action btn-primary" target="{{$action['target']}}">
+												<!--@if (isset($action['icone']))
 													<span class="{{$action['icone']}}"></span>
+													<i class="fa fa-chevron-right" aria-hidden="true"></i>
 												@endif
 												@if ($action['onlyIcon']===false)
+													@if ($action['title'] == 'View')
+														<i class="fa fa-eye" aria-hidden="true"></i>
+													@elseif ($action['title'] == 'Edit')
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													@else 
+														{{ $action['title'] }}	
+													@endif
+													{{--$action['title']--}}
+												@endif-->
+												@if (isset($action['class']))
+													<span class="{{$action['class']}}"></span>
+												@else
 													{{$action['title']}}
 												@endif
 											</a>
@@ -143,11 +156,21 @@
 											<form action="{!!$action['url']!!}" method="POST" {!! ($action['confirm']!==false ? 'onsubmit="if(!confirm(\''.addslashes(htmlentities($action['confirm'])).'\')){event.preventDefault; return false;}; "' : '' ); !!} >
 												{{csrf_field()}}
 												<input type="hidden" name="_method" value="{!!$action['method']!!}">
-												<button type="submit" title="{{$action['title']}}" class="btn btn-xs action btn-default">
-													@if (isset($action['icone']))
+												<button type="submit" title="{{$action['title']}}" class="btn btn-xs action btn-danger">
+													<!--@if (isset($action['icone']))
 														<span class="{{$action['icone']}}"></span>
 													@endif
 													@if ($action['onlyIcon']===false)
+														@if ($action['title'] == 'Delete')
+															<i class="fa fa-trash-o" aria-hidden="true"></i>
+														@else
+															{{ $action['title'] }}
+														@endif
+														{{-- $action['title'] --}}
+													@endif-->
+													@if (isset($action['class']))
+														<span class="{{$action['class']}}"></span>
+													@else
 														{{$action['title']}}
 													@endif
 												</button>
