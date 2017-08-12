@@ -107,7 +107,7 @@
 						@endif				
 					@endforeach
 					@if (isset($actions))
-						<th class="actions" width="10%">@lang('Simplegrid::grid.Actions')</th>
+						<th class="actions">@lang('Simplegrid::grid.Actions')</th>
 					@endif
 				</tr>
 			</thead>			

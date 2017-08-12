@@ -45,7 +45,7 @@ class WorkCommand extends Command
     protected $worker;
 
     /**
-     * Create a new queue work command.
+     * Create a new queue listen command.
      *
      * @param  \Illuminate\Queue\Worker  $worker
      * @return void

@@ -44,7 +44,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Shell extends Application
 {
-    const VERSION = 'v0.8.11';
+    const VERSION = 'v0.8.10';
 
     const PROMPT      = '>>> ';
     const BUFF_PROMPT = '... ';
@@ -891,17 +891,7 @@ class Shell extends Application
             return $line;
         }
 
-        if ($bracketedPaste = $this->config->useBracketedPaste()) {
-            printf("\e[?2004h"); // Enable bracketed paste
-        }
-
-        $line = $this->readline->readline($this->getPrompt());
-
-        if ($bracketedPaste) {
-            printf("\e[?2004l"); // ... and disable it again
-        }
-
-        return $line;
+        return $this->readline->readline($this->getPrompt());
     }
 
     /**

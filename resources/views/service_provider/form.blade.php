@@ -110,6 +110,12 @@
                   </div>
                </div>
                <div class="form-group">
+                    {!! Form::label('short_description',trans('main.provider.short_description'),array('class'=>'control-label col-sm-3 ')) !!}
+                  <div class="col-lg-6">
+                      {!! Form::textarea('short_description', @$provider->short_description, array('class'=>'form-control', 'placeholder' => __(trans('main.placeholder'),['name' => trans('main.provider.short_description')]), 'rows'=>'3', 'maxlenght' => '255')) !!}
+                  </div>
+               </div>
+               <div class="form-group">
                     {!! Form::label('googlemap_latitude',trans('main.provider.coordinates'),array('class'=>'control-label col-lg-3')) !!}
 					<div class=" col-md-3">
                       {!! Form::text('googlemap_latitude', @$provider->googlemap_latitude, array('class'=>'form-control', 'placeholder' => __(trans('main.placeholder'),['name' => trans('main.provider.latitude')]))) !!}

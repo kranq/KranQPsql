@@ -68,7 +68,7 @@ trait BuildsQueries
      * Execute the query and get the first result.
      *
      * @param  array  $columns
-     * @return \Illuminate\Database\Eloquent\Model|static|null
+     * @return mixed
      */
     public function first($columns = ['*'])
     {

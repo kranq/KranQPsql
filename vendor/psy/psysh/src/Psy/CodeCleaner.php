@@ -192,10 +192,6 @@ class CodeCleaner
                 return false;
             }
 
-            if ($this->parseErrorIsTrailingComma($e, $code)) {
-                return false;
-            }
-
             if (!$this->parseErrorIsEOF($e)) {
                 throw ParseErrorException::fromParseError($e);
             }
@@ -250,10 +246,5 @@ class CodeCleaner
     private function parseErrorIsUnterminatedComment(\PhpParser\Error $e, $code)
     {
         return $e->getRawMessage() === 'Unterminated comment';
-    }
-
-    private function parseErrorIsTrailingComma(\PhpParser\Error $e, $code)
-    {
-        return ($e->getRawMessage() === 'A trailing comma is not allowed here') && (substr(rtrim($code), -1) === ',');
     }
 }

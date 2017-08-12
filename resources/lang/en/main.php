@@ -148,7 +148,8 @@ $lang['category.title'] = 'Category';
 $lang['category.category_name'] = 'Category Name';
 $lang['category.slug'] = 'Slug';
 $lang['category.description'] = 'Description';
-$lang['category.category_image'] = 'Category Image';
+$lang['category.category_image'] = 'Logo';
+$lang['category.services'] = 'Services';
 $lang['category.status'] = 'Status';
 $lang['category.order_by'] = 'Order By';
 $lang['category.createsuccess'] = 'Category has been created successfully';
@@ -222,6 +223,7 @@ $lang['provider.ratings'] = 'Ratings';
 $lang['provider.accountdetails'] = 'Account Details';
 $lang['provider.submittedon'] = 'Submitted On';
 $lang['provider.images'] = 'Images';
+$lang['provider.short_description'] = 'Short Description';
 
 $lang['placeholder'] = 'Enter :Name';
 $lang['image_upload_notes'] = '<b>Upload:</b> jpg, png &#xa; <br> <b>Dimension:</b> 50 * 50 &#xa; <br> <b>Max Size:</b> 1MB';
