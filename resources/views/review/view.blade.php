@@ -23,7 +23,13 @@
 					<p class="form-control-static">{!! @$user[0]->fullname; !!}</p>
 				</div>
 			</div>
-			<div class="form-group">
+	<div class="form-group">
+				<div class="col-sm-3 control-label"> {!! trans('main.review.rating') !!}</div>
+				<div class="col-lg-6">
+					<p class="form-control-static">{!! @$review->rating; !!}</p>
+				</div>
+			</div>		
+                    <div class="form-group">
 				<div class="col-sm-3 control-label"> {!! trans('main.review.reviews') !!}</div>
 				<div class="col-lg-6">
 					<p class="form-control-static">{!! @$review->reviews; !!}</p>

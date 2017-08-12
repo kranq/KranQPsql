@@ -15,7 +15,7 @@ class Review extends Model
     public $timestamps = true;
     public $incrementing=false;
     use SoftDeletes;
-    protected $fillable = array('id','service_provider_id','user_id', 'reviews','status','postted_on');
+    protected $fillable = array('id','service_provider_id','user_id', 'reviews','rating', 'status','postted_on');
 
     /**
      * To fetch the details from the service provider table 
@@ -23,7 +23,9 @@ class Review extends Model
     public static function getReviewDetails($id)
     {
     	$reviews = Review::where('user_id', '=', $id)->get();
-    	for ($i=0; $i < count($reviews); $i++) { 
+                  $countReviews =  count($reviews);
+    	for ($i=0; $i < $countReviews; $i++) 
+                  { 
     		$reviews[$i]->postted_on = KranHelper::dateTime($reviews[$i]->postted_on);
     		$review = ServiceProvider::where('id', '=', $reviews[$i]->service_provider_id)->orderBy('name_sp','asc')->pluck('name_sp');
     		$reviews[$i]->service_provider_name = $review[0];

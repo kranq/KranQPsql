@@ -57,11 +57,12 @@ class CategoryController extends Controller
                 ]);
             // To have actions for the records
             //->action('View', URL::to('category/show/{id}'))
-                $Grid->action('View', URL::to('category/show/{id}'))
-                    ->action('Edit', URL::to('category/edit/{id}'))
+                $Grid->action('View', URL::to('category/show/{id}'), ['class'=>'fa fa-eye'])
+                    ->action('Edit', URL::to('category/edit/{id}'), ['class'=>'fa fa-edit'])
                     ->action('Delete', URL::to('category/destroy/{id}'), [
                   'confirm'=>'Do you with so continue?',
                   'method'=>'DELETE',
+				  'class'=>'fa fa-trash-o',
               ]);
               // Pass the values to the view page
               return view('category.index', ['grid'=>$Grid]);

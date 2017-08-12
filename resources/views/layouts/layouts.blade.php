@@ -18,7 +18,8 @@
     <!-- ONLY INCLUDE IF YOU NOT HAVE THOSE DEPENDENCIES -->
     <!-- <link rel="stylesheet" href="vendor/rafwell/simple-grid/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" /> -->
     <!-- CSS LARAVEL SIMPLEGRID -->
-    <link rel="stylesheet" href="vendor/rafwell/simple-grid/css/simplegrid.css">
+    <!--<link rel="stylesheet" href="http://localhost:801/svnprojects/KRQ/Source/1.0.0/public/vendor/rafwell/simple-grid/css/simplegrid.css">-->
+	{!! Html::style('vendor/rafwell/simple-grid/css/simplegrid.css') !!}
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
     <!-- Css Ends here-->
@@ -30,8 +31,8 @@
 <header class="header fixed-top clearfix">
 <!--logo start-->
 <div class="brand">
-    <a href="{{ url('/') }}" class="logo">
-      <img src="{!! URL::to('/') !!}/images/logocrop.png" style="width: 170px; margin-top: -15px;" alt="KranQ">
+    <a href="{{ url('/category') }}" class="logo">
+      <img src="{!! URL::to('/') !!}/images/logocrop.png" style="width: 170px; margin-top: -15px;" alt="KranQ" title="KranQ">
     </a>
     <div class="sidebar-toggle-box">
         <div class="fa fa-bars"></div>
@@ -98,6 +99,7 @@
     {!! Html::script('js/sparkline/jquery.sparkline.js') !!}
     {!! Html::script('js/scripts.js') !!}
 	{!! Html::script('js/bootstrap-fileupload.js') !!}
+	{!! Html::script('js/ckeditor/ckeditor.js') !!}
     <!-- Js Starts here-->
     <!-- ONLY INCLUDE IF YOU NOT HAVE THOSE DEPENDENCIES -->
     <!-- <script src="vendor/rafwell/simple-grid/moment/moment.js"></script> -->

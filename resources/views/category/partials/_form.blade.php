@@ -27,7 +27,20 @@
         <div class="form-group">
               {!! Form::label('category_image',trans('main.category.category_image'),array('class'=>'control-label col-lg-3')) !!}
             <div class="col-lg-4">
-              {{ Form::file('category_image', array('class' => '', 'accept' => trans('main.file_extension'))) }}
+                <div class="form-group">
+                    <div class="controls col-md-9">
+                        <div class="fileupload fileupload-new" data-provides="fileupload">
+                            <span class="btn btn-white btn-file">
+                            <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select file</span>
+                            <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
+                            {{ Form::file('category_image', array('class' => '', 'accept' => trans('main.file_extension'))) }}
+                            {{-- Form::file('logo',array('class'=>'default')) --}}
+                            </span>
+                            <span class="fileupload-preview" style="margin-left:5px;"></span>
+                            <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none; margin-left:5px;"></a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-lg-3">
                 <i  data-original-title="{!! trans('main.image_upload_notes_title') !!}" data-content="{!! trans('main.image_upload_notes') !!}" data-placement="right" data-trigger="hover" class="fa fa-info-circle popovers" aria-hidden="true" data-html="true"></i>

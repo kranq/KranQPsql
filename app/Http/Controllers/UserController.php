@@ -64,11 +64,12 @@ class UserController extends Controller
         });
         
         // To have actions for the records
-        $Grid->action('View', URL::to('user/show/{id}'))
-            ->action('Edit', URL::to('user/edit/{id}'))
+        $Grid->action('View', URL::to('user/show/{id}'), ['class'=>'fa fa-eye'])
+            ->action('Edit', URL::to('user/edit/{id}'), ['class'=>'fa fa-edit'])
             ->action('Delete', URL::to('user/destroy/{id}'), [
           'confirm'=>'Do you with so continue?',
           'method'=>'DELETE',
+		  'class'=>'fa fa-trash-o',
         ]);
         // Pass the values to the view page
         return view('user.index', ['grid'=>$Grid]);

@@ -20,7 +20,20 @@
 	            {!! Form::label('logo',trans('main.provider.logo'),array('class'=>'control-label col-sm-3')) !!}
                 <div class="col-lg-3">
                     {{-- Form::file('logo') --}}
-                    <div class="fileupload fileupload-new" data-provides="fileupload">
+                    <div class="form-group">
+                        <div class="controls col-md-9">
+                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                                <span class="btn btn-white btn-file">
+                                <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select file</span>
+                                <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
+                                {{ Form::file('logo',array('class'=>'default')) }}
+                                </span>
+                                <span class="fileupload-preview" style="margin-left:5px;"></span>
+                                <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none; margin-left:5px;"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--div class="fileupload fileupload-new" data-provides="fileupload">
                         <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
                             <img src="{!! trans('main.default_image_path') !!}" alt="No Image" />
                         </div>
@@ -29,12 +42,10 @@
                        <span class="btn btn-white btn-file">
                        <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select image</span>
                        <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
-                       <!--input type="file" class=",array('class'=>'default')" /-->
                          {{ Form::file('logo',array('class'=>'default')) }}
                        </span>
-                        <!--a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash"></i> Remove</a-->
                         </div>
-                    </div>
+                    </div -->
                 </div>
                 <div class="col-sm-3">
                     <i  data-original-title="{!! trans('main.image_upload_notes_title') !!}" data-content="{!! trans('main.image_upload_notes') !!}" data-placement="right" data-trigger="hover" class="fa fa-info-circle popovers" aria-hidden="true" data-html="true"></i>
@@ -47,7 +58,7 @@
                 <div class="col-lg-3">
                         <a href="#" >
                         @if($provider->logo)
-                            <img src="{!! URL::to('../uploads/provider') !!}/{!! @$provider->logo !!}"  alt="{!! @$provider->logo !!}" width="50px" height="50px" title="{!! @$provider->logo !!}" />
+                            <img src="{!! URL::to('../uploads/provider') !!}/{!! @$provider->logo !!}"  alt="{!! @$provider->logo !!}" title="{!! @$provider->logo !!}" />
                         @endif
                         </a>
                     </div>

@@ -60,7 +60,7 @@ a,a:hover,a:focus {
 }
 .form-signin h2.form-signin-heading {
     margin:0;
-    padding:35px 15px;
+    padding:18px 15px;
     text-align:center;
     background:#aec785;
     border-radius:5px 5px 0 0;
@@ -83,7 +83,8 @@ a,a:hover,a:focus {
     font-family:'Open Sans',sans-serif;
 }
 .form-signin .form-control {
-    position:relative;
+font-family:'Open Sans',sans-serif;   
+   position:relative;
     font-size:16px;
     height:auto;
     padding:10px;
@@ -95,12 +96,13 @@ a,a:hover,a:focus {
     z-index:2;
 }
 .form-signin input[type="email"],.form-signin input[type="password"] {
-    margin-bottom:15px;
+    font-family:'Open Sans',sans-serif;
+	margin-bottom:15px;
     border-radius:5px;
     -webkit-border-radius:5px;
     border:1px solid #eaeaea;
     box-shadow:none;
-    font-size:12px;
+    font-size:14px;
 }
 .form-signin .btn-login {
     background:#1fb5ac;
@@ -237,7 +239,7 @@ ul.sidebar-menu li ul.sub li {
     margin-right:0;
 }
 ul.sidebar-menu li ul.sub li a {
-    font-size:12px;
+    font-size:13px;
     padding-top:13px;
     padding-bottom:13px;
     -webkit-transition:all 0.3s ease;
@@ -274,7 +276,7 @@ ul.sidebar-menu li a {
     text-decoration:none;
     display:block;
     padding:18px 0 18px 25px;
-    font-size:12px;
+    font-size:13px;
     outline:none;
     -webkit-transition:all 0.3s ease;
     -moz-transition:all 0.3s ease;
@@ -458,7 +460,7 @@ ul.top-menu>li>a:hover,ul.top-menu>li>a:focus {
     -webkit-border-radius:0px;
 }
 .dropdown-menu.extended li a {
-    font-size:12px;
+    font-size:13px;
     list-style:none;
 }
 .dropdown-menu.extended.logout {
@@ -5795,4 +5797,10 @@ right: -1px;
 [rel="popover"]{
     cursor: pointer;
     display:inline-block; /* chrome-fix */
+}
+
+.list-page-select{
+	border-radius:5px;
+	height:30px;
+	width:75px;
 }

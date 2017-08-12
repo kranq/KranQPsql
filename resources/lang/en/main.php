@@ -109,9 +109,10 @@ $lang['location.deletesuccess'] = 'Locality has been deleted successfully';
 $lang['location.referencesuccess'] = 'This record is referenced with City could not delete!.';
 
 // Reviews
-$lang['review.title'] = 'Reviews';
+$lang['review.title'] = 'Reviews & Ratings';
 //$lang['review.service_provider_id'] = 'Service Provider';
 //$lang['review.user_id'] = 'User';
+$lang['review.rating'] = 'Rating';
 $lang['review.reviews'] = 'Reviews';
 $lang['review.status'] = 'Status';
 $lang['review.postted_on'] = 'Posted On';
@@ -133,6 +134,14 @@ $lang['employee.createsuccess'] = 'Employee has been created successfully';
 $lang['employee.updatesuccess'] = 'Employee has been updated successfully';
 $lang['employee.deletesuccess'] = 'Employee has been deleted successfully';
 
+// Service
+$lang['service.title'] = 'Service';
+$lang['service.service_name'] = 'Service Name';
+$lang['service.status'] = 'Status';
+$lang['service.createsuccess'] = 'Service has been created successfully';
+$lang['service.updatesuccess'] = 'Service has been updated successfully';
+$lang['service.deletesuccess'] = 'Service has been deleted successfully';
+$lang['service.referencesuccess'] = 'This record is refrenced with service provider could not delete!.';
 
 // Category
 $lang['category.title'] = 'Category';
@@ -157,6 +166,17 @@ $lang['city.createsuccess'] = 'City has been created successfully';
 $lang['city.updatesuccess'] = 'City has been updated successfully';
 $lang['city.deletesuccess'] = 'City has been deleted successfully';
 $lang['city.referencesuccess'] = 'The record is referenced with Locations could not delete!.';
+
+// CMS
+$lang['cms.header_title'] = 'Cms';
+$lang['cms.title'] = 'Title';
+$lang['cms.slug'] = 'Slug';
+$lang['cms.description'] = 'Description';
+$lang['cms.createsuccess'] = 'CMS page has been created successfully';
+$lang['cms.updatesuccess'] = 'CMS page has been updated successfully';
+$lang['cms.deletesuccess'] = 'CMS page has been deleted successfully';
+//$lang['cms.referencesuccess'] = 'The record is referenced with Locations could not delete!.';
+
 // Rating
 $lang['rating.title'] = 'Ratings';
 $lang['rating.serviceprovider'] = 'Service Provider';

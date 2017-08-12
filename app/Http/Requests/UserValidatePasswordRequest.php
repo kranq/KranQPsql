@@ -24,8 +24,8 @@ class UserValidatePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-                'password' => 'required|min:6|max:191',
-                'password_confirmation' => 'required|min:6|max:191|same:password',
+                'password' => 'required|min:6|max:15',
+                'password_confirmation' => 'required|min:6|max:15|same:password',
         ];
     }
 }

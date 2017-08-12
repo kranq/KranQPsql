@@ -7,7 +7,7 @@
             <div class="login-wrap">
                 <div class="user-login-info">
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                        <input id="email" type="email" class="form-control" name="email" placeholder="Username" value="admin@gmail.com" required autofocus>
+                        <input id="email" type="email" class="form-control" name="email" placeholder="Username" value="admin@kranq.in" required autofocus>
                         @if ($errors->has('email'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('email') }}</strong>

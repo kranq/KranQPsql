@@ -5,6 +5,7 @@ use Image;
 use Mail;
 use App;
 use GuzzleHttp\Client;
+use Route;
 
 class KranHelper
 {
@@ -149,6 +150,34 @@ class KranHelper
 			}
 		}
             
+	}
+	
+	/**
+	 * To get the active menu
+	 */
+	public static function getActiveMenu($urlList){
+		$currentUrl = explode('/',Route::getFacadeRoot()->current()->uri());
+		$urlList = $urlList;
+		$activeMenu = (in_array($currentUrl[0],$urlList)) ? 'active' : '' ;
+		return $activeMenu;
+	}
+	
+	/**
+	 * To get the active sub menu
+	 */
+	public static function getActiveSubMenu($urlList){
+		$currentUrl = Route::getFacadeRoot()->current()->uri();
+		$activeMenu = ($currentUrl == $urlList) ? 'active' : '' ;
+		return $activeMenu;
+	}
+	
+	/**
+	 * To get the active sub settings menu
+	 */
+	public static function getActiveSubMenuDefault($urlList){
+		$currentUrl = explode('/',Route::getFacadeRoot()->current()->uri());
+		$activeMenu = ($currentUrl[0] == $urlList) ? 'active' : '' ;
+		return $activeMenu;
 	}
 	
 	

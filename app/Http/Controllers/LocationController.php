@@ -58,11 +58,12 @@ class LocationController extends Controller
                   'localities.id' //The fields used for process actions. those not are showed
                 ]);
             // To have actions for the records
-                $Grid->action('View', URL::to('location/show/{id}'))
-                    ->action('Edit', URL::to('location/edit/{id}'))
+                $Grid->action('View', URL::to('location/show/{id}'), ['class'=>'fa fa-eye'])
+                    ->action('Edit', URL::to('location/edit/{id}'), ['class'=>'fa fa-edit'])
                     ->action('Delete', URL::to('location/destroy/{id}'), [
                   'confirm'=>'Do you with so continue?',
                   'method'=>'DELETE',
+				  'class'=>'fa fa-trash-o',
               ]);
 
               // Pass the values to the view page

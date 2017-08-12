@@ -71,14 +71,28 @@
 	                    {!! Form::label('updateprofile',trans('main.user.updateprofile'),array('class'=>'')) !!}
 	                </div>
 					<div class="col-lg-4">
-	                    {!! Form::file('updateprofile') !!}
+	                    {{-- Form::file('updateprofile') --}}
+	                    <div class="form-group">
+	                        <div class="controls col-md-9">
+	                            <div class="fileupload fileupload-new" data-provides="fileupload">
+	                                <span class="btn btn-white btn-file">
+	                                <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select file</span>
+	                                <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
+	                                {{ Form::file('updateprofile',array('class'=>'default')) }}
+	                                </span>
+	                                <span class="fileupload-preview" style="margin-left:5px;"></span>
+	                                <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none; margin-left:5px;"></a>
+	                            </div>
+	                        </div>
+                    	</div>
 	                </div>
-	                <div class="col-lg-3">
+	                <div class="col-lg-5">
 	                	<i  data-original-title="{!! trans('main.image_upload_notes_title') !!}" data-content="{!! trans('main.image_upload_notes') !!}" data-placement="right" data-trigger="hover" class="fa fa-info-circle popovers" aria-hidden="true" data-html="true"></i>
 		        	</div>
+		        </div>
 		        @if(@$user->profile_picture)
 	                <div class="form-group">
-                        <div class="col-lg-3 control-label">
+                        <div class="col-lg-3">
                         </div>
                         <div class="col-lg-6">
                             <a href="#" >
@@ -87,6 +101,8 @@
                             @endif
                             </a>
                         </div>    
+                        <div class="col-lg-3">
+                        </div>
 	                </div>
 	            @endif
 				<div class="form-group">

@@ -30,7 +30,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    //protected $redirectTo = '/home';
+    protected $redirectTo = '/category';
 
     /**
      * Create a new controller instance.
@@ -48,7 +49,8 @@ class LoginController extends Controller
     public function logout($id = false)
     {
         Auth::logout();
-        Session::flush();
+        //Session::flush();
+        //Session::flash('message', 'You have been logged out!');
         return redirect('/');
     }
 }

@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
 			'employee' => 'EmployeeController',
             'category' => 'CategoryController',
             'location' => 'LocationController',
-            //'country' => 'CountryController',
+            'service' => 'ServiceController',
             'city' => 'CityController',
             'home' => 'HomeController',
             'rating' => 'RatingController',
@@ -52,6 +52,9 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
     // Employee
     Route::get('employee/edit/{id}', array('as' => 'employee.edit', 'uses' => 'EmployeeController@edit'));
     Route::delete('employee/destroy/{id}', array('as' => 'employee.destroy', 'uses' => 'EmployeeController@destroy'));
+	// Service
+    Route::get('service/edit/{id}', array('as' => 'service.edit', 'uses' => 'ServiceController@edit'));
+    Route::delete('service/destroy/{id}', array('as' => 'service.destroy', 'uses' => 'ServiceController@destroy'));
     // Category
     Route::get('category/edit/{id}', array('as' => 'category.edit', 'uses' => 'CategoryController@edit'));
     Route::get('category/show/{id}', array('as' => 'category.show', 'uses' => 'CategoryController@show'));
@@ -71,6 +74,11 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
     Route::get('city/edit/{id}', array('as' => 'city.edit', 'uses' => 'CityController@edit'));
     Route::get('city/show/{id}', array('as' => 'city.show', 'uses' => 'CityController@show'));
     Route::delete('city/destroy/{id}', array('as' => 'city.destroy', 'uses' => 'CityController@destroy'));
+	
+	// Cms
+	Route::get('cms/show/{id}', array('as' => 'cms.show', 'uses' => 'CmsPagesController@show'));
+	Route::get('cms/edit/{id}', array('as' => 'cms.edit', 'uses' => 'CmsPagesController@edit'));
+	
     // Location
     Route::get('location/edit/{id}', array('as' => 'location.edit', 'uses' => 'LocationController@edit'));
     Route::get('location/show/{id}', array('as' => 'location.show', 'uses' => 'LocationController@show'));

@@ -53,7 +53,7 @@
                                 <div class="col-lg-6">
                                 @php //echo '<pre>';print_r($provider->logo);exit;@endphp
                                     @if(!empty(@$provider->logo))
-                                        <img src="{{ URL::to('../uploads/provider') }}/{!! @$provider->logo !!}" width="50%" height="50%">
+                                        <img src="{{ URL::to('../uploads/provider') }}/{!! @$provider->logo !!}">
                                     @else
                                         <img src="{{ URL::to('/images/noimage.jpg') }}">
                                     @endif

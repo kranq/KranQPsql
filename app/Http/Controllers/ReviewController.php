@@ -42,20 +42,22 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        // To get the records details from the table
-        //$serviceProvider=Review::join('service_providers','service_provider_id','=','service_providers.id')->orderBy('id', 'desc');
+        // To get the records details from the table        
         $serviceProvider=Review::join('service_providers','service_provider_id','=','service_providers.id');
         $Grid = new Grid($serviceProvider, 'reviews');
         // To have header for the values
-      $Grid->fields([
-              'reviews'=>'Reviews',
+      $Grid->fields([              
+			  'reviews'=>'Reviews',
+			  'reviews.rating'=>'Rating',
               'name_sp'=>'Service Provider',
+			  'postted_on'=>'Posted On',
               'reviews.status'=>'Status'
           ])
 
         ->processLine(function($row){
             //This function will be called for each row
             $row['reviews'] = KranHelper::reviewStringLimit($row);
+			$row['postted_on'] = KranHelper::dateTimeFormat($row);
             //Do more you need on this row
             return $row; 
             //Do not forget to return the row
@@ -64,11 +66,12 @@ class ReviewController extends Controller
             'reviews.id' //The fields used for process actions. those not are showed
         ]);
         // To have actions for the records
-        $Grid->action('View', URL::to('review/show/{id}'))
-            ->action('Status', URL::to('review/edit/{id}'))
+        $Grid->action('View', URL::to('review/show/{id}'), ['class'=>'fa fa-eye'])
+            ->action('Status', URL::to('review/edit/{id}'), ['class'=>'fa fa-edit'])
             ->action('Delete', URL::to('review/destroy/{id}'), [
           'confirm'=>'Do you with so continue?',
           'method'=>'DELETE',
+		  'class'=>'fa fa-trash-o',
         ]);
         // Pass the values to the view page
         return view('review.index', ['grid'=>$Grid]);
