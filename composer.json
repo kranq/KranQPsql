@@ -11,7 +11,10 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4",
+<<<<<<< HEAD
         "league/flysystem-aws-s3-v3": "~1.0",
+=======
+>>>>>>> 4df0f3ce5ff285114a867d05e2638637599f81b6
         "rafwell/laravel-simplegrid": "~1.1"
     },
     "require-dev": {
