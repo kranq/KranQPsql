@@ -33,7 +33,7 @@ class ServiceController extends Controller
     protected $createmsg = 'main.service.createsuccess';
     protected $updatemsg = 'main.service.updatesuccess';
     protected $deletemsg = 'main.service.deletesuccess';
-    protected $referencemsg = 'main.service.referencesuccess';
+    protected $referencemsg = 'main.referencesuccess';
     
     /**
      * Display a listing of the resource.
@@ -145,7 +145,7 @@ class ServiceController extends Controller
 //        } else {
 //            $city = City::findorFail($id);
 //            $city->delete();
-//            return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));   
+//            return Redirect::route($this->route)->with($this->error, trans($this->deletemsg));   
 //        }
     }
 }

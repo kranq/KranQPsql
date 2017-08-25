@@ -22,7 +22,7 @@ class CmsPagesController extends Controller
     protected $createmsg = 'main.cms.createsuccess';
     protected $updatemsg = 'main.cms.updatesuccess';
     protected $deletemsg = 'main.cms.deletesuccess';
-    protected $referencemsg = 'main.cms.referencesuccess';
+    protected $referencemsg = 'main.referencesuccess';
     /**
      * Display a listing of the resource.
      *

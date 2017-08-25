@@ -139,6 +139,25 @@ return [
         'name_sp' => [
             'required' => 'Service Provider Name field is required',
         ],
+        'service_id' => [
+            'required' => 'Choose service field is required',      
+        ],
+        'city' => [
+            'required' => 'Choose City Name is required',
+        ],
+        'category_id' => [
+            'required' => 'Choose Category field is required',
+        ],
+        'location_id' => [
+            'required' => 'Choose Locality field is required',
+        ],
+        'opening_hrs' => [
+            'required' => 'Choose Opening Hourse field is required',
+        ],
+        'closing_hrs' => [
+            'required' => 'Choose Closing Hourse field is required',
+        ],
+
     ],
 
     /*

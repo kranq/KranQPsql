@@ -33,7 +33,7 @@ class LocationController extends Controller
   protected $createmsg = 'main.location.createsuccess';
   protected $updatemsg = 'main.location.updatesuccess';
   protected $deletemsg = 'main.location.deletesuccess';
-  protected $referencemsg = 'main.location.referencesuccess';
+  protected $referencemsg = 'main.referencesuccess';
 
     /**
      * Display a listing of the resource.
@@ -161,7 +161,7 @@ class LocationController extends Controller
             return Redirect::route($this->route)->with($this->success, trans($this->referencemsg));  
         } else {
             $location->delete();
-            return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));  
+            return Redirect::route($this->route)->with($this->error, trans($this->deletemsg));  
         }
       
     }

@@ -98,4 +98,12 @@ class HomeController extends Controller
         $userData->save();
         return Redirect::back()->with($this->success, trans($this->updatemsg));
     }
+
+    /**
+     * Page Not Found
+     */
+    public function pageNotFound()
+    {
+        return view('404');
+    }
 }

@@ -15,7 +15,7 @@ use Session;
 use Response;
 use Redirect;
 use App\Models\User;
-use App\Models\Rating;
+//use App\Models\Rating;
 use App\Models\Review;
 use App\Models\Bookmark;
 use App\Models\ServiceProvider;
@@ -35,6 +35,7 @@ class UserController extends Controller
     protected $createmsg = 'main.user.createsuccess';
     protected $updatemsg = 'main.user.updatesuccess';
     protected $deletemsg = 'main.user.deletesuccess';
+    protected $referencemsg = 'main.referencesuccess';
     /**
      * Display a listing of the resource.
      *
@@ -117,7 +118,7 @@ class UserController extends Controller
     {
         $data['user'] = User::findorfail($id);
         $data['user']->registered_on = KranHelper::dateTime($data['user']->registered_on);
-        $data['ratings'] = Rating::getDetails($id);
+        //$data['ratings'] = Rating::getDetails($id);
         $data['reviews'] = Review::getReviewDetails($id);
         $data['bookmarks'] = Bookmark::getBookMarkDetails($id);
         $data['registered_mode'] = DropdownHelper::where('key_code', '=', $data['user']->register_mode)->where('group_code', '002')->get();
@@ -169,7 +170,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        
+        $bookMarks = Bookmark::where('user_id', '=', $id)->get();
+        if (count($bookMarks) > 0) {
+            return Redirect::route($this->route)->with($this->success, trans($this->referencemsg));
+        } else {
+            $user = User::findorFail($id);
+            $user->delete();
+            return Redirect::route($this->route)->with($this->error, trans($this->deletemsg));
+        }
     }
     
 }

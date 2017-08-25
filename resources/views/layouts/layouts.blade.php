@@ -15,6 +15,10 @@
     {!! Html::style('css/style.css') !!}
     {!! Html::style('css/style-responsive.css') !!}
     
+    <!-- Multi select css -->
+    {!! Html::style('js/select2/select2.css') !!}
+    <!-- Multi select css End's here-->
+
     <!-- ONLY INCLUDE IF YOU NOT HAVE THOSE DEPENDENCIES -->
     <!-- <link rel="stylesheet" href="vendor/rafwell/simple-grid/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" /> -->
     <!-- CSS LARAVEL SIMPLEGRID -->
@@ -100,6 +104,12 @@
     {!! Html::script('js/scripts.js') !!}
 	{!! Html::script('js/bootstrap-fileupload.js') !!}
 	{!! Html::script('js/ckeditor/ckeditor.js') !!}
+
+    <!-- Multi select js -->
+    {!! Html::script('js/select2/select2.js') !!}
+    {!! Html::script('js/select-init.js') !!}
+    <!-- Multi select js End's here -->
+    
     <!-- Js Starts here-->
     <!-- ONLY INCLUDE IF YOU NOT HAVE THOSE DEPENDENCIES -->
     <!-- <script src="vendor/rafwell/simple-grid/moment/moment.js"></script> -->

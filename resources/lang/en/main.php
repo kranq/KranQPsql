@@ -21,6 +21,8 @@ $lang['send_password_link']	= "Send password reset link";
 $lang['generate_password'] = "Click here to generate password";
 $lang['status'] = 'Status';
 $lang['logoutsuccessmsg'] = 'Logged out successfully.';
+$lang['404'] = '404 - Page Not Found';
+
 // Common
 $lang['site_name'] = 'KranQ';
 $lang['site'] = 'KranQ';
@@ -49,7 +51,7 @@ $lang['users'] = 'Users';
 $lang['defaults'] = 'Defaults';
 $lang['locations'] = 'Locations';
 $lang['employee'] = 'Employee';
-
+$lang['referencesuccess'] = 'The record is referenced and could not delete!';
 
 // User
 $lang['user.title']	= 'Users';
@@ -85,7 +87,7 @@ $lang['user.registeron'] = 'Date Registered';
 $lang['user.status'] = 'Status';
 $lang['user.viewprofile'] = 'View Profile';
 $lang['user.bookmarks'] = 'BookMarks';
-$lang['user.reviews'] = 'Reviews';
+$lang['user.reviews'] = 'Reviews & Ratings';
 $lang['user.ratings'] = 'Ratings';
 $lang['user.beenthere'] = 'Been there status';
 // User view
@@ -106,7 +108,6 @@ $lang['location.status'] = 'Status';
 $lang['location.createsuccess'] = 'Locality has been created successfully';
 $lang['location.updatesuccess'] = 'Locality has been updated successfully';
 $lang['location.deletesuccess'] = 'Locality has been deleted successfully';
-$lang['location.referencesuccess'] = 'This record is referenced with City could not delete!.';
 
 // Reviews
 $lang['review.title'] = 'Reviews & Ratings';
@@ -121,7 +122,6 @@ $lang['review.updatesuccess'] = 'Review has been updated successfully';
 $lang['review.deletesuccess'] = 'Review has been deleted successfully';
 $lang['review.activesuccess'] = 'Review has been Active successfully';
 $lang['review.inactivesuccess'] = 'Review has been Inactive successfully';
-$lang['review.deletereference'] = 'This record is refrenced with service provider could not delete!.';
 
 // Employee
 $lang['employee.title'] = 'Employee';
@@ -135,13 +135,12 @@ $lang['employee.updatesuccess'] = 'Employee has been updated successfully';
 $lang['employee.deletesuccess'] = 'Employee has been deleted successfully';
 
 // Service
-$lang['service.title'] = 'Service';
+$lang['service.title'] = 'Services';
 $lang['service.service_name'] = 'Service Name';
 $lang['service.status'] = 'Status';
 $lang['service.createsuccess'] = 'Service has been created successfully';
 $lang['service.updatesuccess'] = 'Service has been updated successfully';
 $lang['service.deletesuccess'] = 'Service has been deleted successfully';
-$lang['service.referencesuccess'] = 'This record is refrenced with service provider could not delete!.';
 
 // Category
 $lang['category.title'] = 'Category';
@@ -155,7 +154,6 @@ $lang['category.order_by'] = 'Order By';
 $lang['category.createsuccess'] = 'Category has been created successfully';
 $lang['category.updatesuccess'] = 'Category has been updated successfully';
 $lang['category.deletesuccess'] = 'Category has been deleted successfully';
-$lang['category.referencesuccess'] = 'This record is refrenced with service provider could not delete!.';
 
 
 // City
@@ -166,7 +164,6 @@ $lang['city.status'] = 'Status';
 $lang['city.createsuccess'] = 'City has been created successfully';
 $lang['city.updatesuccess'] = 'City has been updated successfully';
 $lang['city.deletesuccess'] = 'City has been deleted successfully';
-$lang['city.referencesuccess'] = 'The record is referenced with Locations could not delete!.';
 
 // CMS
 $lang['cms.header_title'] = 'Cms';
@@ -176,7 +173,6 @@ $lang['cms.description'] = 'Description';
 $lang['cms.createsuccess'] = 'CMS page has been created successfully';
 $lang['cms.updatesuccess'] = 'CMS page has been updated successfully';
 $lang['cms.deletesuccess'] = 'CMS page has been deleted successfully';
-//$lang['cms.referencesuccess'] = 'The record is referenced with Locations could not delete!.';
 
 // Rating
 $lang['rating.title'] = 'Ratings';
@@ -187,7 +183,6 @@ $lang['rating.postedon'] = 'Posted On';
 $lang['rating.createsuccess'] = 'Rating has been created successfully';
 $lang['rating.updatesuccess'] = 'Rating has been updated successfully';
 $lang['rating.deletesuccess'] = 'Rating has been deleted successfully';
-$lang['rating.referencesuccess'] = 'This record is refrenced with service provider could not delete!.';
 
 // Bookmarks
 $lang['bookmark.title'] = 'Bookmarks';
@@ -218,12 +213,17 @@ $lang['provider.updatesuccess'] = 'Rating has been updated successfully';
 $lang['provider.deletesuccess'] = 'Rating has been deleted successfully';
 $lang['provider.basicdetails'] = 'Basic Details';
 $lang['provider.services'] = 'Services';
+$lang['provider.photos'] = 'Photos';
 $lang['provider.reviews'] = 'Reviews';
 $lang['provider.ratings'] = 'Ratings';
 $lang['provider.accountdetails'] = 'Account Details';
 $lang['provider.submittedon'] = 'Submitted On';
 $lang['provider.images'] = 'Images';
 $lang['provider.short_description'] = 'Short Description';
+$lang['provider.owner_name'] = "Name";
+$lang['provider.owner_designation'] = 'Designation';
+$lang['provider.actions'] = 'Actions';
+$lang['provider.services'] = "Service";
 
 $lang['placeholder'] = 'Enter :Name';
 $lang['image_upload_notes'] = '<b>Upload:</b> jpg, png &#xa; <br> <b>Dimension:</b> 50 * 50 &#xa; <br> <b>Max Size:</b> 1MB';
@@ -231,4 +231,13 @@ $lang['image_upload_notes_title'] = '<b>Upload Image</b>';
 $lang['default_image_path'] = 'http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=no+image';
 
 $lang['provider_path'] = '/uploads/provider/';
+
+// Service provider details 
+$lang['serviceproviderdetails.approvelsuccess'] = 'Service Provider Approved successfully';
+$lang['serviceproviderdetails.rejectedsuccess'] = 'Service Provider Rejected successfully';
+$lang['serviceproviderdetails.approvelcancelsuccess'] = 'Service Provider Approvel Rejected successfully';
+$lang['serviceproviderdetails.rejectedcancelsuccess'] = 'Service Provider Rejected cancel successfully';
+$lang['serviceproviderdetails.deletesuccess'] = 'Service Provider Detail has been deleted successfully';
+
 return $lang;
+

@@ -135,6 +135,6 @@ class CountryController extends Controller
     {
       $country = Country::findorFail($id);
       $country->delete();
-      return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));
+      return Redirect::route($this->route)->with($this->error, trans($this->deletemsg));
     }
 }

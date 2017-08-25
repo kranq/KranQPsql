@@ -21,6 +21,7 @@ Route::get('/clear-cache', function() {
 /* Route::get('/', function () {
      return view('welcome');
  }); */
+ Route::get('/home/pageNotFound', 'HomeController@pageNotFound');
 Route::auth('/login');
 // Home page redirection
 Route::get('/home', 'HomeController@index');
@@ -39,7 +40,8 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
             'bookmark' => 'BookmarkController',
             'provider' => 'ServiceProviderController',			
             'review' => 'ReviewController',
-			'cms' => 'CmsPagesController'
+			'cms' => 'CmsPagesController',
+            'serviceproviderdetails' => 'ServiceProviderDetailsController'
 		);
 	foreach ($controllers as $key => $controller){
         //Will generates Crud functions (index,create, edit, delete, update, store)
@@ -99,6 +101,12 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
     Route::get('provider/edit/{id}', array('as' => 'provider.edit', 'uses' => 'ServiceProviderController@edit'));
     Route::get('provider/show/{id}', array('as' => 'provider.show', 'uses' => 'ServiceProviderController@show'));
     Route::delete('provider/destroy/{id}', array('as' => 'provider.destroy', 'uses' => 'ServiceProviderController@destroy'));
+    Route::post('provider/cagetoryservices', array('as' => 'provider.cagetoryservices', 'uses' => 'ServiceProviderController@cagetoryservices'));
+
+    // Service provider Details
+    Route::get('serviceproviderdetails/approvel/{id}', array('as' => 'serviceproviderdetails.approvel', 'uses' => 'ServiceProviderDetailsController@approvel'));
+    Route::get('serviceproviderdetails/reject/{id}', array('as' => 'serviceproviderdetails.reject', 'uses' => 'ServiceProviderDetailsController@reject'));
+    Route::delete('serviceproviderdetails/destroy/{id}', array('as' => 'serviceproviderdetails.destroy', 'uses' => 'ServiceProviderDetailsController@destroy'));
 
 });
 
@@ -106,6 +114,8 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
 Route::get('webservice/index', array('as' => 'webservice.index', 'uses' => 'WebServiceController@index'));
 Route::get('webservice/getcms/{slug}', array('as' => 'webservice.getcms', 'uses' => 'WebServiceController@getCms'));
 Route::post('webservice/register', array('as' => 'webservice.register', 'uses' => 'WebServiceController@register'));
+Route::post('webservice/feedback', array('as' => 'webservice.feedback', 'uses' => 'WebServiceController@sendFeedback'));
+Route::post('webservice/serviceimage', array('as' => 'webservice.serviceimage', 'uses' => 'WebServiceController@getServiceImages'));
 
 // Route::post('store', 'EmployeeController@store');
 Route::get('/logout', 'Auth\LoginController@logout');

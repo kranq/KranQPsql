@@ -18,12 +18,6 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class=" col-sm-3 control-label">{!! trans('main.category.slug') !!}</label>
-				<div class="col-lg-6">
-					<p class="form-control-static">{!! @$category->slug; !!}</p>
-				</div>
-			</div>
-			<div class="form-group">
 				<label class=" col-sm-3 control-label">{!! trans('main.category.category_image') !!}</label>
 				<div class="col-lg-6">
 					<p class="form-control-static"> 
@@ -35,9 +29,15 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class=" col-sm-3 control-label">{!! trans('main.category.description') !!}</label>
+				<label class=" col-sm-3 control-label">{!! trans('main.category.services') !!}</label>
 				<div class="col-lg-6">
-					<p class="form-control-static">{!! @$category->description; !!}</p>
+					<p class="form-control-static">
+					@if (isset($services))
+						@foreach(@$services as $service)
+							@php echo $service[0].',';@endphp
+						@endforeach
+					@endif
+					</p>
 				</div>
 			</div>
 			<div class="form-group">

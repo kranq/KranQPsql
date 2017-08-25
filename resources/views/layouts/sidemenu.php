@@ -74,7 +74,7 @@ use App\Helpers\KranHelper;
                     <ul class="sub">
                         <li class="<?php echo KranHelper::getActiveSubMenuDefault('city'); ?>"><a href="<?php echo URL::to('city'); ?>">City</a></li>
                         <li class="<?php echo KranHelper::getActiveSubMenuDefault('location'); ?>"><a href="<?php echo URL::to('location/'); ?>">Locality</a></li>
-                        <li class="<?php echo KranHelper::getActiveSubMenuDefault('cms'); ?>"><a href="<?php echo URL::to('cms/'); ?>">Cms</a></li>
+                        <li class="<?php echo KranHelper::getActiveSubMenuDefault('cms'); ?>"><a href="<?php echo URL::to('cms/'); ?>">CMS</a></li>
                         <li class="<?php echo KranHelper::getActiveSubMenuDefault('service'); ?>"><a href="<?php echo URL::to('service/'); ?>">Services</a></li>						
                     </ul>
                 </li>

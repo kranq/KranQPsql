@@ -34,7 +34,7 @@ class ReviewController extends Controller
     protected $deletemsg = 'main.review.deletesuccess';
     protected $activemsg = 'main.review.activesuccess';
     protected $inactivemsg = 'main.review.inactivesuccess';
-    protected $referencemsg = 'main.review.deletereference';
+    protected $referencemsg = 'main.referencesuccess';
     /**
      * Display a listing of the resource.
      *
@@ -167,7 +167,7 @@ class ReviewController extends Controller
             return Redirect::back()->with($this->success, trans($this->referencemsg));    
         } else {
             $review->delete();
-            return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));    
+            return Redirect::route($this->route)->with($this->error, trans($this->deletemsg));    
         }
         
     }

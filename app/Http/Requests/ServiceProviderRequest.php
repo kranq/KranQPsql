@@ -34,6 +34,14 @@ class ServiceProviderRequest extends FormRequest
         $rules['category_id'] = 'required';
         $rules['location_id'] = 'required';
         $rules['city'] = 'required';
+        $rules['service_id'] = 'required';
+        $rules['short_description'] = 'required';
+        $rules['status_owner_manager'] = 'required';
+        $rules['opening_hrs'] = 'required';
+        $rules['closing_hrs'] = 'required';
+        $rules['working_days'] = 'required';
+        $rules['phone'] = 'required|max:20';
+        $rules['logo'] = 'required';
         switch ($this->method()) {
             case 'GET':
             case 'DELETE':

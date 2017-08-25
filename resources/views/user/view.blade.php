@@ -16,21 +16,17 @@
                     {{ trans('main.user.viewprofile') }}
                 </a>
             </li>
-            <li>
+            <!--li>
                 <a data-toggle="tab" href="#job-history">
                     {{ trans('main.user.bookmarks') }}
                 </a>
-            </li>
+            </li-->
             <li>
                 <a data-toggle="tab" href="#contacts" class="contact-map">
                     {{ trans('main.user.reviews') }}
                 </a>
             </li>
-            <li>
-                <a data-toggle="tab" href="#settings">
-                    {{ trans('main.user.ratings') }}
-                </a>
-            </li>
+           
         </ul>
     </header>
     <div class="panel-body">
@@ -90,13 +86,7 @@
                                 <div class="col-lg-6">
                                     <p class="form-control-static">{{ @$user->status }}</p>
                                 </div>
-                            </div>
-                            <!-- <div class="form-group">
-                                <label for="cname" class="control-label col-lg-3">{{ trans('main.user.beenthere') }}</label>
-                                <div class="col-lg-6">
-                                    <p class="form-control-static">{{ (@$user->been_there_status) ? @$user->been_there_status : 'Nil' }}</p>
-                                </div>
-                            </div> -->
+                            </div>                            
                         </div>
                     </div>
                 </div>
@@ -130,8 +120,9 @@
                             <thead>
                                 <tr>
                                     <th width="70%">User Review</th>
-                                    <th width="15%">Service Provider</th>
-                                    <th width="15%">Posted On</th>
+                                    <th width="10%">Rating</th>
+                                    <th width="10%">Service Provider</th>
+                                    <th width="10%">Posted On</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -139,6 +130,7 @@
                                     @foreach (@$reviews as $review)
                                         <tr>
                                             <td>{{ $review->reviews }}</td>
+                                            <td>{{ $review->rating }}</td>
                                             <td>{{ $review->service_provider_name }}</td>
                                             <td>{{ $review->postted_on }}</td>
                                         </tr>
@@ -149,36 +141,7 @@
                     </div>
                     </div>
                 </div>
-            <div id="settings" class="tab-pane ">
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover table-bordered" id="editable-sample">
-                        <thead>
-                        <tr>
-                            <th>Service Provider</th>
-                            <th>Ratings</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            @if (@$ratings)
-                                @foreach (@$ratings as $rating)
-                                    <tr class="">
-                                        <td>
-                                            <p>{{-- @$sponser_list[$rating['']] --}}</p>
-                                            <p>{{ @$rating->service_provider_name }}</p>
-                                        </td>
-                                        <td>
-                                            {{ @$rating->rating_value }} 
-                                            <?php /*for ($i=0;$i < round($rating->rating_value); $i++)
-                                                 echo '&#9733;'; */
-                                            ?>
-                                        </td>
-                                    </tr>
-                                @endforeach    
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            
             <a href="{{ route('main.user.index') }}" class="btn btn-default">Back</a>
         </div>
     </div>

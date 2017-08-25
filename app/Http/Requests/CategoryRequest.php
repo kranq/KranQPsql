@@ -30,10 +30,11 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
-        $rules['slug'] = 'required';
-        $rules['status'] = 'required';
+        //$rules['slug'] = 'required';
         $rules['order_by'] = 'required';
-        $rules['description'] = 'max:1000';
+        $rules['status'] = 'required';
+        $rules['service_id'] = 'required';
+        //$rules['description'] = 'max:1000';
         switch ($this->method()) {
             case 'GET':
             case 'DELETE':
@@ -44,7 +45,7 @@ class CategoryRequest extends FormRequest
             case 'POST':
             {
                 $rules['category_name'] = 'required|unique:categories,category_name';
-                $rules['slug'] = 'required';
+                //$rules['slug'] = 'required';
                 $rules['status'] = 'required';
                 $rules['order_by'] = 'required';          
             }

@@ -18,7 +18,7 @@
             </li>
             <li>
                 <a data-toggle="tab" href="#job-history">
-                    {{ trans('main.provider.services') }}
+                    {{ trans('main.provider.photos') }}
                 </a>
             </li>
             <li>
@@ -175,6 +175,7 @@
                                 <tr>
                                     <th>{{ trans('main.provider.services') }}</th>
                                     <th>{{ trans('main.provider.images') }}</th>
+                                    <th>{{ trans('main.provider.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -183,14 +184,25 @@
 
                                     @foreach (@$service_providers as $service_provider)
                                         <tr>
-                                            <td width="70%">{{ $service_provider->service_description }}</td>
+                                            <td width="60%">{{ $service_provider->service_description }}</td>
                                            <td width="30%"> <!-- <td>{{ $service_provider->image }}</td> -->
                                                 @if(!empty(@$service_provider->image))
                                                     <img src="{{ URL::to('../uploads/service_provider_details') }}/{!! @$service_provider->image !!}" width="50%" height="10%">
                                                 @else
                                                     <img src="{{ URL::to('/images/noimage.jpg') }}">
                                                 @endif
-                                        </td>
+                                            </td>
+                                            <td width="10%">
+                                                <a href="{{ URL::to('serviceproviderdetails/approvel') }}/{{ $service_provider->id }}" title="Approve"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>|
+                                                <a href="{{ URL::to('serviceproviderdetails/reject') }}/{{ $service_provider->id }}" title="Reject"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>|
+                                                <form action="{{ URL::to('serviceproviderdetails/destroy') }}/{{ $service_provider->id }}" method="POST" onsubmit="if(!confirm('Do you with so continue?')){event.preventDefault; return false;}; ">
+                                                    <input type="hidden" name="_token" value="GgTEoRbhbFcMh1GpqUrxfygT82MczEVQgxltNN4C">
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                        <button type="submit" title="Delete" class="btn btn-xs action btn-danger">
+                                                            <span class="fa fa-trash-o"></span>
+                                                        </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -235,15 +247,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                            @if (@$ratings)
-                                @foreach (@$ratings as $rating)
-                                @php //echo '<pre>';print_r($users);exit; @endphp
+                            @if (@$reviews)
+                                @foreach (@$reviews as $review)
                                     <tr class="">
                                         <td>
-                                            <p>{{ @$users[$rating->user_id] }}</p>
+                                            <p>{{ @$users[$review->user_id] }}</p>
                                         </td>
                                         <td>
-                                            {{ @$rating->rating_value }} 
+                                            {{ @$review->rating }} 
                                             <?php /*for ($i=0;$i < round($rating->rating_value); $i++)
                                                  echo '&#9733;'; */
                                             ?>

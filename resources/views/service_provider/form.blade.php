@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="form-group">
-	            {!! Form::label('logo',trans('main.provider.logo'),array('class'=>'control-label col-sm-3')) !!}
+	            {!! Form::label('logo',trans('main.provider.logo'),array('class'=>'control-label col-sm-3 custom_required')) !!}
                 <div class="col-lg-3">
                     {{-- Form::file('logo') --}}
                     <div class="form-group">
@@ -31,6 +31,11 @@
                                 <span class="fileupload-preview" style="margin-left:5px;"></span>
                                 <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none; margin-left:5px;"></a>
                             </div>
+                            @if ($errors->has('logo'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('logo') }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <!--div class="fileupload fileupload-new" data-provides="fileupload">
@@ -68,7 +73,7 @@
             <div class="form-group">
                 {!! Form::label('category_id',trans('main.provider.category'),array('class'=>'custom_required col-sm-3 control-label')) !!}
                 <div class="col-lg-6">
-                    {!!Form::select('category_id', $categories, @$provider->category_id, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
+                    {!!Form::select('category_id', $categories, @$provider->category_id, ['class' => 'form-control', 'placeholder' => 'Select', 'id' => 'category_id'])!!}
                     @if ($errors->has('category_id'))
                     <span class="help-block">
                         <strong>{{ $errors->first('category_id') }}</strong>
@@ -76,7 +81,19 @@
                     @endif
                 </div>
             </div>
-
+            <div class="form-group">
+                {!! Form::label('service_id',trans('main.provider.services'),array('class'=>'control-label col-lg-3 custom_required')) !!}
+                <div class="col-lg-6">
+                    {{ Form::select('service_id[]', @$services, @$service, array('class' => 'populate select2-offscreen', 'multiple' => 'true', 'id' => 'e9', 'style' => 'width:485px')) }}
+                   @if ($errors->has('service_id'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('service_id') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
+            <div>
+            </div>
             <div class="form-group">
                         {!! Form::label('city',trans('main.provider.city'),array('class'=>'custom_required col-sm-3 control-label')) !!}
                       <div class="col-lg-6">
@@ -110,9 +127,14 @@
                   </div>
                </div>
                <div class="form-group">
-                    {!! Form::label('short_description',trans('main.provider.short_description'),array('class'=>'control-label col-sm-3 ')) !!}
+                    {!! Form::label('short_description',trans('main.provider.short_description'),array('class'=>'control-label col-sm-3 custom_required')) !!}
                   <div class="col-lg-6">
                       {!! Form::textarea('short_description', @$provider->short_description, array('class'=>'form-control', 'placeholder' => __(trans('main.placeholder'),['name' => trans('main.provider.short_description')]), 'rows'=>'3', 'maxlenght' => '255')) !!}
+                    @if ($errors->has('short_description'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('short_description') }}</strong>
+                        </span>
+                    @endif
                   </div>
                </div>
                <div class="form-group">
@@ -135,26 +157,55 @@
                             </div>
 								</div>
                 <div class="form-group">
-                    {!! Form::label('status_owner_manager	',trans('main.provider.status_owner_manager'),array('class'=>'control-label col-lg-3')) !!}
+                    {!! Form::label('status_owner_manager	',trans('main.provider.status_owner_manager'),array('class'=>'control-label col-lg-3 custom_required')) !!}
 					<div  class="col-lg-6" >
-                          {{ Form::radio('status_owner_manager', 'Owner', true, ['class' => 'field']) }} Yes
-                          {{ Form::radio('status_owner_manager', 'Manager', false, ['class' => 'field']) }} No
-                        </div>
+                        {{ Form::radio('status_owner_manager', 'Owner', false, ['class' => 'field', 'id' => 'status_owner_manager_yes']) }} Yes
+                        {{ Form::radio('status_owner_manager', 'Manager', true, ['class' => 'field', 'id' => 'status_owner_manager_no']) }} No
+                    </div>
+                    @if ($errors->has('status_owner_manager'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('status_owner_manager') }}</strong>
+                        </span>
+                    @endif
 				</div>
+                <div class="Manager_yes">
+                <div class="form-group">
+                    {!! Form::label('owner_name',trans('main.provider.owner_name'),array('class'=>'control-label col-lg-3')) !!}
+                    <div  class="col-lg-6" >
+                          {{ Form::text('owner_name', @$provider->owner_name, ['class' => 'form-control',]) }} 
+                    </div>
+                </div>
+                <div class="form-group">
+                    {!! Form::label('owner_designation',trans('main.provider.owner_designation'),array('class'=>'control-label col-lg-3')) !!}
+                    <div  class="col-lg-6" >
+                          {{ Form::text('owner_designation', @$provider->owner_designation, ['class' => 'form-control',]) }} 
+                    </div>
+                </div>
+                </div>
                     <div class="form-group">
-                      {!! Form::label('open_close_hours	',trans('main.provider.open_close_hours'),array('class'=>'control-label col-lg-3')) !!}
+                      {!! Form::label('open_close_hours	',trans('main.provider.open_close_hours'),array('class'=>'control-label col-lg-3 custom_required')) !!}
 						<div  class="col-lg-6">
 						    <div class="col-md-4">
                                 {!!Form::select('opening_hrs', $opening_hrs, @$provider->opening_hrs, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
+                                @if ($errors->has('opening_hrs'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('opening_hrs') }}</strong>
+                                    </span>
+                                @endif
 							</div>
 							<div class="col-md-1 text-center">  to </div>
-                        <div class="col-md-4">
-                          {!!Form::select('closing_hrs', $closing_hrs, @$provider->closing_hrs, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
-														</div>
-												</div>
-										</div>
+                            <div class="col-md-4">
+                                {!!Form::select('closing_hrs', $closing_hrs, @$provider->closing_hrs, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
+                                @if ($errors->has('closing_hrs'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('closing_hrs') }}</strong>
+                                    </span>
+                                @endif
+        					</div>
+						</div>
+					</div>
                         <div class="form-group">
-                          {!! Form::label('working_days	',trans('main.provider.working_days'),array('class'=>'control-label col-sm-3')) !!}
+                          {!! Form::label('working_days	',trans('main.provider.working_days'),array('class'=>'control-label col-sm-3 custom_required')) !!}
                             <div class="col-sm-9 zero">
                                 <div class="col-sm-2 check4 checkbox">
                                     <label class="checkbox-inline">
@@ -168,10 +219,15 @@
                                              <?php echo $row; ?> </label>
                                     <?php endforeach; ?>
                                  </div>
+                                @if ($errors->has('working_days'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('working_days') }}</strong>
+                                    </span>
+                                @endif
                              </div>
                          </div>
                         <div class="form-group">
-                            {!! Form::label('phone',trans('main.provider.phone'),array('class'=>'control-label col-sm-3')) !!}
+                            {!! Form::label('phone',trans('main.provider.phone'),array('class'=>'control-label col-sm-3 custom_required')) !!}
                             <div class="col-lg-6">
                                 {!! Form::text('phone', @$provider->phone, array('class'=>'form-control', 'placeholder' => __(trans('main.placeholder'),['name' => trans('main.provider.phone')]))) !!}
                                 @if ($errors->has('phone'))
@@ -193,8 +249,8 @@
                             </div>
                         </div>
                         <div class="prf-contacts sttng">
-														<h2> Account Details</h2>
-												</div>
+							<h2> Account Details</h2>
+						</div>
                         <div class="form-group">
                                 {!! Form::label('email',trans('main.provider.email'),array('class'=>'control-label col-lg-3 custom_required')) !!}
                             <div class="col-lg-6">
@@ -241,8 +297,36 @@
 <!--main content end-->
 @section('page_js')
 <script type="text/javascript">
+    var token = "{!! csrf_token() !!}";
+    $('.Manager_yes').hide();
     $("#selecctall").change(function () {
         $("input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+    $('#status_owner_manager_yes').on('change', function() {
+            $('.Manager_yes').show();
+    });
+    $('#status_owner_manager_no').on('change', function() {
+            $('.Manager_yes').hide();
+    });
+
+    // To fetch the Category Service Details
+    $("#category_id").on('change', function() {
+        var category_id = $("#category_id").val();
+        $.ajax({
+            url: "{{ URL::to('provider/cagetoryservices') }}",
+            type: "post",
+            data: {
+                    '_token': token, 
+                    'id' : category_id,
+                },
+            success: function (response) {
+                $("#e9").html(response);
+               // you will get response from your php page (what you echo or print)                 
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+               console.log(textStatus, errorThrown);
+            }
+        });
     });
 </script>
 @endsection

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ServiceProvider;
 use App\Http\Requests\ServiceProviderRequest;
-
+use DB;
 use URL;
 use Image;
 use Session;
@@ -13,16 +13,18 @@ use Redirect;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\City;
-use App\Models\Rating;
+//use App\Models\Rating;
 use App\Models\Review;
+use App\Models\Service;
 use App\Models\Bookmark;
 use App\Models\Category;
 use App\Models\Location;
 use App\Helpers\KranHelper;
 use Rafwell\Simplegrid\Grid;
+use App\Models\CategoryService;
 use App\Http\Requests\UserRequest;
 use App\Models\ServiceProviderDetails;
-
+use App\Models\ServiceProviderCategoryService;
 //use Illuminate\Support\ServiceProvider;
 
 class ServiceProviderController extends Controller
@@ -89,6 +91,8 @@ class ServiceProviderController extends Controller
       $data['categories'] = Category::orderBy('category_name','asc')->pluck('category_name', 'id');
       $data['cities'] = City::orderBy('city_name','asc')->pluck('city_name', 'id');
       $data['localities'] = Location::orderBy('locality_name','asc')->pluck('locality_name', 'id');
+      //$data['services'] = Service::orderBy('service_name', 'asc')->pluck('service_name', 'id')->all();
+      $data['services'] = [];
       $data['all_status'] = KranHelper::getProviderStatusDropdown();
       $data['opening_hrs'] = KranHelper::getTimeDropDown();
       $data['closing_hrs'] = KranHelper::getTimeDropDown();
@@ -105,17 +109,24 @@ class ServiceProviderController extends Controller
      */
     public function store(ServiceProviderRequest $request)
     {
-      $input = $request->all();
-      $input = $request->except('_token');
-      if($request->hasFile('logo')){
-         $input['logo'] = ServiceProvider::upload_file($request, 'logo');
-      }
-      if(!empty($input['working_days'])){
-        $input['working_days'] = implode(',',$input['working_days']);
-      }
-      $input['slug'] = KranHelper::convertString($input['name_sp']);
-      $input['password'] = bcrypt($input['password']);
-      ServiceProvider::create($input);
+        $input = $request->all();
+        $input = $request->except('_token');
+        if($request->hasFile('logo')){
+            $input['logo'] = ServiceProvider::upload_file($request, 'logo');
+        }
+        if(!empty($input['working_days'])){
+            $input['working_days'] = implode(',',$input['working_days']);
+        }
+        $input['slug'] = KranHelper::convertString($input['name_sp']);
+        $input['password'] = bcrypt($input['password']);
+        $last = ServiceProvider::create($input);
+        // To get the Last Insert id and insert the value in the Service Provider Table by email
+        $lastRecord = ServiceProvider::where('email','=' ,$last->email)->get();
+        $serviceProviderInput['service_provider_id'] = $lastRecord[0]->id;
+        $serviceProviderInput['category_id'] = $input['category_id'];
+        $serviceProviderInput['service_id'] = implode(',', $input['service_id']);
+        ServiceProviderCategoryService::create($serviceProviderInput);
+
       return Redirect::route($this->route)->with($this->success, trans($this->createmsg));
     }
 
@@ -133,11 +144,10 @@ class ServiceProviderController extends Controller
         $data['provider']->category_id = Category::getCategoryNameById($data['provider']->category_id);
         $data['provider']->city = City::getCityNameById($data['provider']->city);
         $data['provider']->location_id = Location::getLocationNameById($data['provider']->location_id);
-        $data['ratings'] = Rating::where('service_provider_id', '=', $id)->get();
+        //$data['ratings'] = Rating::where('service_provider_id', '=', $id)->get();
         $data['users'] = User::orderBy('fullname', 'asc')->pluck('fullname', 'id');
         $data['reviews'] = Review::getServiceProviderReviewDetails($id);
         $data['service_providers'] = ServiceProviderDetails::where('service_provider_id', '=', $id)->get();
-        //echo '<pre>';print_r($data['bookmarks']);exit;
         return view('service_provider.view', $data);
     }
 
@@ -149,20 +159,26 @@ class ServiceProviderController extends Controller
      */
     public function edit($id)
     {
-      $data['provider'] = ServiceProvider::findorFail($id);
-      $data['categories'] = Category::orderBy('category_name','asc')->pluck('category_name', 'id');
-      $data['cities'] = City::orderBy('city_name','asc')->pluck('city_name', 'id');
-      $data['localities'] = Location::orderBy('locality_name','asc')->pluck('locality_name', 'id');
-      $data['all_status'] = KranHelper::getProviderStatusDropdown();
-      $data['opening_hrs'] = KranHelper::getTimeDropDown();
-      $data['closing_hrs'] = KranHelper::getTimeDropDown();
-      $data['working_days'] = KranHelper::getAllWeekDays();
-      $data['selected_working_days'] = $data['provider']->working_days;
-      if($data['selected_working_days']){
-        $data['selected_working_days'] = explode(',',$data['selected_working_days']);
-      }
-
-      return view('service_provider.edit', $data);
+        $data['provider'] = ServiceProvider::findorFail($id);
+        $data['categories'] = Category::orderBy('category_name','asc')->pluck('category_name', 'id');
+        $data['cities'] = City::orderBy('city_name','asc')->pluck('city_name', 'id');
+        $data['localities'] = Location::orderBy('locality_name','asc')->pluck('locality_name', 'id');
+        $data['all_status'] = KranHelper::getProviderStatusDropdown();
+        $data['opening_hrs'] = KranHelper::getTimeDropDown();
+        $data['closing_hrs'] = KranHelper::getTimeDropDown();
+        $data['working_days'] = KranHelper::getAllWeekDays();
+        $data['selected_working_days'] = $data['provider']->working_days;
+        if($data['selected_working_days']){
+            $data['selected_working_days'] = explode(',',$data['selected_working_days']);
+        }
+        $services = ServiceProviderCategoryService::where('service_provider_id','=' ,$id)->get();
+        $service[] = '';
+        if (count($services) > 0) {
+            $service = explode(',',$services[0]->service_id);
+        }
+        $data['services'] = Service::orderBy('service_name', 'asc')->pluck('service_name', 'id')->all();
+        $data['service'] = Service::whereIn('id',$service)->pluck('id');
+        return view('service_provider.edit', $data);
     }
 
     /**
@@ -174,23 +190,36 @@ class ServiceProviderController extends Controller
      */
     public function update(ServiceProviderRequest $request, $id)
     {
-      $input = $request->all();
-      $provider  = ServiceProvider::findorFail($id);
-      if($request->hasFile('logo')){
-         $input['logo'] = ServiceProvider::upload_file($request, 'logo');
-      }
-      if(!empty($input['working_days'])){
-        $input['working_days'] = implode(',',$input['working_days']);
-      }
-      $input['slug'] = KranHelper::convertString($input['name_sp']);
-      if($input['password']){
-        $input['password'] = bcrypt($input['password']);
-      }else{
-        $input['password'] = $provider->password;
-      }
-      $provider->fill($input);
-      $provider->save();
-      return Redirect::route($this->route)->with($this->success, trans($this->updatemsg));
+        $input = $request->all();
+        $provider  = ServiceProvider::findorFail($id);
+        if($request->hasFile('logo')){
+            $input['logo'] = ServiceProvider::upload_file($request, 'logo');
+        }
+        if(!empty($input['working_days'])){
+            $input['working_days'] = implode(',',$input['working_days']);
+        }
+        $input['slug'] = KranHelper::convertString($input['name_sp']);
+        if($input['password']){
+            $input['password'] = bcrypt($input['password']);
+        }else{
+            $input['password'] = $provider->password;
+        }
+        // To get the Last Insert id and insert the value in the Category Service Table by Category Name
+        $serviceProviderInputs = implode(',', $input['service_id']);
+        if (!empty($input['service_id'])) {
+            $serviceProviderStatus = ServiceProviderCategoryService::where('service_provider_id','=' ,$id)->get();
+            if (count($serviceProviderStatus) > 0) {
+                $result =  DB::statement('UPDATE service_provider_category_services set service_id="'.$serviceProviderInputs.'" where category_id='.$input['category_id'].' AND service_provider_id='.$id);   
+            } else {
+                $serviceProviderInput['service_provider_id'] = $id;
+                $serviceProviderInput['category_id'] = $input['category_id'];
+                $serviceProviderInput['service_id'] = $serviceProviderInputs;
+                ServiceProviderCategoryService::create($serviceProviderInput);
+            }
+        }
+        $provider->fill($input);
+        $provider->save();
+        return Redirect::route($this->route)->with($this->success, trans($this->updatemsg));
 
     }
 
@@ -204,4 +233,29 @@ class ServiceProviderController extends Controller
     {
         //
     }
-}
+
+
+    /**
+     * To get the Category based Services
+     * @return \Illumniate\Http\Response
+     */
+    public function cagetoryservices()
+    {
+        if ($_POST['id']) {
+            $id = $_POST['id'];
+            $categoryServices = CategoryService::getCategoryService($id);
+            if ($categoryServices) { 
+                $service = explode(',',$categoryServices);
+                $result = '';
+                foreach ($service as $value) {
+                    $services = Service::where('id','=',$value)->get()->all();
+                    $result .= '<option value="'.$services[0]->id.'"';
+                    $result .= '>'. $services[0]->service_name .'<option>';
+                }
+                echo $result;
+            } else { 
+                echo '';
+            }
+        }
+    } 
+} 

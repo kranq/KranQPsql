@@ -32,7 +32,7 @@ class CityController extends Controller
     protected $createmsg = 'main.city.createsuccess';
     protected $updatemsg = 'main.city.updatesuccess';
     protected $deletemsg = 'main.city.deletesuccess';
-    protected $referencemsg = 'main.city.referencesuccess';
+    protected $referencemsg = 'main.referencesuccess';
 
     /**
      * Display a listing of the resource.
@@ -147,7 +147,7 @@ class CityController extends Controller
         } else {
             $city = City::findorFail($id);
             $city->delete();
-            return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));   
+            return Redirect::route($this->route)->with($this->error, trans($this->deletemsg));   
         }
     }
 }

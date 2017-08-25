@@ -60,7 +60,7 @@ class KranHelper
 
     // To set the string limit
    public static function reviewStringLimit($row) {
-        return substr($row['reviews'],0,50). '...';
+        return substr($row['reviews'],0,20). '...';
     }
 
     //
@@ -132,13 +132,13 @@ class KranHelper
 	* @param string $imageName
 	* @return string 
 	*/
-	public static function convertStringToImage($imageString,$imageName){
+	public static function convertStringToImage($imageString,$imageName,$path){
 		$imageData = base64_decode($imageString);
         $photo = imagecreatefromstring($imageData);
 		$dateval = date('Ymdhis');
         if ($photo) {
 			$file = $imageName.  '-' . $dateval . '.jpg';
-            $path = base_path() . "/uploads/user/"; //file upload path
+            $path = base_path() . $path; //file upload path
             //$data['profile_picture'] = $path . $imageName. '-' . $dateval . '.jpg';
             if (!is_dir($path)) {
                 @mkdir($path);

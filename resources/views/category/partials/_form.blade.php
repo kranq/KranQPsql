@@ -14,17 +14,6 @@
             </div>
         </div>
         <div class="form-group">
-            {!! Form::label('slug',trans('main.category.slug'),array('class'=>'control-label col-lg-3 custom_required')) !!}
-            <div class="col-lg-6">
-                {!! Form::text('slug', @$category->slug, array('class'=>'form-control', 'placeholder' => 'Enter Slug')) !!}
-                @if ($errors->has('slug'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('slug') }}</strong>
-                </span>
-                @endif
-            </div>
-        </div>
-        <div class="form-group">
               {!! Form::label('category_image',trans('main.category.category_image'),array('class'=>'control-label col-lg-3')) !!}
             <div class="col-lg-4">
                 <div class="form-group">
@@ -60,12 +49,12 @@
         </div>
         @endif
         <div class="form-group">
-            {!! Form::label('description',trans('main.category.description'),array('class'=>'control-label col-lg-3')) !!}
+            {!! Form::label('service_id',trans('main.category.services'),array('class'=>'control-label col-lg-3 custom_required')) !!}
             <div class="col-lg-6">
-                {!! Form::textarea('description', @$category->description, array('class'=>'form-control', 'placeholder' => 'Enter Description', 'rows'=>'2', 'maxlenght' => '1000')) !!}
-                @if ($errors->has('description'))
+                {!! Form::select('service_id[]', @$services, @$service, array('class' => 'populate select2-offscreen', 'multiple' => 'true', 'id' => 'e9', 'style' => 'width:485px')) !!}
+               @if ($errors->has('service_id'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('description') }}</strong>
+                        <strong>{{ $errors->first('service_id') }}</strong>
                     </span>
                 @endif
             </div>
@@ -95,7 +84,8 @@
 		<div class="form-group">
 			<div class="col-lg-offset-3 col-lg-6">
 				<button type="submit" class="btn btn-primary">{!! @$btn !!}</button>
-                <a href="{!! route('main.category.index') !!}" class="btn btn-default">{!! trans('main.cancel') !!}
+                <a href="{!! route('main.category.index') !!}" class="btn btn-default">
+                {!! trans('main.cancel') !!}
                 </a>
 			</div>
 		</div>

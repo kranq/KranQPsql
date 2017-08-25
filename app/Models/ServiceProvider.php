@@ -2,7 +2,7 @@
 
 /*
   ------------------------------------------------------------------------------------------------
-  Project		      : KRQ 1.0.0
+  Project		    : KRQ 1.0.0
   Created By    	: Joan Britto S
   Created Date  	: 26.07.2017
   Purpose       	: To handle service provider details
@@ -23,7 +23,7 @@ class ServiceProvider extends Model
 
   use SoftDeletes;
 
-  protected $fillable = array('id','category_id', 'location_id', 'name_sp','slug','logo','city','address','status_owner_manager','opening_hrs','closing_hrs','working_days','phone','website_link','googlemap_latitude','googlemap_longitude','email','password','	order_by','	status');
+  protected $fillable = array('id','category_id', 'short_description','owner_name', 'owner_designation', 'location_id', 'name_sp','slug','logo','city','address','status_owner_manager','opening_hrs','closing_hrs','working_days','phone','website_link','googlemap_latitude','googlemap_longitude','email','password','	order_by','	status');
 
   /**
    * Get the category that owns the service provider.
