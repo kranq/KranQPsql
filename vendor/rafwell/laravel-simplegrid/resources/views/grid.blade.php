@@ -11,10 +11,10 @@
 				<fieldset>
 					<legend>@lang('Simplegrid::grid.Advanced Search')</legend>
 					@include('Simplegrid::advancedSearch', ['fields'=>$advancedSearchFields])
-					<button class="btn-submit-advanced-search btn btn-primary" type="submit" title="@lang('Simplegrid::grid.Search')">
+					<button class="btn-submit-advanced-search btn btn-default" type="submit" title="@lang('Simplegrid::grid.Search')">
 						<i class="fa fa-search" aria-hidden="true"> </i> @lang('Simplegrid::grid.Search')
 					</button>
-					<a href="{{$urlSimpleSearch}}" class="btn btn-primary" title="@lang('Simplegrid::grid.Simple Search')"><span class="glyphicon glyphicon-zoom-out"></span></a>
+					<a href="{{$urlSimpleSearch}}" class="btn btn-default" title="@lang('Simplegrid::grid.Simple Search')"><span class="glyphicon glyphicon-zoom-out"></span></a>
 					@if ($totalRows>0)
 						<span class="total-info pull-right">
 							{{trans_choice('Simplegrid::grid.Page :current_page of :total_pages. Total of :total_rows row.', $totalRows, [
@@ -60,7 +60,19 @@
 	</div>
 	@endif
 	
-	
+	<!-- <div class="row"> -->
+		<!-- div class="col-md-8">
+			@if($bulkActions)
+			<div class="bulk-action">
+				<select name="grid_bulk_action" class="grid_bulk_action" data-token="{{ csrf_token() }}" data-confirm-msg="@lang('Simplegrid::grid.Do you really want to apply this action to the selected items?')" data-alert-msg="@lang('Simplegrid::grid.Select at least one item to apply the action!')">
+					<option value="">@lang('Simplegrid::grid.Apply to selected')</option>
+					@foreach($bulkActions as $action)
+					<option value="{{$action['url']}}">{!!$action['title']!!}</option>
+					@endforeach
+				</select>		
+			</div>
+			@endif	
+		</div> -->
 		<div class="col-md-4">
 			<div class="showing-rows-info pull-right">
 				<span>@lang('Simplegrid::grid.Showing') </span>
@@ -120,6 +132,20 @@
 									@foreach ($row['gridActions'] as $action)	
 										@if($action['method']=='GET')								
 											<a href="{!!$action['url']!!}" title="{{$action['title']}}" class="btn btn-xs action btn-primary" target="{{$action['target']}}">
+												<!--@if (isset($action['icone']))
+													<span class="{{$action['icone']}}"></span>
+													<i class="fa fa-chevron-right" aria-hidden="true"></i>
+												@endif
+												@if ($action['onlyIcon']===false)
+													@if ($action['title'] == 'View')
+														<i class="fa fa-eye" aria-hidden="true"></i>
+													@elseif ($action['title'] == 'Edit')
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													@else 
+														{{ $action['title'] }}	
+													@endif
+													{{--$action['title']--}}
+												@endif-->
 												@if (isset($action['class']))
 													<span class="{{$action['class']}}"></span>
 												@else
@@ -131,6 +157,17 @@
 												{{csrf_field()}}
 												<input type="hidden" name="_method" value="{!!$action['method']!!}">
 												<button type="submit" title="{{$action['title']}}" class="btn btn-xs action btn-danger">
+													<!--@if (isset($action['icone']))
+														<span class="{{$action['icone']}}"></span>
+													@endif
+													@if ($action['onlyIcon']===false)
+														@if ($action['title'] == 'Delete')
+															<i class="fa fa-trash-o" aria-hidden="true"></i>
+														@else
+															{{ $action['title'] }}
+														@endif
+														{{-- $action['title'] --}}
+													@endif-->
 													@if (isset($action['class']))
 														<span class="{{$action['class']}}"></span>
 													@else
@@ -156,6 +193,20 @@
 	</div>
 	@if (isset($rows) && count($rows)>0)
 	<div class="row">
+		<!-- <div class="col-md-{!! $totalPages>1 ? '9' : '12' !!}">	
+			@if($allowExport)
+			<div class="input-group">				
+				<select name="export" class="form-control">
+					<option value="">@lang('Simplegrid::grid.Select an option to export')</option>
+					<option value="xls">XLS</option>
+					<option value="csv">CSV</option>
+				</select>
+				<a href="#" data-href="{{$urlExport}}" target="_blank" class="input-group-addon btn-export" title="@lang('Simplegrid::grid.Export')" data-alert-msg="@lang('Simplegrid::grid.Select a format for export!')">
+					<span class="glyphicon glyphicon-download"></span> @lang('Simplegrid::grid.Export')
+				</a>
+			</div>		
+			@endif
+		</div> -->
 		<div class="col-md-3">
 			@if ($totalPages>1)
 				<div class="nav-pagination">
