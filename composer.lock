@@ -1966,42 +1966,7 @@
             ],
             "time": "2017-07-29T19:30:02+00:00"
         },
-        {
-            "name": "rafwell/laravel-simplegrid",
-            "version": "1.5.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rafwell/laravel-simplegrid.git",
-                "reference": "2ac6a0bb3445cb14268e2fc20a172adaebad6490"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rafwell/laravel-simplegrid/zipball/2ac6a0bb3445cb14268e2fc20a172adaebad6490",
-                "reference": "2ac6a0bb3445cb14268e2fc20a172adaebad6490",
-                "shasum": ""
-            },
-            "require": {
-                "box/spout": "^2.7"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rafwell\\Simplegrid\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rafael Souza",
-                    "email": "rafaotec@gmail.com"
-                }
-            ],
-            "description": "A simple component for generating powerful grids with Laravel.",
-            "time": "2017-08-14T17:36:00+00:00"
-        },
+        
         {
             "name": "ramsey/uuid",
             "version": "3.7.0",
