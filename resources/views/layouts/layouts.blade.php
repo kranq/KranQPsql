@@ -90,7 +90,9 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           @include('common.alert')
           @yield('content')
+		  <a href="https://msg91.com/startups/?utm_source=startup-banner"><img src="https://msg91.com/images/startups/msg91Badge.png" width="120" height="90" title="MSG91 - SMS for Startups" alt="Bulk SMS - MSG91"></a>		  
         </div>
+		
     </div>
   </section>
 </section>

@@ -24,7 +24,9 @@
     <div class="container">
         @include('common.alert')
         @yield('content')
+		<a href="https://msg91.com/startups/?utm_source=startup-banner"><img src="https://msg91.com/images/startups/msg91Badge.png" width="120" height="90" title="MSG91 - SMS for Startups" alt="Bulk SMS - MSG91"></a>
     </div>
+	
     <!-- Placed js at the end of the document so the pages load faster -->
     <!--Core js-->
     <script src="{{ asset('js/app.js') }}"></script>
