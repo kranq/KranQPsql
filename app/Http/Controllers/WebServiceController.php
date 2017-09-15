@@ -138,6 +138,17 @@ class WebServiceController extends Controller
 							//$data['been_there_status'] = ($data['been_there_status']=='Yes') ? 1 : 2;
 							$data['registered_on'] = date('Y-m-d H:i:s');
 							$data['status'] = 'Active';
+
+							$logoPath = trans('main.user_path');
+							if(isset($data['profile_url']) && $data['profile_url']){
+								if (!filter_var($data['profile_url'], FILTER_VALIDATE_URL)) { 
+									$input['profile_picture'] = KranHelper::convertStringToImage($data['profile_url'],$data['fullname'],$logoPath);
+									if($user->profile_picture){
+										@unlink(base_path().$logoPath.'/'.$user->profile_picture);
+									}
+								}	
+							}
+
 							/*$userProfilePath = '/uploads/user/';
 							if(isset($data['profile_picture'])){
 								$data['profile_picture'] = KranHelper::convertStringToImage($data['profile_picture'],$data['fullname'],$userProfilePath);
@@ -346,7 +357,8 @@ class WebServiceController extends Controller
 			if($data){
 				if($data['mobile'] && $data['otp']){
 					$mobileExists	= User::get()->where('mobile',$data['mobile'])->where('otp',$data['otp'])->count();
-					
+					$basePath = URL::to('/').'/..';
+					$imagePath = $basePath.trans('main.user_path');	
 					if($mobileExists == 0){
 						$resultData = array('status'=>false,'message'=>'invalid OTP','result'=>'');
 					} else {
@@ -355,6 +367,8 @@ class WebServiceController extends Controller
 						$userData['name'] = $user->fullname;
 						$userData['email'] = $user->email;
 						$userData['mobile'] = $user->mobile;
+						$userData['profile_picture'] = ($user->profile_picture) ? $imagePath.$user->profile_picture : "";
+
 						$otpStoreStatus = User::where('mobile', '=', $data['mobile'])->update(['mobile_verification_status' => '1']);
 						$resultData = array('status'=>true,'message'=>'OTP verification success','result'=>$userData);
 					}
@@ -583,7 +597,9 @@ class WebServiceController extends Controller
     			if($data['username'] && $data['password']){					
     				$unameExist = ServiceProvider::get()->where('email',$data['username'])->count();
     				$unameData = ServiceProvider::get()->where('email',$data['username'])->first();
-
+    				//$user = User::find($reviewDetails['user_id']);
+					$basePath = URL::to('/').'/..';
+					$imagePath = $basePath.trans('main.provider_path');	
     				if($unameExist != 0){
 						//compare the entered password with the password in the db with the given uname
     					$checkpwd = Hash::check($data['password'], $unameData->password);
@@ -591,6 +607,7 @@ class WebServiceController extends Controller
     					$userData['name'] = $unameData->name_sp;
     					$userData['email'] = $unameData->email;
     					$userData['mobile'] = $unameData->phone;
+    					$userData['logo'] = ($unameData->logo) ? $imagePath.$unameData->logo : ""; 
     					if($checkpwd){
     						$resultData = array('status'=>true,'message'=>'service provider login available','result'=>$userData);
     					}else{
@@ -961,8 +978,10 @@ class WebServiceController extends Controller
 				$reviewData = $request->all();
 				$page = (isset($reviewData['page'])) ? $reviewData['page'] : "0";	
 				$recordLimit = (isset($reviewData['limit'])) ? $reviewData['limit'] : "20";	
+				$page = ($page > 0) ? $page - 1 : 0;
 				$start =  $page * $recordLimit + 1;
-				$end = $page * $recordLimit + $recordLimit;
+				//$end = $page * $recordLimit + $recordLimit;
+				$end = $recordLimit;
 				$reviewDetails = Review::where('status', 'Active')->skip($start)->take($end)->get();
 				$arrayData = [];
 				if ($reviewDetails) {
@@ -1010,8 +1029,11 @@ class WebServiceController extends Controller
 				$userData = $request->all();
 				$page = (isset($userData['page'])) ? $userData['page'] : "0";	
 				$recordLimit = (isset($userData['limit'])) ? $userData['limit'] : "20";	
+
+				$page = ($page > 0) ? $page - 1 : 0;
 				$start =  $page * $recordLimit + 1;
-				$end = $page * $recordLimit + $recordLimit;
+				//$end = $page * $recordLimit + $recordLimit;
+				$end = $recordLimit;
 				$basePath = URL::to('/').'/..';
 				$imagePath = $basePath.trans('main.user_path');
 				$arrayData = [];
@@ -1126,7 +1148,7 @@ class WebServiceController extends Controller
 						if($data['register_mode']){
 							$input['register_mode'] = $this->getRegisterMode($data['register_mode']);
 							if($data['register_mode'] == 'Facebook'){		
-								$input['facebook_id'] = ($data['facebook_id']) ? $data['facebook_id'] : '';
+								$input['facebook_id'] = (isset($data['facebook_id']) && $data['facebook_id']) ? $data['facebook_id'] : '';
 							}
 						}
 						$input['updated_at'] = date('Y-m-d H:i:s');
@@ -1289,9 +1311,13 @@ class WebServiceController extends Controller
 				if (isset($data['id'])) {
 					$reviewDetails = Review::where('status','Active')->where('user_id',$data['id'])->get();
 					if ($reviewDetails) {
+						$basePath = URL::to('/').'/..';
+						$imagePath = $basePath.trans('main.provider_path');	
 						foreach ($reviewDetails as $index => $value) {
+							$sp = ServiceProvider::find($value['service_provider_id']);
 							$arrayData[$index]['id'] = $value['id'];
-							$arrayData[$index]['service_provider_name'] = ($value['service_provider_id']) ? ServiceProvider::getServiceNameById($value['service_provider_id']) : "";
+							$arrayData[$index]['name'] = ($value['service_provider_id']) ? ServiceProvider::getServiceNameById($value['service_provider_id']) : "";
+							$arrayData[$index]['image'] = ($sp->logo) ? $imagePath.$sp->logo : "";
 							//$arrayData[$index]['user'] = ($value['user_id']) ? User::getUserNameById($value['user_id']) : "";
 							$arrayData[$index]['reviews'] = ($value['reviews']) ? $value['reviews'] : "";
 							$arrayData[$index]['ratings'] = ($value['rating']) ? $value['rating'] : "";
@@ -1334,8 +1360,8 @@ class WebServiceController extends Controller
 							$imagePath = $basePath.trans('main.user_path');							
 							$arrayData[$index]['id'] = $value['id'];
 							//$arrayData[$index]['service_provider_name'] = ($value['service_provider_id']) ? ServiceProvider::getServiceNameById($value['service_provider_id']) : "";
-							$arrayData[$index]['user'] = ($value['user_id']) ? User::getUserNameById($value['user_id']) : "";
-							$arrayData[$index]['user_image'] = $imagePath.$user->profile_picture;
+							$arrayData[$index]['name'] = ($value['user_id']) ? User::getUserNameById($value['user_id']) : "";
+							$arrayData[$index]['image'] = $imagePath.$user->profile_picture;
 							$arrayData[$index]['reviews'] = ($value['reviews']) ? $value['reviews'] : "";
 							$arrayData[$index]['ratings'] = ($value['rating']) ? $value['rating'] : "";
 							$arrayData[$index]['posted_on'] = ($value['postted_on']) ? KranHelper::formatDate($value['postted_on']) : "";

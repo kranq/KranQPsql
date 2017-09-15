@@ -140,8 +140,8 @@ Route::post('webservice/customer-update', array('as' => 'webservice.customer-upd
 Route::post('webservice/serviceprovider-view', array('as' => 'webservice.serviceprovider-view', 'uses' => 'WebServiceController@viewServiceProvider'));
 Route::post('webservice/user-reviews', array('as' => 'webservice.user-reviews', 'uses' => 'WebServiceController@userReviews'));
 Route::post('webservice/sp-reviews', array('as' => 'webservice.sp-reviews', 'uses' => 'WebServiceController@spReviews'));
-Route::post('webservice/addreview', array('as' => 'webservice.addreview', 'uses' => 'WebServiceController@addReview'));
-Route::post('webservice/updatereview', array('as' => 'webservice.updatereview', 'uses' => 'WebServiceController@updateReview'));
+Route::post('webservice/review-add', array('as' => 'webservice.review-add', 'uses' => 'WebServiceController@addReview'));
+Route::post('webservice/review-update', array('as' => 'webservice.review-update', 'uses' => 'WebServiceController@updateReview'));
 
 
 // Route::post('store', 'EmployeeController@store');

@@ -35,7 +35,7 @@ class AddressController extends Controller
     public function index()
     {
         // To get the records details from the table
-        $Grid = new Grid(Address::query(), 'address');
+        $Grid = new Grid(Address::query()->orderBy('id', 'DESC'), 'address');
 
         // To have header for the values
         $Grid->fields([

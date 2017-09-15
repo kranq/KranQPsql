@@ -44,7 +44,7 @@ class ServiceProviderController extends Controller
     public function index()
     {
         // To get the records details from the table
-        $providers = ServiceProvider::join('categories','category_id','=','categories.id')->join('localities','location_id','=','localities.id')->join('cities','city','=','cities.id');
+        $providers = ServiceProvider::join('categories','category_id','=','categories.id')->join('localities','location_id','=','localities.id')->join('cities','city','=','cities.id')->orderBy('id', 'DESC');
 
         $Grid = new Grid($providers,'');
 

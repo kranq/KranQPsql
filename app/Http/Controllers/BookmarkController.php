@@ -26,7 +26,7 @@ class BookmarkController extends Controller
     public function index()
     {
         // To get the records details from the table
-        $Grid = new Grid(Bookmark::query(), 'bookmarks');
+        $Grid = new Grid(Bookmark::query()->orderBy('id', 'DESC'), 'bookmarks');
 
         // To have header for the values
         $Grid->fields([

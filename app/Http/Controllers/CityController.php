@@ -42,7 +42,7 @@ class CityController extends Controller
     public function index()
     {
         // To get the records details from the table
-        $Grid = new Grid(City::query(), 'Cities');
+        $Grid = new Grid(City::query()->orderBy('id', 'DESC'), 'Cities');
 
         // To have header for the values
         $Grid->fields([

@@ -42,7 +42,7 @@ class LocationController extends Controller
     public function index()
     {
         // To get the records details from the table with join query
-        $localities = Location::join('cities','city_id','=','cities.id');
+        $localities = Location::join('cities','city_id','=','cities.id')->orderBy('id', 'DESC');
         $Grid = new Grid($localities, 'localities');
         // To have header for the values
         $Grid->fields([

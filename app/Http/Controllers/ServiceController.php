@@ -43,7 +43,7 @@ class ServiceController extends Controller
     public function index()
     {
         // To get the records details from the table
-        $Grid = new Grid(Service::query(), 'Services');
+        $Grid = new Grid(Service::query()->orderBy('id', 'DESC'), 'Services');
 
         // To have header for the values
         $Grid->fields([                
