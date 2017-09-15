@@ -53,4 +53,14 @@ class User extends Model
         }
         return $filename;   
     }
+
+    /**
+     * To get the username
+     * 
+     * @return array
+     **/
+    public static function getUserNameById($id) {
+        $userDetails = User::where('id', '=', $id)->first();
+        return $userDetails->fullname;
+    }
 }

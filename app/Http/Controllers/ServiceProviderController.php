@@ -13,7 +13,6 @@ use Redirect;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\City;
-//use App\Models\Rating;
 use App\Models\Review;
 use App\Models\Service;
 use App\Models\Bookmark;
@@ -25,7 +24,6 @@ use App\Models\CategoryService;
 use App\Http\Requests\UserRequest;
 use App\Models\ServiceProviderDetails;
 use App\Models\ServiceProviderCategoryService;
-//use Illuminate\Support\ServiceProvider;
 
 class ServiceProviderController extends Controller
 {
@@ -96,8 +94,8 @@ class ServiceProviderController extends Controller
       $data['all_status'] = KranHelper::getProviderStatusDropdown();
       $data['opening_hrs'] = KranHelper::getTimeDropDown();
       $data['closing_hrs'] = KranHelper::getTimeDropDown();
-      $data['working_days'] = KranHelper::getAllWeekDays();
-      $data['selected_working_days'] = KranHelper::getAllWeekDays();
+      $data['working_days'] = KranHelper::getWeekDays();
+      $data['selected_working_days'] = KranHelper::getWeekDays();
       return view('service_provider.create', $data);
     }
 
@@ -119,6 +117,7 @@ class ServiceProviderController extends Controller
         }
         $input['slug'] = KranHelper::convertString($input['name_sp']);
         $input['password'] = bcrypt($input['password']);
+        //echo '<pre>';print_r($input);exit;
         $last = ServiceProvider::create($input);
         // To get the Last Insert id and insert the value in the Service Provider Table by email
         $lastRecord = ServiceProvider::where('email','=' ,$last->email)->get();
@@ -166,10 +165,11 @@ class ServiceProviderController extends Controller
         $data['all_status'] = KranHelper::getProviderStatusDropdown();
         $data['opening_hrs'] = KranHelper::getTimeDropDown();
         $data['closing_hrs'] = KranHelper::getTimeDropDown();
-        $data['working_days'] = KranHelper::getAllWeekDays();
+        $data['working_days'] = KranHelper::getWeekDays();
         $data['selected_working_days'] = $data['provider']->working_days;
         if($data['selected_working_days']){
             $data['selected_working_days'] = explode(',',$data['selected_working_days']);
+            //echo '<pre>';print_r($data['selected_working_days']);exit;
         }
         $services = ServiceProviderCategoryService::where('service_provider_id','=' ,$id)->get();
         $service[] = '';
@@ -178,6 +178,7 @@ class ServiceProviderController extends Controller
         }
         $data['services'] = Service::orderBy('service_name', 'asc')->pluck('service_name', 'id')->all();
         $data['service'] = Service::whereIn('id',$service)->pluck('id');
+        //echo '<pre>';print_r($data['selected_working_days']);exit;
         return view('service_provider.edit', $data);
     }
 
@@ -205,6 +206,7 @@ class ServiceProviderController extends Controller
             $input['password'] = $provider->password;
         }
         // To get the Last Insert id and insert the value in the Category Service Table by Category Name
+        
         $serviceProviderInputs = implode(',', $input['service_id']);
         if (!empty($input['service_id'])) {
             $serviceProviderStatus = ServiceProviderCategoryService::where('service_provider_id','=' ,$id)->get();
@@ -231,7 +233,9 @@ class ServiceProviderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $postData = ServiceProvider::findorfail($id);
+        $postData->delete();
+        return Redirect::route($this->route)->with($this->error, trans($this->deletemsg));  
     }
 
 

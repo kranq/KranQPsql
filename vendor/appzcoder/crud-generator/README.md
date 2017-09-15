@@ -1,8 +1,8 @@
 # Laravel 5 CRUD Generator
 
+[![Build Status](https://travis-ci.org/appzcoder/crud-generator.svg)](https://travis-ci.org/appzcoder/crud-generator.svg)
 [![Total Downloads](https://poser.pugx.org/appzcoder/crud-generator/d/total.svg)](https://packagist.org/packages/appzcoder/crud-generator)
 [![Latest Stable Version](https://poser.pugx.org/appzcoder/crud-generator/v/stable.svg)](https://packagist.org/packages/appzcoder/crud-generator)
-[![Latest Unstable Version](https://poser.pugx.org/appzcoder/crud-generator/v/unstable.svg)](https://packagist.org/packages/appzcoder/crud-generator)
 [![License](https://poser.pugx.org/appzcoder/crud-generator/license.svg)](https://packagist.org/packages/appzcoder/crud-generator)
 
 ### Requirements
@@ -12,11 +12,27 @@
 ## Installation
 Open your terminal(CLI), go to the root directory of your Laravel project, then follow the following procedure.
 
+For Laravel >= 5.5 you need to follow these steps
+---
+
+1. Run
+    ```
+    composer require appzcoder/crud-generator --dev
+    composer require laravelcollective/html
+    ```
+
+2. Publish vendor files of this package.
+    ```
+    php artisan vendor:publish --provider="Appzcoder\CrudGenerator\CrudGeneratorServiceProvider"
+    ```
+
+For Laravel < 5.5 you need to follow these steps
+---
+
 1. Run
     ```
     composer require appzcoder/crud-generator --dev
     ```
-
 2. Since the package is only use in local developmnet, add the provider in app/Providers/AppServiceProvider.php.
     ```php
 
@@ -49,6 +65,7 @@ Open your terminal(CLI), go to the root directory of your Laravel project, then 
         'HTML' => Collective\Html\HtmlFacade::class,
     ],
     ```
+
 4. Run ```composer dump-autoload```
 
 5. Publish vendor files of this package.
@@ -263,4 +280,4 @@ You can customize the generator's stub files/templates to achieve your need.
 
 ## Author
 
-[Sohel Amin](http://www.sohelamin.com)
+[Sohel Amin](http://www.sohelamin.com) :email: [Hire Me](mailto:sohelamincse@gmail.com)

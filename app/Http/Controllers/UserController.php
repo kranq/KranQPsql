@@ -15,15 +15,13 @@ use Session;
 use Response;
 use Redirect;
 use App\Models\User;
-//use App\Models\Rating;
 use App\Models\Review;
 use App\Models\Bookmark;
-use App\Models\ServiceProvider;
-use App\Models\DropdownHelper;
 use App\Helpers\KranHelper;
-//use Illuminate\Http\Request;
-use App\Http\Requests\UserRequest;
 use Rafwell\Simplegrid\Grid;
+use App\Models\DropdownHelper;
+use App\Models\ServiceProvider;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -36,6 +34,7 @@ class UserController extends Controller
     protected $updatemsg = 'main.user.updatesuccess';
     protected $deletemsg = 'main.user.deletesuccess';
     protected $referencemsg = 'main.referencesuccess';
+
     /**
      * Display a listing of the resource.
      *
@@ -43,10 +42,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //$user = User::query()->orderBy('id', 'desc');
         // To get the records details from the table
         $Grid = new Grid(User::query(), 'users');
-
         // To have header for the values
         $Grid->fields([
               //'id' => 'ID',
@@ -63,7 +60,6 @@ class UserController extends Controller
             $row['registered_on'] = KranHelper::dateTimeFormat($row);
             return $row;
         });
-        
         // To have actions for the records
         $Grid->action('View', URL::to('user/show/{id}'), ['class'=>'fa fa-eye'])
             ->action('Edit', URL::to('user/edit/{id}'), ['class'=>'fa fa-edit'])
@@ -118,7 +114,6 @@ class UserController extends Controller
     {
         $data['user'] = User::findorfail($id);
         $data['user']->registered_on = KranHelper::dateTime($data['user']->registered_on);
-        //$data['ratings'] = Rating::getDetails($id);
         $data['reviews'] = Review::getReviewDetails($id);
         $data['bookmarks'] = Bookmark::getBookMarkDetails($id);
         $data['registered_mode'] = DropdownHelper::where('key_code', '=', $data['user']->register_mode)->where('group_code', '002')->get();

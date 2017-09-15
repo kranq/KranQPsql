@@ -1,23 +1,31 @@
 <?php
-/**
- * To write the comman fields
- **/
 
-/*Login page*/
+/*
+  |--------------------------------------------------------------------------
+  | Common Language Texts
+  |--------------------------------------------------------------------------
+  |
+  | The following language lines contain the default error messages used by
+  | the validator class. Some of these rules have multiple versions such
+  | as the size rules. 
+  |
+ */
+
+// Login Page
 $lang['login'] = 'Login';
 $lang['signinto'] = 'Sign in to start your session';
 $lang['rememberme'] = 'Remember Me';
-$lang['signin']	= 'Login';
-$lang['resetpassword']	= 'Reset Password';
-$lang['send_password_link']	= "Send password reset link";
+$lang['signin'] = 'Login';
+$lang['resetpassword'] = 'Reset Password';
+$lang['send_password_link'] = "Send password reset link";
 $lang['sent.success'] = "sent successfully.";
 $lang['remember'] = "Remember Me";
 $lang['forget_password'] = "Forgot Your Password?";
-$lang['email'] 	= "E-Mail Address";
+$lang['email'] = "E-Mail Address";
 $lang['password'] = "Password";
 $lang['reset_password'] = "Reset Password";
 $lang['confirm_password'] = "Confirm Password";
-$lang['send_password_link']	= "Send password reset link";
+$lang['send_password_link'] = "Send password reset link";
 $lang['generate_password'] = "Click here to generate password";
 $lang['status'] = 'Status';
 $lang['logoutsuccessmsg'] = 'Logged out successfully.';
@@ -34,7 +42,7 @@ $lang['cancel'] = 'Cancel';
 $lang['update'] = 'Update';
 $lang['message'] = 'Message :';
 $lang['validation.try_again'] = 'Invalid Credentials try again';
-$lang['validation.form_validation']	= 'Form validation : ';
+$lang['validation.form_validation'] = 'Form validation : ';
 $lang['selected'] = 'Select';
 $lang['view'] = 'View';
 $lang['back'] = 'Back';
@@ -52,10 +60,11 @@ $lang['defaults'] = 'Defaults';
 $lang['locations'] = 'Locations';
 $lang['employee'] = 'Employee';
 $lang['referencesuccess'] = 'The record is referenced and could not delete!';
+$lang['norecords'] = 'The records are not found!..';
 
-// User
-$lang['user.title']	= 'Users';
-$lang['user.user']	= 'User';
+//  User
+$lang['user.title'] = 'Users';
+$lang['user.user'] = 'User';
 $lang['user.fullname'] = 'Full Name';
 $lang['user.username'] = 'User Name';
 $lang['user.profile'] = 'Profile';
@@ -67,16 +76,11 @@ $lang['user.password'] = 'Password';
 $lang['user.updateprofilesuccess'] = 'Profile updated successfully';
 $lang['user.updatepwdsuccess'] = 'Password updated successfully';
 $lang['user.pwderrormsg'] = 'Passwords are do not match correctly';
-
-// Change Password
 $lang['user.changepassword'] = 'Change Password';
 $lang['user.currentpassword'] = 'Current Password';
 $lang['user.newpassword'] = 'New Password';
 $lang['user.password_confirmation'] = 'Confirm Password';
 $lang['user.placepassword'] = 'Enter Password';
-
-
-// Users
 $lang['user.profilepicture'] = 'Profile Picture';
 $lang['user.personal'] = 'Personal Information';
 $lang['user.enterusername'] = 'Enter Full Name';
@@ -90,15 +94,10 @@ $lang['user.bookmarks'] = 'BookMarks';
 $lang['user.reviews'] = 'Reviews & Ratings';
 $lang['user.ratings'] = 'Ratings';
 $lang['user.beenthere'] = 'Been there status';
-// User view
 $lang['user.serviceprovider'] = 'Service Provider';
-
 $lang['user.createsuccess'] = 'User has been created successfully';
 $lang['user.updatesuccess'] = 'User has been updated successfully';
 $lang['user.deletesuccess'] = 'User has been deleted successfully';
-
-
-
 
 // Location
 $lang['location.title'] = 'Locality';
@@ -111,8 +110,6 @@ $lang['location.deletesuccess'] = 'Locality has been deleted successfully';
 
 // Reviews
 $lang['review.title'] = 'Reviews & Ratings';
-//$lang['review.service_provider_id'] = 'Service Provider';
-//$lang['review.user_id'] = 'User';
 $lang['review.rating'] = 'Rating';
 $lang['review.reviews'] = 'Reviews';
 $lang['review.status'] = 'Status';
@@ -154,7 +151,6 @@ $lang['category.order_by'] = 'Order By';
 $lang['category.createsuccess'] = 'Category has been created successfully';
 $lang['category.updatesuccess'] = 'Category has been updated successfully';
 $lang['category.deletesuccess'] = 'Category has been deleted successfully';
-
 
 // City
 $lang['city.title'] = 'City';
@@ -205,6 +201,7 @@ $lang['provider.coordinates'] = 'Google Maps Coordinates';
 $lang['provider.latitude'] = 'Latitude';
 $lang['provider.longitude'] = 'Longitude';
 $lang['provider.status_owner_manager'] = 'Are you the Owner/Manager of the Service';
+$lang['provider.owner_phone'] = 'Owner/Manager Phone Number';
 $lang['provider.open_close_hours'] = 'Open/closing hours';
 $lang['provider.working_days'] = 'Working Days';
 $lang['provider.name'] = 'Name of the Service Provider';
@@ -224,12 +221,10 @@ $lang['provider.owner_name'] = "Name";
 $lang['provider.owner_designation'] = 'Designation';
 $lang['provider.actions'] = 'Actions';
 $lang['provider.services'] = "Service";
-
 $lang['placeholder'] = 'Enter :Name';
 $lang['image_upload_notes'] = '<b>Upload:</b> jpg, png &#xa; <br> <b>Dimension:</b> 50 * 50 &#xa; <br> <b>Max Size:</b> 1MB';
 $lang['image_upload_notes_title'] = '<b>Upload Image</b>';
 $lang['default_image_path'] = 'http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=no+image';
-
 $lang['provider_path'] = '/uploads/provider/';
 
 // Service provider details 
@@ -239,5 +234,17 @@ $lang['serviceproviderdetails.approvelcancelsuccess'] = 'Service Provider Approv
 $lang['serviceproviderdetails.rejectedcancelsuccess'] = 'Service Provider Rejected cancel successfully';
 $lang['serviceproviderdetails.deletesuccess'] = 'Service Provider Detail has been deleted successfully';
 
-return $lang;
+// Address
+$lang['address.title'] = "Address";
+$lang['address.phone'] = "Phone";
+$lang['address.email'] = "Email";
+$lang['address.createsuccess'] = 'Address has been created successfully';
+$lang['address.updatesuccess'] = 'Address has been updated successfully';
+$lang['address.deletesuccess'] = 'Address has been deleted successfully';
 
+// Amazon URL
+$lang['amazonurl'] = 'https://kranq.s3-ap-southeast-1.amazonaws.com/';
+$lang['category_path'] = '/uploads/category/';
+$lang['user_path'] = '/uploads/user/';
+
+return $lang;

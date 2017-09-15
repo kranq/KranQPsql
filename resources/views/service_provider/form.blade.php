@@ -84,7 +84,7 @@
             <div class="form-group">
                 {!! Form::label('service_id',trans('main.provider.services'),array('class'=>'control-label col-lg-3 custom_required')) !!}
                 <div class="col-lg-6">
-                    {{ Form::select('service_id[]', @$services, @$service, array('class' => 'populate select2-offscreen', 'multiple' => 'true', 'id' => 'e9', 'style' => 'width:485px')) }}
+                    {{ Form::select('service_id[]', @$services, @$service, array('class' => 'populate select2-offscreen selectinput-width', 'multiple' => 'true', 'id' => 'e9')) }}
                    @if ($errors->has('service_id'))
                         <span class="help-block">
                             <strong>{{ $errors->first('service_id') }}</strong>
@@ -181,6 +181,12 @@
                           {{ Form::text('owner_designation', @$provider->owner_designation, ['class' => 'form-control',]) }} 
                     </div>
                 </div>
+                <div class="form-group">
+                    {!! Form::label('owner_phone',trans('main.provider.owner_phone'),array('class'=>'control-label col-lg-3')) !!}
+                    <div  class="col-lg-6" >
+                          {{ Form::text('owner_phone', @$provider->owner_phone, ['class' => 'form-control',]) }} 
+                    </div>
+                </div>
                 </div>
                     <div class="form-group">
                       {!! Form::label('open_close_hours	',trans('main.provider.open_close_hours'),array('class'=>'control-label col-lg-3 custom_required')) !!}
@@ -213,9 +219,9 @@
                                          Check All </label>
                                  </div>
                                 <div class="col-sm-10 check1 checkbox checkbox_type">
-                                    <?php foreach ($working_days as $row): ?>
+                                    <?php foreach ($working_days as $key => $row): ?>
                                          <label class="checkbox-inline">
-                                             {!! Form::checkbox('working_days[]', @$row, in_array(@$row, @$selected_working_days), ['class' => 'checkbox_type']) !!}
+                                             {!! Form::checkbox('working_days[]', @$key, in_array(@$key, @$selected_working_days), ['class' => 'checkbox_type']) !!}
                                              <?php echo $row; ?> </label>
                                     <?php endforeach; ?>
                                  </div>
@@ -238,7 +244,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('website_link',trans('main.provider.website_link'),array('class'=>'control-label col-sm-3')) !!}
+                            {!! Form::label('website_link',trans('main.provider.website_link'),array('class'=>'control-label col-sm-3 custom_required')) !!}
                             <div class="col-lg-6">
                                 {!! Form::text('website_link', @$provider->website_link, array('class'=>'form-control', 'placeholder' => __(trans('main.placeholder'),['name' => trans('main.provider.website_link')]))) !!}
                                 @if ($errors->has('website_link'))
@@ -313,8 +319,8 @@
     $("#category_id").on('change', function() {
         var category_id = $("#category_id").val();
         $.ajax({
+            type: "POST",
             url: "{{ URL::to('provider/cagetoryservices') }}",
-            type: "post",
             data: {
                     '_token': token, 
                     'id' : category_id,

@@ -1,7 +1,7 @@
 <?php
 /*
 ------------------------------------------------------------------------------------------------
-Project     : KRQ 1.0.0
+Project         : KRQ 1.0.0
 Created By      : Honest Raj A
 Created Date    : 20.07.2017
 Purpose         : To handle Country details
@@ -41,23 +41,22 @@ class CountryController extends Controller
       // To get the records details from the table
         $Grid = new Grid(Country::query(), 'Countries');
 
-    // To have header for the values
-          $Grid->fields([
-                  'id' => 'ID',
-                  'country_code'=>'Country Code',
-                  'country_name'=>'Country Name',
-                  'status'=>'Status',
-
-              ]);
-            // To have actions for the records
-              $Grid->action('View', URL::to('country/show/{id}'))
+        // To have header for the values
+        $Grid->fields([
+            'id' => 'ID',
+            'country_code'=>'Country Code',
+            'country_name'=>'Country Name',
+            'status'=>'Status',
+        ]);
+        // To have actions for the records
+        $Grid->action('View', URL::to('country/show/{id}'))
               ->action('Edit', URL::to('country/edit/{id}'))
               ->action('Delete', URL::to('country/destroy/{id}'), [
                   'confirm'=>'Do you with so continue?',
                   'method'=>'DELETE',
-              ]);
-              // Pass the values to the view page
-              return view('country/index', ['grid'=>$Grid]);
+        ]);
+        // Pass the values to the view page
+        return view('country/index', ['grid'=>$Grid]);
     }
 
     /**
@@ -80,9 +79,9 @@ class CountryController extends Controller
      */
     public function store(CountryRequest $request)
     {
-      $input = $request->all();
-      Country::create($input);
-      return Redirect::route($this->route)->with($this->success, trans($this->createmsg));
+        $input = $request->all();
+        Country::create($input);
+        return Redirect::route($this->route)->with($this->success, trans($this->createmsg));
     }
 
     /**

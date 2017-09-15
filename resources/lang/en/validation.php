@@ -157,7 +157,12 @@ return [
         'closing_hrs' => [
             'required' => 'Choose Closing Hourse field is required',
         ],
-
+        'address' => [
+            'required' => 'Address field is required',
+        ],
+        'phone' => [
+            'required' => 'Phone Number field is required',
+        ],
     ],
 
     /*

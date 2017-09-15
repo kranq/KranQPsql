@@ -1,7 +1,7 @@
 <?php
 /*
 ------------------------------------------------------------------------------------------------
-Project             : KRQ 1.0.0
+Project         : KRQ 1.0.0
 Created By      : Honest Raj A
 Created Date    : 25.07.2017
 Purpose         : To handle Review details
@@ -14,14 +14,13 @@ use Image;
 use Session;
 use Response;
 use Redirect;
-use App\Models\Review;
 use App\Models\User;
+use App\Models\Review;
 use App\Helpers\KranHelper;
 use Rafwell\Simplegrid\Grid;
-//use Illuminate\Http\Request;
 use App\Http\Requests\Request;
-//use Illuminate\Support\ServiceProvider;
 use App\Models\ServiceProvider;
+
 class ReviewController extends Controller
 {
     protected $error = 'error';
@@ -46,13 +45,13 @@ class ReviewController extends Controller
         $serviceProvider=Review::join('service_providers','service_provider_id','=','service_providers.id');
         $Grid = new Grid($serviceProvider, 'reviews');
         // To have header for the values
-      $Grid->fields([              
+        $Grid->fields([              
 			  'reviews'=>'Reviews',
 			  'reviews.rating'=>'Rating',
               'name_sp'=>'Service Provider',
 			  'postted_on'=>'Posted On',
               'reviews.status'=>'Status'
-          ])
+        ])
 
         ->processLine(function($row){
             //This function will be called for each row
@@ -125,13 +124,12 @@ class ReviewController extends Controller
     public function edit($id)
     {
         $data = Review::findorfail($id);
-        if($data->status == 'Active'){
+        if ($data->status == 'Active') {
             $input['status'] = 'Inactive';
             $data->fill($input);
             $data->save();
             return Redirect::back()->with($this->success, trans($this->inactivemsg));
-        }
-        else{
+        } else {
             $input['status'] = 'Active';
             $data->fill($input);
             $data->save();
@@ -162,7 +160,6 @@ class ReviewController extends Controller
     {
         $review = Review::findorFail($id);
         $serviceProvider = ServiceProvider::where('id', '=', $review->service_provider_id)->get();
-        //echo '<pre>';print_r();exit;
         if (count($serviceProvider)) {
             return Redirect::back()->with($this->success, trans($this->referencemsg));    
         } else {

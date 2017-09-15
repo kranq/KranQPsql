@@ -1,6 +1,15 @@
 <?php
 
+/*
+------------------------------------------------------------------------------------------------
+Project         : KRQ 1.0.0
+Created By      : Vijay Felix Raj C
+Created Date    : 09.08.2017
+Purpose         : To handle Service Provider Details
+------------------------------------------------------------------------------------------------
+*/
 namespace App\Http\Controllers;
+
 use DB;
 use Redirect;
 use Illuminate\Http\Request;
@@ -104,7 +113,8 @@ class ServiceProviderDetailsController extends Controller
     }
 
     /**
-     * To approvel service provider details
+     *  To approvel service provider details
+     *  @return true
      */
     public function approvel($id) 
     {
@@ -119,7 +129,8 @@ class ServiceProviderDetailsController extends Controller
     }
 
     /**
-     * To approvel service provider details
+     *  To approvel service provider details
+     *  @return true
      */
     public function reject($id) 
     {

@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use Session;
 use Redirect;
 use App\User;
-use App\Http\Requests\UserValidatePasswordRequest;
-//use Illuminate\Http\Request;
 use App\Http\Requests\UsersRequest;
+use App\Http\Requests\UserValidatePasswordRequest;
 
 class HomeController extends Controller
 {
@@ -41,7 +40,6 @@ class HomeController extends Controller
      */
     public function profileView($id)
     {
-        //$userData = User::where('id', '=', $id)->orderBy('asc');
         $data['user'] = User::findorfail($id);
         return view('user.updateProfile', $data);
     }
@@ -101,6 +99,7 @@ class HomeController extends Controller
 
     /**
      * Page Not Found
+     * @return 404 page
      */
     public function pageNotFound()
     {

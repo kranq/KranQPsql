@@ -10,31 +10,34 @@ Purpose       	: To handle Category details
 namespace App\Http\Controllers;
 use DB;
 use URL;
-use Image;
+//use Image;
+use Storage;
 use Session;
 use Response;
 use Redirect;
 use App\Models\Service;
 use App\Models\Category;
-use App\Models\CategoryService;
-use App\Models\ServiceProvider;
+use App\Helpers\KranHelper;
 use Rafwell\Simplegrid\Grid;
 use App\Models\DropdownHelper;
 //use Illuminate\Http\Request;
+use App\Models\CategoryService;
+use App\Models\ServiceProvider;
 use App\Http\Requests\CategoryRequest;
 //use Illuminate\Support\ServiceProvider;
 
 class CategoryController extends Controller
 {
-  protected $error = 'error';
-  protected $success = 'success';
-  protected $route = 'main.category.index';
-  protected $title = 'main.category.title';
-  protected $notfound = 'main.category.notfound';
-  protected $createmsg = 'main.category.createsuccess';
-  protected $updatemsg = 'main.category.updatesuccess';
-  protected $deletemsg = 'main.category.deletesuccess';
-  protected $referencemsg = 'main.referencesuccess';
+    protected $error = 'error';
+    protected $success = 'success';
+    protected $route = 'main.category.index';
+    protected $title = 'main.category.title';
+    protected $notfound = 'main.category.notfound';
+    protected $createmsg = 'main.category.createsuccess';
+    protected $updatemsg = 'main.category.updatesuccess';
+    protected $deletemsg = 'main.category.deletesuccess';
+    protected $referencemsg = 'main.category.referencesuccess';
+
     /**
      * Display a listing of the resource.
      *
@@ -47,27 +50,27 @@ class CategoryController extends Controller
         $Grid = new Grid($category, 'categories');
 
         // To have header for the values
-          $Grid->fields([
-                  //'id' => 'ID',
-                  'category_name'=>'Category Name',
-                  //'slug'=>'Slug',
-                  'order_by'=>'Order By',
-                  'status'=>'Status'
-              ])
-                ->actionFields([
-                    'id' //The fields used for process actions. those not are showed
-                ]);
+        $Grid->fields([
+              //'id' => 'ID',
+              'category_name'=>'Category Name',
+              //'slug'=>'Slug',
+              'order_by'=>'Order By',
+              'status'=>'Status'
+          ])
+            ->actionFields([
+                'id' //The fields used for process actions. those not are showed
+            ]);
             // To have actions for the records
             //->action('View', URL::to('category/show/{id}'))
-                $Grid->action('View', URL::to('category/show/{id}'), ['class'=>'fa fa-eye'])
-                    ->action('Edit', URL::to('category/edit/{id}'), ['class'=>'fa fa-edit'])
-                    ->action('Delete', URL::to('category/destroy/{id}'), [
-                  'confirm'=>'Do you with so continue?',
-                  'method'=>'DELETE',
-				  'class'=>'fa fa-trash-o',
-              ]);
-              // Pass the values to the view page
-              return view('category.index', ['grid'=>$Grid]);
+            $Grid->action('View', URL::to('category/show/{id}'), ['class'=>'fa fa-eye'])
+                ->action('Edit', URL::to('category/edit/{id}'), ['class'=>'fa fa-edit'])
+                ->action('Delete', URL::to('category/destroy/{id}'), [
+              'confirm'=>'Do you with so continue?',
+              'method'=>'DELETE',
+			  'class'=>'fa fa-trash-o',
+            ]);
+          // Pass the values to the view page
+          return view('category.index', ['grid'=>$Grid]);
     }
 
     /**
@@ -94,6 +97,8 @@ class CategoryController extends Controller
     {
         $input = $request->all();
         $input = $request->except('_token');
+        // To upload the images into Amazon S3
+        $amazonImgUpload = \Storage::disk('s3')->put($request->file('category_image')->getClientOriginalName(), file_get_contents($request->file('category_image')), 'uploads');
         if($request->hasFile('category_image')){
            $input['category_image'] = Category::upload_file($request, 'category_image');
         }
@@ -115,7 +120,7 @@ class CategoryController extends Controller
     public function show($id)
     {
         $data['category'] = Category::findorFail($id);
-        if ($data['category']->service_id) {    
+        if ($data['category']->service_id) {
             $service = explode(',',$data['category']->service_id);
         }
         if (!empty($service)) {
@@ -137,8 +142,11 @@ class CategoryController extends Controller
     {
         $data['category'] = Category::findorFail($id);
         $data['CategoryService'] = CategoryService::getCategoryService($id);
-        if (count($data['CategoryService'])>0) {    
+        if (count($data['CategoryService'])>0) {
             $service = explode(',',$data['CategoryService']);
+        }
+        if ($data['category']->category_image) {
+            $data['amazonImgUpload'] = $data['category']->category_image;
         }
         $data['status'] = DropdownHelper::where('group_code', '001')->orderBy('key_code', 'asc')->pluck('value', 'key_code');
         $data['services'] = Service::orderBy('service_name', 'asc')->pluck('service_name', 'id')->all();
@@ -157,7 +165,11 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, $id)
     {
         $input = $request->all();
-        $category  = Category::findorFail($id);
+        $category = Category::findorFail($id);
+        /*if (Storage::disk('s3')->exists($request->file('category_image')->getClientOriginalName())) {
+            Storage::disk('s3')->delete($request->file('category_image')->getClientOriginalName());
+        }*/
+        //$amazonImgUpload = Storage::disk('s3')->put($request->file('category_image')->getClientOriginalName(), file_get_contents($request->file('category_image')), 'uploads');
         if($request->hasFile('category_image')){
            $input['category_image'] = Category::upload_file($request, 'category_image', $id);
         }
@@ -166,11 +178,11 @@ class CategoryController extends Controller
         if (!empty($service)) {
             $categoryService = CategoryService::where('category_id', '=', $id)->get();
             if (count($categoryService) > 0) {
-                $result =  DB::statement('UPDATE category_services set service_id="'.$service.'" where category_id='.$id);    
+                $result =  DB::statement('UPDATE category_services set service_id="'.$service.'" where category_id='.$id);
             } else {
                 $categoryInput['category_id'] = $id;
                 $categoryInput['service_id'] = $service;
-                CategoryService::create($categoryInput);   
+                CategoryService::create($categoryInput);
             }
         }
         $category->fill($input);
@@ -192,7 +204,7 @@ class CategoryController extends Controller
         } else {
             $category = Category::findorFail($id);
             $category->delete();
-            return Redirect::route($this->route)->with($this->error, trans($this->deletemsg));
+            return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));
         }
     }
 }

@@ -1,7 +1,7 @@
 <?php
 /*
 ------------------------------------------------------------------------------------------------
-Project		: KRQ 1.0.0
+Project		    : KRQ 1.0.0
 Created By    	: Loganathan N
 Created Date  	: 20.07.2017
 Purpose       	: To handle location details
@@ -10,30 +10,29 @@ Purpose       	: To handle location details
 
 namespace App\Http\Controllers;
 
-use App\Models\Location;
-use App\Models\City;
-use App\Http\Requests\LocationRequest;
-
 use URL;
 use Image;
 use Session;
 use Response;
 use Redirect;
+use App\Models\City;
+use App\Models\Location;
 use Rafwell\Simplegrid\Grid;
+use App\Http\Requests\LocationRequest;
 use Illuminate\Support\ServiceProvider;
 
 class LocationController extends Controller
 {
 
-  protected $error = 'error';
-  protected $success = 'success';
-  protected $route = 'main.location.index';
-  protected $title = 'main.location.title';
-  protected $notfound = 'main.location.notfound';
-  protected $createmsg = 'main.location.createsuccess';
-  protected $updatemsg = 'main.location.updatesuccess';
-  protected $deletemsg = 'main.location.deletesuccess';
-  protected $referencemsg = 'main.referencesuccess';
+    protected $error = 'error';
+    protected $success = 'success';
+    protected $route = 'main.location.index';
+    protected $title = 'main.location.title';
+    protected $notfound = 'main.location.notfound';
+    protected $createmsg = 'main.location.createsuccess';
+    protected $updatemsg = 'main.location.updatesuccess';
+    protected $deletemsg = 'main.location.deletesuccess';
+    protected $referencemsg = 'main.referencesuccess';
 
     /**
      * Display a listing of the resource.
@@ -42,32 +41,30 @@ class LocationController extends Controller
      */
     public function index()
     {
-       // To get the records details from the table
+        // To get the records details from the table with join query
         $localities = Location::join('cities','city_id','=','cities.id');
-
         $Grid = new Grid($localities, 'localities');
-
         // To have header for the values
-          $Grid->fields([
-                  //'localities.id' => 'ID',
-                  'city_name'=>'City',
-                  'locality_name'=>'Locality Name',
-                  'localities.status'=>'Status'
-              ]);
-              $Grid->actionFields([
-                  'localities.id' //The fields used for process actions. those not are showed
-                ]);
-            // To have actions for the records
-                $Grid->action('View', URL::to('location/show/{id}'), ['class'=>'fa fa-eye'])
+        $Grid->fields([
+                //'localities.id' => 'ID',
+                'city_name'=>'City',
+                'locality_name'=>'Locality Name',
+                'localities.status'=>'Status'
+        ]);
+        $Grid->actionFields([
+            'localities.id' //The fields used for process actions. those not are showed
+        ]);
+        // To have actions for the records
+        $Grid->action('View', URL::to('location/show/{id}'), ['class'=>'fa fa-eye'])
                     ->action('Edit', URL::to('location/edit/{id}'), ['class'=>'fa fa-edit'])
                     ->action('Delete', URL::to('location/destroy/{id}'), [
                   'confirm'=>'Do you with so continue?',
                   'method'=>'DELETE',
 				  'class'=>'fa fa-trash-o',
-              ]);
+        ]);
 
-              // Pass the values to the view page
-              return view('location.index', ['grid'=>$Grid]);
+        // Pass the values to the view page
+        return view('location.index', ['grid'=>$Grid]);
     }
 
     /**
@@ -93,14 +90,6 @@ class LocationController extends Controller
     {
         $input = $request->all();       
         $input = $request->except('_token');
-       
-        /*
-        $this->validate($request, [
-            'title' => 'required|unique:posts|max:255',
-            'body' => 'required',
-        ]);
-        */
-        
         Location::create($input);
         return Redirect::route($this->route)->with($this->success, trans($this->createmsg));
     }

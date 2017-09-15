@@ -126,7 +126,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if(@$reviews)
+                                @if(count(@$reviews)>0)
                                     @foreach (@$reviews as $review)
                                         <tr>
                                             <td>{{ $review->reviews }}</td>
@@ -135,6 +135,10 @@
                                             <td>{{ $review->postted_on }}</td>
                                         </tr>
                                     @endforeach
+                                @else 
+                                    <tr>
+                                        <td colspan="4">{{ trans('main.norecords') }}</td>
+                                    </tr>
                                 @endif
                             </tbody>
                         </table>

@@ -37,28 +37,28 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-      // To get the records details from the table
+        // To get the records details from the table
         $Grid = new Grid(Employee::query(), 'Employee');
       
-	  // To have header for the values
-          $Grid->fields([
-                  'id' => 'ID',
-                  'birth_date'=>'Date of Birth',
-                  'first_name'=>'First Name',
-                  'last_name'=>'Last Name',
-                  'gender'=>[
-                      'label'=>'Gender',
-                      'field'=>"case when gender = 'M' then 'Male' else 'Female' end"
-                  ]
-              ]);
-            // To have actions for the records
-              $Grid->action('Edit', URL::to('employee/edit/{id}'))
+	    // To have header for the values
+        $Grid->fields([
+            'id' => 'ID',
+            'birth_date'=>'Date of Birth',
+            'first_name'=>'First Name',
+            'last_name'=>'Last Name',
+            'gender'=>[
+                'label'=>'Gender',
+                'field'=>"case when gender = 'M' then 'Male' else 'Female' end"
+            ]
+        ]);
+        // To have actions for the records
+        $Grid->action('Edit', URL::to('employee/edit/{id}'))
               ->action('Delete', URL::to('employee/destroy/{id}'), [
                   'confirm'=>'Do you with so continue?',
                   'method'=>'DELETE',
-              ]);
-              // Pass the values to the view page
-              return view('employee/index', ['grid'=>$Grid]);
+        ]);
+        // Pass the values to the view page
+        return view('employee/index', ['grid'=>$Grid]);
     }
 
     /**
@@ -133,8 +133,8 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-      $employee = Employee::findorFail($id);
-      $employee->delete();
-      return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));
+        $employee = Employee::findorFail($id);
+        $employee->delete();
+        return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));
     }
 }

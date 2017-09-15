@@ -42,7 +42,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-          // To get the records details from the table
+        // To get the records details from the table
         $Grid = new Grid(Service::query(), 'Services');
 
         // To have header for the values
@@ -61,7 +61,7 @@ class ServiceController extends Controller
                 'method'=>'DELETE',
 				'class'=>'fa fa-trash-o',
             ]);
-            // Pass the values to the view page
+        // Pass the values to the view page
         return view('service/index', ['grid'=>$Grid]);
     }
 
@@ -139,13 +139,13 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
-//        $locality = Service::where('city_id', '=', $id)->get();
-//        if (count($locality) > 0) {
-//            return Redirect::route($this->route)->with($this->success, trans($this->referencemsg));
-//        } else {
-//            $city = City::findorFail($id);
-//            $city->delete();
-//            return Redirect::route($this->route)->with($this->error, trans($this->deletemsg));   
-//        }
+      /* $locality = Service::where('city_id', '=', $id)->get();
+       if (count($locality) > 0) {
+           return Redirect::route($this->route)->with($this->success, trans($this->referencemsg));
+       } else {
+           $city = City::findorFail($id);
+           $city->delete();
+           return Redirect::route($this->route)->with($this->error, trans($this->deletemsg));   
+       }*/
     }
 }

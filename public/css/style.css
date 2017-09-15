@@ -14,7 +14,7 @@ body {
     font-family:'Open Sans',sans-serif;
     padding:0px !important;
     margin:0px !important;
-    font-size:13px;
+    font-size:14px;
     text-rendering:optimizeLegibility;
 }
 ul, .list-unstyled {
@@ -2929,7 +2929,8 @@ ul.amounts li {
 }
 .panel-heading .nav {
     border:medium none;
-    font-size:13px;
+    font-size:15px;
+    font-weight: bold;
     margin:-15px -15px -15px;
 }
 .tab-bg-dark-navy-blue ul>li>a {
@@ -5772,26 +5773,55 @@ right: -1px;
     .dashboard-height {
       height: 150px !important;
     }
+    .selectinput-width {
+        width: 480px !important;
+    }
 }
+@media (min-width: 414px) and (max-width: 736px) {
+    .selectinput-width {
+        width: 550px !important;
+    }
+}
+@media (min-width: 375px) and (max-width: 667px) {
+    .selectinput-width {
+        width: 395px !important;
+    }
+}
+/* iphone 5s Starts */
 @media (min-width: 320px) and (max-width: 568px) {
     .dashboard-height {
       height: 150px !important;
     }
+    .selectinput-width {
+        width: 255px !important;
+    }
 }
-
+/* iphone 5s Ends */
 @media (min-width: 480px) and (max-width: 767px) {
     .dashboard-height {
       height: 150px !important;
     }
+    .selectinput-width {
+        width: 485px !important;
+    }
 }
+
 @media (min-width: 1024) and (max-width: 1366px) {
     .dashboard-height {
       height: 350px !important;
     }
+    .selectinput-width {
+        width: 485px !important;
+    }
 }
+
+/* Normal Desktop View */
 @media all and (min-width: 1001px) {
     .dashboard-height {
       height: 350px !important;
+    }
+    .selectinput-width {
+        width: 480px !important;
     }
 }
 [rel="popover"]{

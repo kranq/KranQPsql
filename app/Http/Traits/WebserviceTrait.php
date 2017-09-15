@@ -24,10 +24,19 @@ trait WebserviceTrait {
 	public function registerModesList(){
 		$registerModes = array(
 							''=>'0',
-							'Email'=>'1',
-							'Facebook'=>'2',
-							'G+'=>'3',
+							'Mobile'=>'1',
+							'Facebook'=>'2'
 						);
 		return $registerModes;
+	}
+	
+	/**
+	 * To generate the random number generation for mobile OTP
+	 *
+	 * @return int
+	 */
+	public function generateOTP(){
+		$mobileOTP	= substr(str_shuffle("0123456789"), 0, 4);
+		return $mobileOTP;
 	}
 }

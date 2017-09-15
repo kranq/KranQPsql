@@ -17,9 +17,9 @@ use App\User;
 use App\Models\City;
 use App\Models\Location;
 use Rafwell\Simplegrid\Grid;
-use Illuminate\Support\ServiceProvider;
-use App\Http\Requests\CityRequest;
 //use Illuminate\Http\Request;
+use App\Http\Requests\CityRequest;
+use Illuminate\Support\ServiceProvider;
 
 
 class CityController extends Controller

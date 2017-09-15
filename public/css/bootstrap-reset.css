@@ -154,7 +154,7 @@ ul {
 .btn-default {
     background-color: #c7cbd6;
     border-color: #c7cbd6;
-    color: #fff;
+    /*color: #fff;*/
 }
 
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {

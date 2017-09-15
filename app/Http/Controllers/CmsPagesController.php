@@ -1,15 +1,21 @@
 <?php
-
+/*
+  ------------------------------------------------------------------------------------------------
+  Project           : KRQ 1.0.0
+  Created By        : Joseph
+  Created Date      : 26.07.2017
+  Purpose           : To handle CMS Page details
+  ------------------------------------------------------------------------------------------------
+ */
 namespace App\Http\Controllers;
 
 use URL;
 use Redirect;
 use App\Models\CmsPages;
-use Rafwell\Simplegrid\Grid;
 use App\Helpers\KranHelper;
-use Illuminate\Support\ServiceProvider;
-
 use Illuminate\Http\Request;
+use Rafwell\Simplegrid\Grid;
+use Illuminate\Support\ServiceProvider;
 
 
 class CmsPagesController extends Controller
@@ -35,24 +41,22 @@ class CmsPagesController extends Controller
 
         // To have header for the values
         $Grid->fields([
-                //'id' => 'ID',
-                'title'=>'Title',
-                'slug'=>'Slug',
-                /*'description'=>'Description',*/
-
+            //'id' => 'ID',
+            'title'=>'Title',
+            'slug'=>'Slug',
+            //'description'=>'Description',
         ])
         ->actionFields([
             'id' //The fields used for process actions. those not are showed 
         ]);
         // To have actions for the records
-		
-            $Grid->action('View', URL::to('cms/show/{id}'), ['class'=>'fa fa-eye'])
-            	 ->action('Edit', URL::to('cms/edit/{id}'), ['class'=>'fa fa-edit']);
-                /*->action('Delete', URL::to('city/destroy/{id}'), [
-                'confirm'=>'Do you with so continue?',
-                'method'=>'DELETE',
-            ]);*/
-            // Pass the values to the view page
+        $Grid->action('View', URL::to('cms/show/{id}'), ['class'=>'fa fa-eye'])
+        	 ->action('Edit', URL::to('cms/edit/{id}'), ['class'=>'fa fa-edit']);
+            /*->action('Delete', URL::to('city/destroy/{id}'), [
+            'confirm'=>'Do you with so continue?',
+            'method'=>'DELETE',
+        ]);*/
+        // Pass the values to the view page
         return view('cms/index', ['grid'=>$Grid]);
     }
 

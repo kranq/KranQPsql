@@ -1,27 +1,27 @@
 <?php
+/*
+------------------------------------------------------------------------------------------------
+Project       : KRQ
+Created By    : Vijay Felix Raj C
+Created Date  : 24.07.2017
+Purpose       : To handle Common functions
+------------------------------------------------------------------------------------------------
+*/
 namespace App\Helpers;
 
-use Image;
-use Mail;
 use App;
-use GuzzleHttp\Client;
+use Mail;
+use Image;
 use Route;
+use Storage;
+use GuzzleHttp\Client;
 
 class KranHelper
 {
-
-    public static function gen_uuid()
-    {
-        return sprintf('%04x%04x%04x%04x%04x%04x%04x%04x', // 32 bits for "time_low"
-            mt_rand(0, 0xffff), mt_rand(0, 0xffff), // 16 bits for "time_mid"
-            mt_rand(0, 0xffff), // 16 bits for "time_hi_and_version", // four most significant bits holds version number 4
-            mt_rand(0, 0x0fff) | 0x4000, // 16 bits, 8 bits for "clk_seq_hi_res", // 8 bits for "clk_seq_low",
-            // two most significant bits holds zero and one for variant DCE1.1
-            mt_rand(0, 0x3fff) | 0x8000, // 48 bits for "node"
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff), mt_rand(0, 0xffff));
-    }
-
+    /**
+     * To convert given base64 image to JPEG format
+     * @return array
+     */
     public static function base64_to_jpeg($base64_string)
     {
         $output_file = static::createTempFile('png');
@@ -34,6 +34,10 @@ class KranHelper
         return $output_file;
     }
 
+    /**
+     * To convert time to hours format
+     * @return array
+     */
     public static function format_hours($hour) {
         if($hour) {
             $hour = rtrim($hour, "00");
@@ -47,8 +51,13 @@ class KranHelper
     }
 
 
-    // format date to norway format
-    public static function formatDate($date,$format = 'd.m.Y') {
+    /**
+     *  To formate the date given
+     * @param type $date
+     * @param type $format
+     * @return type
+     */
+    public static function formatDate($date,$format = 'd-m-Y') {
         if($date) {
             $date = new \DateTime($date);
             return $date->format($format);
@@ -58,35 +67,53 @@ class KranHelper
         }
     }
 
-    // To set the string limit
-   public static function reviewStringLimit($row) {
+    /**
+     * To set the string limit
+     * @return array
+     */
+    public static function reviewStringLimit($row) {
         return substr($row['reviews'],0,20). '...';
     }
 
-    //
+    /**
+     * To make list of array
+     * @return array
+     */
     public static function getProviderStatus($row) {
       $row_status = $row['status'] ? $row['status'] : '1';
       $status = ['1' => 'Under Review','2'=> 'Approved', '3' => 'Rejected'];
       return $status[$row_status];
     }
 
-    // Date time format
+    /**
+     * To convert Date time format 
+     * @return array
+     */
     public static function dateTime($date = false) {
         return ($date) ? date('d/m/Y, h.i a', strtotime($date)) : date('d/m/Y h:i:s');
     }
 
-    // Date time format
+    /**
+     * To convert Date time format
+     * @return array
+     */
     public static function dateTimeFormat($date = false) {
         return ($date['registered_on']) ? date('d/m/Y, h.i a', strtotime($date['registered_on'])) : date('d/m/Y, h.i a');
     }
 
-	 // To get all the the provider status for dropdown
+    /**
+     * To get all the the provider status for dropdown
+     * @return array
+     */
     public static function getProviderStatusDropdown() {
       $status = ['1' => 'Under Review','2'=> 'Approved', '3' => 'Rejected'];
       return $status;
     }
 
-    //Returns the time in 12 Hours Format in dropdown
+    /**
+     * Returns the time in 12 Hours Format in dropdown
+     * @return array
+     */
     public static function getTimeDropDown($start=FALSE, $end=FALSE){
       $start_time = ($start) ? $start : '8';
       $end_time = ($end) ? $end : '21';
@@ -107,7 +134,10 @@ class KranHelper
       return $result;
     }
 
-    //Returns the weekdays
+    /**
+     * Returns the weekdays
+     * @return array
+     */
     public static function getAllWeekDays($start=FALSE, $end=FALSE){
       $dayNames = [
             'Sunday',
@@ -121,6 +151,23 @@ class KranHelper
         return $dayNames;
     }
 
+    /**
+     * Returns the weekdays
+     * @return array
+     */
+    public static function getWeekDays($start=FALSE, $end=FALSE){
+      $dayNames = [
+            '1'=>'Mon to Fri',
+            '2'=>'Saturday',
+            '3'=>'Sunday',
+        ];
+        return $dayNames;
+    }
+
+    /**
+     * Convert string to lower
+     * @return array
+     */
     public static function convertString($str){
       return str_replace(' ', '-', strtolower($str));
     }
@@ -132,13 +179,14 @@ class KranHelper
 	* @param string $imageName
 	* @return string 
 	*/
-	public static function convertStringToImage($imageString,$imageName){
+	public static function convertStringToImage($imageString,$imageName,$path){
 		$imageData = base64_decode($imageString);
-        $photo = imagecreatefromstring($imageData);
+    $photo = imagecreatefromstring($imageData);
 		$dateval = date('Ymdhis');
+    $imageName = KranHelper::convertString($imageName);
         if ($photo) {
 			$file = $imageName.  '-' . $dateval . '.jpg';
-            $path = base_path() . "/uploads/user/"; //file upload path
+            $path = base_path() . $path; //file upload path
             //$data['profile_picture'] = $path . $imageName. '-' . $dateval . '.jpg';
             if (!is_dir($path)) {
                 @mkdir($path);
@@ -180,5 +228,51 @@ class KranHelper
 		return $activeMenu;
 	}
 	
+    /**
+     * To Common Upload for Amazon s3
+     */
+    public static function imageUploadS3($request, $filename)
+    {
+        //echo '<pre>';print_r($filename);exit;
+        $t = Storage::disk('s3')->put($filename, file_get_contents($request), 'uploads');
+        $imageName = Storage::disk('s3')->url($filename);
+        return true;
+    }
+
+    /**
+     * Handles to generate random chars
+     * @param file_name
+     * @return results 
+     */
+    public static function generate_random_string($length = false) {
+        $length = ($length) ? $length : 6;
+        // Specifies the characters
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        $result = '';
+        for ($i = 0; $i < $length; $i++) {
+            $result .= $characters[mt_rand(0, 61)];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the time in 12 Hours Format to view
+     * @return array
+     **/
+        public static function getFormattedTime($hours){
+      $time = '';
+      if($hours){
+          if($hours<12){
+              $time = $hours.' AM';
+          }else if($hours==12){
+              $time = '12 PM';
+          }else{
+            $time = $hours - 12 .' PM';
+          }
+
+      }
+      return $time;
+    }
 	
 }

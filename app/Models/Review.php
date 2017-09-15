@@ -39,15 +39,33 @@ class Review extends Model
      */
     public static function getServiceProviderReviewDetails($id)
     {
-        $reviews = Review::where('service_provider_id', '=', $id)->get();
-
-        for ($i=0; $i < count($reviews); $i++) { 
-            $reviews[$i]->postted_on = KranHelper::dateTime($reviews[$i]->postted_on);
-            $review = ServiceProvider::where('id', '=', $reviews[$i]->service_provider_id)->orderBy('name_sp','asc')->pluck('name_sp');
-            $reviews[$i]->service_provider_name = $review[0];
-            $userName = User::where('id', '=', $reviews[$i]->user_id)->orderBy('fullname','asc')->pluck('fullname');
-            $reviews[$i]->username = $userName[0];
+        $reviewsCounnt = Review::where('service_provider_id', '=', $id)->count();
+        if($reviewsCounnt != 0){
+            $reviews = Review::where('service_provider_id', '=', $id)->get();
+            for ($i=0; $i < count($reviews); $i++) { 
+                $reviews[$i]->postted_on = KranHelper::dateTime($reviews[$i]->postted_on);
+                $review = ServiceProvider::where('id', '=', $reviews[$i]->service_provider_id)->orderBy('name_sp','asc')->pluck('name_sp');
+                $reviews[$i]->service_provider_name = $review[0];
+                $userName = User::where('id', '=', $reviews[$i]->user_id)->orderBy('fullname','asc')->pluck('fullname');
+                $reviews[$i]->username = $userName[0];
+            }
+            return $reviews;
+        }else{
+            return false;
         }
-        return $reviews;
+    }
+
+    /**
+     * To fetch the details from the service provider table 
+     */
+    public static function getRatingsOfServiceProviderById($id)
+    {
+        $reviewsCounnt = Review::where('service_provider_id', '=', $id)->count();
+        $avg = '';
+        if($reviewsCounnt != 0){
+            $reviews = Review::where('service_provider_id', '=', $id)->avg('rating');
+            $avg = number_format($reviews, 2, '.', ',');
+        }
+        return $avg;
     }
 }

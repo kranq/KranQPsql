@@ -27,5 +27,4 @@
             </div>
             {{-- old('email') --}}
 </form>
-
 @endsection

@@ -5,7 +5,7 @@ Project       : KRQ
 Created By    : Vijay Felix Raj C
 Email Address : vijayfelixraj@gmail.com
 Created Date  : 24.07.2017
-Purpose       : To handle Bookmarks
+Purpose       : To handle Bookmarks Details
 ------------------------------------------------------------------------------------------------
 */
 namespace App\Http\Controllers;
