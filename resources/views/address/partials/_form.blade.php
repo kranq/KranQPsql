@@ -16,16 +16,16 @@
         <div class="form-group">
             {!! Form::label('phone',trans('main.address.phone'),array('class'=>'control-label col-lg-3 custom_required')) !!}
             <div class="col-lg-6">
-                {!! Form::text('phone', @$address->phone, array('class' => 'form-control')) !!}
-               @if ($errors->has('phone'))
+                {!! Form::text('phone_no', @$address->phone_no, array('class' => 'form-control')) !!}
+               @if ($errors->has('phone_no'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('phone') }}</strong>
+                        <strong>{{ $errors->first('phone_no') }}</strong>
                     </span>
                 @endif
             </div>
         </div>
         <div class="form-group">
-            {!! Form::label('phone',trans('main.address.email'),array('class'=>'control-label col-lg-3 custom_required')) !!}
+            {!! Form::label('email',trans('main.address.email'),array('class'=>'control-label col-lg-3 custom_required')) !!}
             <div class="col-lg-6">
                 {!! Form::text('email', @$address->email, array('class' => 'form-control')) !!}
                @if ($errors->has('email'))

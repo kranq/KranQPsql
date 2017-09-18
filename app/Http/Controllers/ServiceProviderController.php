@@ -112,9 +112,9 @@ class ServiceProviderController extends Controller
         if($request->hasFile('logo')){
             $input['logo'] = ServiceProvider::upload_file($request, 'logo');
         }
-        if(!empty($input['working_days'])){
+        /*if(!empty($input['working_days'])){
             $input['working_days'] = implode(',',$input['working_days']);
-        }
+        }*/
         $input['slug'] = KranHelper::convertString($input['name_sp']);
         $input['password'] = bcrypt($input['password']);
         //echo '<pre>';print_r($input);exit;
@@ -167,10 +167,13 @@ class ServiceProviderController extends Controller
         $data['closing_hrs'] = KranHelper::getTimeDropDown();
         $data['working_days'] = KranHelper::getWeekDays();
         $data['selected_working_days'] = $data['provider']->working_days;
-        if($data['selected_working_days']){
+        $data['selected_working_saturdays'] = ($data['provider']->working_saturdays) ? 1 : 0;
+        $data['selected_working_sundays'] = ($data['provider']->working_sundays) ? 1 : 0;
+        //echo '<pre>';print_r($data['provider']->working_sundays);exit;
+        /*if($data['selected_working_days']){
             $data['selected_working_days'] = explode(',',$data['selected_working_days']);
             //echo '<pre>';print_r($data['selected_working_days']);exit;
-        }
+        }*/
         $services = ServiceProviderCategoryService::where('service_provider_id','=' ,$id)->get();
         $service[] = '';
         if (count($services) > 0) {

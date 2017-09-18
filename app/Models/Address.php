@@ -11,13 +11,13 @@ Purpose       : To handle Address
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+//use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Address extends Model
 {
-    protected $table = 'address';
-    public $timestamps = true;
+    protected $table = 'contact_details';
+    //public $timestamps = true;
     public $incrementing=false;
-    use SoftDeletes;
-    protected $fillable = array('id','address','phone','email');
+    //use SoftDeletes;
+    protected $fillable = array('id','address','phone_no','email');
 }

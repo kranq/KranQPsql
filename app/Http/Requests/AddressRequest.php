@@ -24,7 +24,7 @@ class AddressRequest extends FormRequest
     public function rules()
     {   
         $rules['address'] = 'required';
-        $rules['phone'] = 'required';
+        $rules['phone_no'] = 'required';
         switch ($this->method()) {
             case 'GET':
             case 'DELETE':

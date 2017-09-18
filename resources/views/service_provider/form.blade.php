@@ -95,24 +95,22 @@
             <div>
             </div>
             <div class="form-group">
-                        {!! Form::label('city',trans('main.provider.city'),array('class'=>'custom_required col-sm-3 control-label')) !!}
-                      <div class="col-lg-6">
-                     {!!Form::select('city', $cities, @$provider->city, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
-
-                        @if ($errors->has('city'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('city') }}</strong>
-                        </span>
-                        @endif
-                    </div>
+                {!! Form::label('city',trans('main.provider.city'),array('class'=>'custom_required col-sm-3 control-label')) !!}
+                <div class="col-lg-6">
+                    {!! Form::select('city', $cities, @$provider->city, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
+                    @if ($errors->has('city'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('city') }}</strong>
+                    </span>
+                    @endif
+                </div>
             </div>
-
             <div class="form-group">
                 <div class="">
-                        {!! Form::label('location_id',trans('main.provider.locality'),array('class'=>'custom_required col-sm-3 control-label')) !!}
+                    {!! Form::label('location_id',trans('main.provider.locality'),array('class'=>'custom_required col-sm-3 control-label')) !!}
                       </div>
                       <div class="col-lg-6">
-                     {!!Form::select('location_id', $localities, @$provider->location_id, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
+                    {!!Form::select('location_id', $localities, @$provider->location_id, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
                         @if ($errors->has('location_id'))
                         <span class="help-block">
                             <strong>{{ $errors->first('location_id') }}</strong>
@@ -137,7 +135,7 @@
                     @endif
                   </div>
                </div>
-               <div class="form-group">
+                <div class="form-group">
                     {!! Form::label('googlemap_latitude',trans('main.provider.coordinates'),array('class'=>'control-label col-lg-3')) !!}
 					<div class=" col-md-3">
                       {!! Form::text('googlemap_latitude', @$provider->googlemap_latitude, array('class'=>'form-control', 'placeholder' => __(trans('main.placeholder'),['name' => trans('main.provider.latitude')]))) !!}
@@ -154,8 +152,8 @@
                                     <strong>{{ $errors->first('googlemap_longitude') }}</strong>
                                   </span>
                               @endif
-                            </div>
-								</div>
+                    </div>
+				</div>
                 <div class="form-group">
                     {!! Form::label('status_owner_manager	',trans('main.provider.status_owner_manager'),array('class'=>'control-label col-lg-3 custom_required')) !!}
 					<div  class="col-lg-6" >
@@ -188,10 +186,42 @@
                     </div>
                 </div>
                 </div>
-                    <div class="form-group">
+                <div class="form-group">
+                    {!! Form::label('working_days ',trans('main.provider.working_days'),array('class'=>'control-label col-sm-3 custom_required')) !!}
+                    <div class="col-sm-9 zero">
+                        <!--div class="col-sm-2 check4 checkbox">
+                            <label class="checkbox-inline">
+                                 <input type="checkbox" name="selecctall"  id="selecctall" value="" tabindex="9">
+                                 Check All </label>
+                         </div-->
+                        <div class="col-sm-4 check1 checkbox checkbox_type">
+                            <?php //foreach ($working_days as $key => $row): ?>
+                                 <!--label class="checkbox-inline"></label-->
+                            {{ Form::checkbox('working_days', '1', @$selected_working_days,['class' => 'checkbox_type']) }} <?php echo 'Mon to Fri'; ?>
+                            {{-- Form::checkbox('working_days[]', @$key, in_array(@$key, @$selected_working_days), ['class' => 'checkbox_type']) --}}
+                            <?php //echo $row; ?> 
+                            <?php //endforeach; ?>
+                         </div>
+                         <div class="col-sm-4 check1 checkbox checkbox_type">
+                            {{ Form::checkbox('working_saturdays', '2', @$selected_working_saturdays,['class' => 'saturday']) }} <?php echo 'Saturday'; ?>
+                         </div>
+                         <div class="col-sm-4 check1 checkbox checkbox_type checkbox_align">
+                            {{ Form::checkbox('working_sundays', '3', @$selected_working_sundays,['class' => 'sunday']) }} <?php echo 'Sunday'; ?>
+                         </div>
+                        @if ($errors->has('working_days'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('working_days') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group">
                       {!! Form::label('open_close_hours	',trans('main.provider.open_close_hours'),array('class'=>'control-label col-lg-3 custom_required')) !!}
-						<div  class="col-lg-6">
-						    <div class="col-md-4">
+                      
+                      <div class="col-lg-9 zero">
+                      <div class="row">
+                        <div class="col-md-4 padding_zero">
+						  <div class="col-md-6">
                                 {!!Form::select('opening_hrs', $opening_hrs, @$provider->opening_hrs, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
                                 @if ($errors->has('opening_hrs'))
                                     <span class="help-block">
@@ -199,8 +229,7 @@
                                     </span>
                                 @endif
 							</div>
-							<div class="col-md-1 text-center">  to </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 {!!Form::select('closing_hrs', $closing_hrs, @$provider->closing_hrs, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
                                 @if ($errors->has('closing_hrs'))
                                     <span class="help-block">
@@ -208,32 +237,28 @@
                                     </span>
                                 @endif
         					</div>
-						</div>
+                        </div>
+                         <div class="col-md-4 padding_zero">
+                          <div class="col-md-6 padding_left_zero">
+                                {!!Form::select('saturday_opening_hrs', @$opening_hrs, @$provider->saturday_opening_hrs, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
+                            </div>
+                            <div class="col-md-6">
+                                {!!Form::select('saturday_closing_hrs', @$closing_hrs, @$provider->saturday_closing_hrs, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
+                            </div>
+                        </div>
+                         <div class="col-md-4 padding_zero">
+                          <div class="col-md-6 padding_left_zero">
+                                {!! Form::select('sunday_opening_hrs', @$opening_hrs, @$provider->sunday_opening_hrs, ['class' => 'form-control', 'placeholder' => 'Select']) !!}
+                            </div>
+                            <div class="col-md-6">
+                                {!!Form::select('sunday_closing_hrs', @$closing_hrs, @$provider->sunday_closing_hrs, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
+                            </div>
+                        </div>
 					</div>
-                        <div class="form-group">
-                          {!! Form::label('working_days	',trans('main.provider.working_days'),array('class'=>'control-label col-sm-3 custom_required')) !!}
-                            <div class="col-sm-9 zero">
-                                <div class="col-sm-2 check4 checkbox">
-                                    <label class="checkbox-inline">
-                                         <input type="checkbox" name="selecctall"  id="selecctall" value="" tabindex="9">
-                                         Check All </label>
-                                 </div>
-                                <div class="col-sm-10 check1 checkbox checkbox_type">
-                                    <?php foreach ($working_days as $key => $row): ?>
-                                         <label class="checkbox-inline">
-                                             {!! Form::checkbox('working_days[]', @$key, in_array(@$key, @$selected_working_days), ['class' => 'checkbox_type']) !!}
-                                             <?php echo $row; ?> </label>
-                                    <?php endforeach; ?>
-                                 </div>
-                                @if ($errors->has('working_days'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('working_days') }}</strong>
-                                    </span>
-                                @endif
-                             </div>
-                         </div>
-                        <div class="form-group">
-                            {!! Form::label('phone',trans('main.provider.phone'),array('class'=>'control-label col-sm-3 custom_required')) !!}
+                    </div>
+				</div>
+                    <div class="form-group">
+                        {!! Form::label('phone',trans('main.provider.phone'),array('class'=>'control-label col-sm-3 custom_required')) !!}
                             <div class="col-lg-6">
                                 {!! Form::text('phone', @$provider->phone, array('class'=>'form-control', 'placeholder' => __(trans('main.placeholder'),['name' => trans('main.provider.phone')]))) !!}
                                 @if ($errors->has('phone'))
@@ -242,7 +267,7 @@
                                 </span>
                                 @endif
                             </div>
-                        </div>
+                    </div>
                         <div class="form-group">
                             {!! Form::label('website_link',trans('main.provider.website_link'),array('class'=>'control-label col-sm-3 custom_required')) !!}
                             <div class="col-lg-6">
@@ -305,8 +330,11 @@
 <script type="text/javascript">
     var token = "{!! csrf_token() !!}";
     $('.Manager_yes').hide();
-    $("#selecctall").change(function () {
+    /*$("#selecctall").change(function () {
         $("input:checkbox").prop('checked', $(this).prop("checked"));
+    });*/
+    $('.saturday').on('change', function(){
+        $('.').show();
     });
     $('#status_owner_manager_yes').on('change', function() {
             $('.Manager_yes').show();

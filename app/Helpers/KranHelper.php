@@ -274,5 +274,30 @@ class KranHelper
       }
       return $time;
     }
+
+    /**
+    * To upload service provider image 
+    *
+    * @param string $imageString
+    * @param string $imageName
+    * @return string 
+    */
+    public static function uploadSPImage($imageString,$file,$path){
+        $imageData = base64_decode($imageString);
+        $photo = imagecreatefromstring($imageData);
+        if ($photo) {
+            $path = base_path() . $path; //file upload path
+            //$data['profile_picture'] = $path . $imageName. '-' . $dateval . '.jpg';
+            if (!is_dir($path)) {
+                @mkdir($path);
+            }
+            if (imagejpeg($photo, $path . $file, 100)) {
+                return $file;
+            } else {
+                return '';
+            }
+        }
+            
+    }
 	
 }

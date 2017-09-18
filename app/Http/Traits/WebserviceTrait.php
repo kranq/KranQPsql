@@ -39,4 +39,19 @@ trait WebserviceTrait {
 		$mobileOTP	= substr(str_shuffle("0123456789"), 0, 4);
 		return $mobileOTP;
 	}
+	
+	/**
+	 * To return the list of register modes
+	 *
+	 * @return array 
+	 */
+	public function workingDaysList(){
+		$workingDays = array(
+							0 => '',
+							1 => 'Mon to Fri',
+							2 => 'Saturday',
+							3 => 'Sunday'
+						);
+		return $workingDays;
+	}
 }

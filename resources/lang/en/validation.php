@@ -163,6 +163,9 @@ return [
         'phone' => [
             'required' => 'Phone Number field is required',
         ],
+        'phone_no' => [
+            'required' => 'Phone Number field is required',
+        ]
     ],
 
     /*

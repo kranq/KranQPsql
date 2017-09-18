@@ -152,6 +152,9 @@ class UserController extends Controller
         } else {
             $input['password'] = bcrypt($input['password']);
         }
+        if($request->hasFile('profile_picture')){
+           $input['profile_picture'] = User::fileUpload($request, 'profile_picture');
+        }
         $userData->fill($input);
         $userData->save();
         return Redirect::route($this->route)->with($this->success, trans($this->updatemsg));   

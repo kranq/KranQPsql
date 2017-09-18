@@ -41,7 +41,7 @@ class AddressController extends Controller
         $Grid->fields([
                 //'id' => 'ID',
                 'address'=>'Address',
-                'phone'=>'Phone',
+                'phone_no'=>'Phone',
                 'email'=>'Email',
                 /*'description'=>'Description',*/
 
