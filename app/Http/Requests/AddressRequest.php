@@ -34,13 +34,13 @@ class AddressRequest extends FormRequest
                 break;
                 case 'POST':
                 {
-                   $rules['email'] = 'required|unique:address,email';
+                   $rules['email'] = 'required|unique:contact_details,email';
                 }
                 case 'PUT':
                 case 'PATCH':
                 {
                   if(FormRequest::segment(2)){
-                    $rules['email'] = 'required|unique:address,email,' . FormRequest::segment(2) . ',id';
+                    $rules['email'] = 'required|unique:contact_details,email,' . FormRequest::segment(2) . ',id';
                 }
             }
             break;

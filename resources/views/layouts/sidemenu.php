@@ -67,7 +67,7 @@ use App\Helpers\KranHelper;
                 </li>
 				
 				<li class="sub-menu">
-                    <a href="javascript:;" class="<?php echo KranHelper::getActiveMenu(array('city','location','cms','service')); ?>">
+                    <a href="javascript:;" class="<?php echo KranHelper::getActiveMenu(array('city','location','cms','service','address')); ?>">
                         <i class="fa fa-cogs"></i>
                         <span>Defaults</span>
                     </a>

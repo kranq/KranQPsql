@@ -20,7 +20,7 @@
 			<div class="form-group">
 				<label class=" col-sm-3 control-label">{!! trans('main.address.phone') !!}</label>
 				<div class="col-lg-6">
-					<p class="form-control-static">{!! @$address->phone !!}</p>
+					<p class="form-control-static">{!! @$address->phone_no !!}</p>
 				</div>
 			</div>
 			<div class="form-group">

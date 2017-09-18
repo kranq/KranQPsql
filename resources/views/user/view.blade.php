@@ -146,7 +146,11 @@
                     </div>
                 </div>
             
-            <a href="{{ route('main.user.index') }}" class="btn btn-default">Back</a>
+            <div class="form-group">
+                <div class="col-lg-offset-3 col-lg-6">
+                        <a href="{!! route('main.user.index') !!}" class="btn btn-default">{!! trans('main.back') !!}</a>
+                </div>
+            </div>
         </div>
     </div>
 </section>					
