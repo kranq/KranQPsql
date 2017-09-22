@@ -56,18 +56,7 @@
                     <i  data-original-title="{!! trans('main.image_upload_notes_title') !!}" data-content="{!! trans('main.image_upload_notes') !!}" data-placement="right" data-trigger="hover" class="fa fa-info-circle popovers" aria-hidden="true" data-html="true"></i>
                 </div>
 			</div>
-			@if (@$amazonImgUpload)
-			<div class="form-group">
-                <div class="col-sm-3 control-label">
-                </div>
-                <div class="col-lg-3">
-                        <a href="#" >
-                            <img src="{!! @$amazonImgUpload !!}" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-            @elseif (@$provider->logo)
+            @if(@$provider->logo)
             <div class="form-group">
                 <div class="col-sm-3 control-label">
                 </div>
@@ -214,10 +203,10 @@
                             <?php //endforeach; ?>
                          </div>
                          <div class="col-sm-4 check1 checkbox checkbox_type">
-                            {{ Form::checkbox('working_saturdays', '2', @$selected_working_saturdays,['class' => 'saturday', 'id' => "WorkingSaturday"]) }} <?php echo 'Saturday'; ?>
+                            {{ Form::checkbox('working_saturdays', '2', @$selected_working_saturdays,['class' => 'saturday']) }} <?php echo 'Saturday'; ?>
                          </div>
                          <div class="col-sm-4 check1 checkbox checkbox_type checkbox_align">
-                            {{ Form::checkbox('working_sundays', '3', @$selected_working_sundays,['class' => 'sunday', 'id' => "WorkingSunday"]) }} <?php echo 'Sunday'; ?>
+                            {{ Form::checkbox('working_sundays', '3', @$selected_working_sundays,['class' => 'sunday']) }} <?php echo 'Sunday'; ?>
                          </div>
                         @if ($errors->has('working_days'))
                             <span class="help-block">
@@ -249,7 +238,7 @@
                                 @endif
         					</div>
                         </div>
-                         <div class="col-md-4 padding_zero" id="WorkingSaturdayHours">
+                         <div class="col-md-4 padding_zero">
                           <div class="col-md-6 padding_left_zero">
                                 {!!Form::select('saturday_opening_hrs', @$opening_hrs, @$provider->saturday_opening_hrs, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
                             </div>
@@ -257,7 +246,7 @@
                                 {!!Form::select('saturday_closing_hrs', @$closing_hrs, @$provider->saturday_closing_hrs, ['class' => 'form-control', 'placeholder' => 'Select'])!!}
                             </div>
                         </div>
-                         <div class="col-md-4 padding_zero" id="WorkingSundayHours">
+                         <div class="col-md-4 padding_zero">
                           <div class="col-md-6 padding_left_zero">
                                 {!! Form::select('sunday_opening_hrs', @$opening_hrs, @$provider->sunday_opening_hrs, ['class' => 'form-control', 'placeholder' => 'Select']) !!}
                             </div>
@@ -341,16 +330,11 @@
 <script type="text/javascript">
     var token = "{!! csrf_token() !!}";
     $('.Manager_yes').hide();
-    $('#WorkingSundayHours').hide();
-    $('#WorkingSaturdayHours').hide();
     /*$("#selecctall").change(function () {
         $("input:checkbox").prop('checked', $(this).prop("checked"));
     });*/
-    $('#WorkingSaturday').on('change', function(){
-        $('#WorkingSaturdayHours').toggle();
-    });
-    $('#WorkingSunday').on('change', function(){
-        $('#WorkingSundayHours').toggle();
+    $('.saturday').on('change', function(){
+        $('.').show();
     });
     $('#status_owner_manager_yes').on('change', function() {
             $('.Manager_yes').show();

@@ -7,6 +7,7 @@ use App\Http\Requests\ServiceProviderRequest;
 use DB;
 use URL;
 use Image;
+use Storage;
 use Session;
 use Response;
 use Redirect;
@@ -45,12 +46,11 @@ class ServiceProviderController extends Controller
     {
         // To get the records details from the table
         $providers = ServiceProvider::join('categories','category_id','=','categories.id')->join('localities','location_id','=','localities.id')->join('cities','city','=','cities.id')->orderBy('id', 'DESC');
-
         $Grid = new Grid($providers,'');
-
         // To have header for the values
             $Grid->fields([
                   'name_sp'=>'Service Provider',
+                  'category_name'=>'Category Name',
                  'locality_name'=>'Locality',
                  'city_name'=>'City',
                  'service_providers.created_at' => 'Submitted On',
@@ -109,6 +109,13 @@ class ServiceProviderController extends Controller
     {
         $input = $request->all();
         $input = $request->except('_token');
+		// To create a directory if not exists
+		if (!(Storage::disk('s3')->exists('/uploads/provider')))
+		{
+			Storage::disk('s3')->makeDirectory('/uploads/provider/');
+		}
+		// To upload the images into Amazon S3
+        $amazonImgUpload = Storage::disk('s3')->put('/uploads/provider/'.$request->file('logo')->getClientOriginalName(), file_get_contents($request->file('logo')), 'public');
         if($request->hasFile('logo')){
             $input['logo'] = ServiceProvider::upload_file($request, 'logo');
         }
@@ -138,6 +145,8 @@ class ServiceProviderController extends Controller
     public function show($id)
     {
         $data['provider'] = ServiceProvider::findorfail($id);
+		// To get the image form the Amazon s3 account
+		$data['s3image']= \Storage::disk('s3')->url('uploads/provider/'.$data['provider']->logo);
         $created_at = $data['provider']->created_at;
         $data['provider']->created_date = Carbon::parse($created_at)->format('d/m/Y, h.i a');
         $data['provider']->category_id = Category::getCategoryNameById($data['provider']->category_id);
@@ -159,6 +168,9 @@ class ServiceProviderController extends Controller
     public function edit($id)
     {
         $data['provider'] = ServiceProvider::findorFail($id);
+		if ($data['provider']->logo) {
+            $data['amazonImgUpload'] = \Storage::disk('s3')->url('uploads/provider/'.$data['provider']->logo);
+        }
         $data['categories'] = Category::orderBy('category_name','asc')->pluck('category_name', 'id');
         $data['cities'] = City::orderBy('city_name','asc')->pluck('city_name', 'id');
         $data['localities'] = Location::orderBy('locality_name','asc')->pluck('locality_name', 'id');
@@ -196,12 +208,18 @@ class ServiceProviderController extends Controller
     {
         $input = $request->all();
         $provider  = ServiceProvider::findorFail($id);
+		if ($request->file('logo')) {
+			if (Storage::disk('s3')->exists('uploads/provider/'.$provider->logo)) {
+				Storage::disk('s3')->delete('uploads/provider/'.$provider->logo);
+			}
+	        $amazonImgUpload = Storage::disk('s3')->put('uploads/provider/'.$request->file('logo')->getClientOriginalName(), file_get_contents($request->file('logo')), 'public');
+		}
         if($request->hasFile('logo')){
             $input['logo'] = ServiceProvider::upload_file($request, 'logo');
         }
-        if(!empty($input['working_days'])){
+        /*if(!empty($input['working_days'])){
             $input['working_days'] = implode(',',$input['working_days']);
-        }
+        }*/
         $input['slug'] = KranHelper::convertString($input['name_sp']);
         if($input['password']){
             $input['password'] = bcrypt($input['password']);
@@ -209,7 +227,6 @@ class ServiceProviderController extends Controller
             $input['password'] = $provider->password;
         }
         // To get the Last Insert id and insert the value in the Category Service Table by Category Name
-        
         $serviceProviderInputs = implode(',', $input['service_id']);
         if (!empty($input['service_id'])) {
             $serviceProviderStatus = ServiceProviderCategoryService::where('service_provider_id','=' ,$id)->get();
@@ -237,6 +254,12 @@ class ServiceProviderController extends Controller
     public function destroy($id)
     {
         $postData = ServiceProvider::findorfail($id);
+		// To delete the image from the Amazon S3 account
+		if (!empty($postData->logo)) {
+			if (Storage::disk('s3')->exists('uploads/provider/'.$postData->logo)) {
+				Storage::disk('s3')->delete('uploads/provider/'.$postData->logo);
+			}
+		}
         $postData->delete();
         return Redirect::route($this->route)->with($this->error, trans($this->deletemsg));  
     }

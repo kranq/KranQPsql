@@ -44,7 +44,9 @@
                             <div class="form-group">
                                     <label for="cname" class="control-label col-lg-3">{{ trans('main.user.profilepicture') }}</label>
                                     <div class="col-lg-6">
-                                    	@if(!empty(@$user->profile_picture))
+										@if (@$s3image)
+										<img src="{{ @$s3image }}">
+                                    	@elseif(!empty(@$user->profile_picture))
                                         <img src="{{ URL::to('../uploads/user') }}/{!! @$user->profile_picture !!}">
                                         @else
                                         <img src="{{ URL::to('/images') }}/noimage.jpg }}">

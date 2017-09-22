@@ -35,7 +35,17 @@
                 <i  data-original-title="{!! trans('main.image_upload_notes_title') !!}" data-content="{!! trans('main.image_upload_notes') !!}" data-placement="right" data-trigger="hover" class="fa fa-info-circle popovers" aria-hidden="true" data-html="true"></i>
             </div>
         </div>
-        @if(@$category->category_image)
+		@if (@$amazonImgUpload) 
+			<div class="form-group">
+				<div class="col-lg-3 ">
+				</div>
+				<div class="col-lg-6">
+					<a href="#" >
+						<img src="{!! $amazonImgUpload !!}" />
+					</a>
+				</div>    
+			</div>
+        @elseif (@$category->category_image)
         <div class="form-group">
             <div class="col-lg-3 ">
             </div>

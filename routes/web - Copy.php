@@ -39,8 +39,7 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
             'bookmark' => 'BookmarkController',
             'provider' => 'ServiceProviderController',			
             'review' => 'ReviewController',
-			'cms' => 'CmsPagesController',
-            'address' => 'AddressController'
+			'cms' => 'CmsPagesController'
 		);
 	foreach ($controllers as $key => $controller){
         //Will generates Crud functions (index,create, edit, delete, update, store)
@@ -60,7 +59,6 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
     Route::get('category/edit/{id}', array('as' => 'category.edit', 'uses' => 'CategoryController@edit'));
     Route::get('category/show/{id}', array('as' => 'category.show', 'uses' => 'CategoryController@show'));
     Route::delete('category/destroy/{id}', array('as' => 'category.destroy', 'uses' => 'CategoryController@destroy'));
-    Route::post('provider/cagetoryservices', array('as' => 'provider.cagetoryservices', 'uses' => 'ServiceProviderController@cagetoryservices'));
     // User
     Route::get('user/edit/{id}', array('as' => 'user.edit', 'uses' => 'UserController@edit'));
     Route::get('user/show/{id}', array('as' => 'user.show', 'uses' => 'UserController@show'));
@@ -104,45 +102,23 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
 
     // To upload the S3 Image into Amazon bucket
     Route::get('s3-image-upload','S3ImageController@imageUpload');
-	Route::post('s3-image-upload','S3ImageController@imageUploadPost');
+    Route::post('s3-image-upload','S3ImageController@imageUploadPost');
 
-    // Address
-    Route::get('address/edit/{id}', array('as' => 'address.edit', 'uses' => 'AddressController@edit'));
-    Route::get('address/show/{id}', array('as' => 'address.show', 'uses' => 'AddressController@show'));
-    Route::delete('address/destroy/{id}', array('as' => 'address.destroy', 'uses' => 'AddressController@destroy'));
 });
 
 //Route::resource('webservice', 'WebServiceController');
 Route::get('webservice/index', array('as' => 'webservice.index', 'uses' => 'WebServiceController@index'));
 Route::get('webservice/getcms/{slug}', array('as' => 'webservice.getcms', 'uses' => 'WebServiceController@getCms'));
 Route::post('webservice/register', array('as' => 'webservice.register', 'uses' => 'WebServiceController@register'));
+<<<<<<< .mine
 Route::post('webservice/feedback', array('as' => 'webservice.feedback', 'uses' => 'WebServiceController@sendFeedback'));
 Route::post('webservice/serviceimage', array('as' => 'webservice.serviceimage', 'uses' => 'WebServiceController@getServiceImages'));
 Route::get('webservice/pre-requisites', array('as' => 'webservice.pre-requisites', 'uses' => 'WebServiceController@getPrerequisites'));
 Route::post('webservice/mobile-verification', array('as' => 'webservice.mobile-verification', 'uses' => 'WebServiceController@mobileVerification'));
-Route::post('webservice/mobile-otp-verification', array('as' => 'webservice.mobile-otp-verification', 'uses' => 'WebServiceController@mobileOTPVerification'));
-Route::post('webservice/resend-otp', array('as' => 'webservice.resend-otp', 'uses' => 'WebServiceController@resendOTP'));
-Route::get('webservice/categories', array('as' => 'webservice.categories', 'uses' => 'WebServiceController@getCategories'));
-Route::post('webservice/serviceproviders', array('as' => 'webservice.serviceproviders', 'uses' => 'WebServiceController@getServiceProviders'));
-
-Route::post('webservice/serviceprovider-login', array('as' => 'webservice.serviceprovider-login', 'uses' => 'WebServiceController@spLogin'));
-Route::post('webservice/serviceprovider-register', array('as' => 'webservice.serviceprovider-register', 'uses' => 'WebServiceController@spRegister'));
-Route::post('webservice/serviceprovider-forgot-password', array('as' => 'webservice.serviceprovider-forgot-password', 'uses' => 'WebServiceController@spForgotPassword'));
-Route::post('webservice/serviceprovider-change-password', array('as' => 'webservice.serviceprovider-change-password', 'uses' => 'WebServiceController@spChangePassword'));
-Route::get('webservice/prerequisites-list', array('as' => 'webservice.prerequisites-list', 'uses' => 'WebServiceController@prerequisitesList'));
-Route::post('webservice/getserviceprovider', array('as' => 'webservice.getserviceprovider', 'uses' => 'WebServiceController@getServiceProvider'));
-Route::post('webservice/getreviewlist', array('as' => 'webservice.getreviewlist', 'uses' => 'WebServiceController@getreviewlist'));
-Route::post('webservice/serviceprovider-update', array('as' => 'webservice.serviceprovider-update', 'uses' => 'WebServiceController@updateServiceProvider'));
-Route::post('webservice/review-list', array('as' => 'webservice.review-list', 'uses' => 'WebServiceController@reviewList'));
-Route::post('webservice/user-list', array('as' => 'webservice.user-list', 'uses' => 'WebServiceController@UserList'));
-Route::post('webservice/customer-view', array('as' => 'webservice.customer-view', 'uses' => 'WebServiceController@userDetails'));
-Route::post('webservice/customer-update', array('as' => 'webservice.customer-update', 'uses' => 'WebServiceController@updateCustomer'));
-Route::post('webservice/serviceprovider-view', array('as' => 'webservice.serviceprovider-view', 'uses' => 'WebServiceController@viewServiceProvider'));
-Route::post('webservice/user-reviews', array('as' => 'webservice.user-reviews', 'uses' => 'WebServiceController@userReviews'));
-Route::post('webservice/sp-reviews', array('as' => 'webservice.sp-reviews', 'uses' => 'WebServiceController@spReviews'));
-Route::post('webservice/review-add', array('as' => 'webservice.review-add', 'uses' => 'WebServiceController@addReview'));
-Route::post('webservice/review-update', array('as' => 'webservice.review-update', 'uses' => 'WebServiceController@updateReview'));
-
+=======
+Route::post('webservice/feedback', array('as' => 'webservice.feedback', 'uses' => 'WebServiceController@sendFeedback'));
+Route::post('webservice/serviceimage', array('as' => 'webservice.serviceimage', 'uses' => 'WebServiceController@getServiceImages'));
+>>>>>>> .r692
 
 // Route::post('store', 'EmployeeController@store');
 Route::get('/logout', 'Auth\LoginController@logout');

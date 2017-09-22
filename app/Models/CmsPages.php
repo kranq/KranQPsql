@@ -22,7 +22,7 @@ class CmsPages extends Model
         	$cmsData = CmsPages::where('slug', '=', $slug)->get();
         	if (count($cmsData)>0) {
         		//$result =  $cmsData[0]->title;
-				$result =  $cmsData;
+				$result =  $cmsData[0];
         	}
         }
     	return $result;

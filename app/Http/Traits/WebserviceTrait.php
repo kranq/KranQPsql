@@ -54,4 +54,31 @@ trait WebserviceTrait {
 						);
 		return $workingDays;
 	}
+
+	/**
+	 * To return the list of Hours
+	 *
+	 * @return array
+	 **/
+	/**
+     * Returns the time in 12 Hours Format in dropdown
+     * @return array
+     */
+    public static function getTimeDropDown($start=FALSE, $end=FALSE){
+      	$start_time = ($start) ? $start : '8';
+      	$end_time = ($end) ? $end : '21';
+      	$i=0;
+      	for($hours=$start_time; $hours<$end_time; $hours++){
+          	if ($hours<12) {
+              	$time = $hours.' AM';
+          	} else if($hours==12) {
+            	$time = '12 PM';
+          	} else {
+            	$time = $hours - 12 .' PM';
+          	}
+          	$result[$i] = array('id' =>$hours,'name' => $time);	
+          	$i++;
+      	}
+      	return $result;
+    }
 }

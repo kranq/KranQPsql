@@ -161,12 +161,44 @@ class WebServiceController extends Controller
 								}
 
 							}
-
+							
 							$registerStatus = User::create($data);
 							$id = User::max('id');
 							if($registerStatus){
 								$userData['id'] =  $id;
-								$resultData = array('status'=>true,'message'=>'registered successfully','result'=>$userData);	
+								
+								/* To send OTP*/
+								$mobileOTP	= $this->generateOTP(); //get the OTP from traits method
+								$authKey	= env("SMS_AUTH_KEY","173397Ad58dSrs59afe736");
+								$senderId	= env("SMS_SENDER_ID","KRQ102234");
+								$route		= env("SMS_ROUTE","4");
+								$smsURI		= env("SMS_URI","https://control.msg91.com/api/sendhttp.php");
+								$message	= "Your OTP to verify the mobile number is ".$mobileOTP;
+								
+								$client = new Client(); //GuzzleHttp\Client
+								$result = $client->post($smsURI, [
+									'form_params' => [
+										'authkey' 	=> $authKey,
+										'mobiles' 	=> $data['mobile'],
+										'message' 	=> $message,
+										'sender'	=> $senderId,
+										'route' 	=> $route
+									]
+								]);
+								$otpStatus = $result->getStatusCode(); // to get the status code
+								if($otpStatus == 200){
+									$otpStoreStatus = User::where('mobile', '=', $data['mobile'])->update(['otp' => $mobileOTP,'mobile_verification_status' => '0','resend_otp_status' => '0']);
+									if($otpStoreStatus){
+										$resultData = array('status'=>true,'message'=>'registered successfully. OTP is sent','result'=>'');
+									} else {
+										$resultData = array('status'=>false,'message'=>'registered successfully. OTP sent but could not be registered (OTP) in database','result'=>'');
+									}
+								} else {
+									$resultData = array('status'=>false,'message'=>'registered successfully. OTP could not be sent','result'=>'');
+								}
+								/*End send OTP*/
+						
+								//$resultData = array('status'=>true,'message'=>'registered successfully','result'=>$userData);	
 							} else {
 								$resultData = array('status'=>false,'message'=>'registration failed','result'=>'');
 							}
@@ -233,12 +265,14 @@ class WebServiceController extends Controller
 			$categoryData 			= Category::get()->where('status','Active');
 			$cityData 				= City::get()->where('status','Active');
 			$localityData 			= Location::get()->where('status','Active');
+			
 			$aboutusData 			= CmsPages::getCmsData('about-us');
 			$whatisKranqData 		= CmsPages::getCmsData('what-is-kranq');
 			$howitWorksData 		= CmsPages::getCmsData('how-does-it-work');
 			$privacyPolicyData 		= CmsPages::getCmsData('privacy-policy');
 			$termsConditionsData	= CmsPages::getCmsData('terms-conditions');
-			$contactData 			= Address::get()->where('id','1');
+			
+			$contactData 			= Address::get()->where('id','1')->first();
 			
 			$basePath = URL::to('/').'/..';
 			$categoryPath = $basePath.trans('main.category_path');				
@@ -252,6 +286,7 @@ class WebServiceController extends Controller
 			$data['cityData']				= $cityData;
 			$data['localityData']			= $localityData;
 			$data['weekDaysData']			= $this->workingDaysList();
+			$data['hours'] 					= $this->getTimeDropDown();
 			$data['contactDetailsData']		= $contactData;
 			$data['aboutusData']			= $aboutusData;
 			$data['whatisKranqData']		= $whatisKranqData;
@@ -471,9 +506,17 @@ class WebServiceController extends Controller
 			$data = $request->all();
 			if($data){
 				if($data['id']){
-					$serviceProviderResult	= ServiceProvider::where('status','1')->where('category_id',$data['id'])->get();
+					$page = (isset($data['page'])) ? $data['page'] : "0";	
+					$recordLimit = (isset($data['limit'])) ? $data['limit'] : "20";	
+
+					//$page = ($page > 0) ? $page - 1 : 0;
+					//$start =  $page * $recordLimit + 1;
+					//$end = $page * $recordLimit + $recordLimit;
+					//$end = $recordLimit;
+					$serviceProviderResult	= ServiceProvider::where('status','1')->where('category_id',$data['id'])->skip($page)->take($recordLimit)->get();
 					$basePath = URL::to('/').'/..';
 					$imagePath = $basePath.trans('main.provider_path');
+					$serviceProviderData = [];
 					foreach($serviceProviderResult as $index => $serviceProvider){
 						$serviceProviderData[$index]['id']				= $serviceProvider->id;						
 						$serviceProviderData[$index]['location_id']		= $serviceProvider->location_id;
@@ -489,8 +532,9 @@ class WebServiceController extends Controller
 
 				//$serviceProviderData[$index]['category_service_data']	= $this->getCategoryServices($category->id);
 					}
-					$data['serviceProviderData']			= $serviceProviderData;	
-					$resultData = array('status'=>true,'message'=>'request success','result'=>$data);
+					$resultData['id']			= $data['id'];	
+					$resultData['serviceProviderData']			= $serviceProviderData;	
+					$resultData = array('status'=>true,'message'=>'request success','result'=>$resultData);
 				} else {
 					$resultData = array('status'=>false,'message'=>'Invalid Input','result'=>'');
 				}				
@@ -679,7 +723,6 @@ class WebServiceController extends Controller
     		if($data){
 				//check if the required fields are filled out
     			if($data['email'] && $data['password'] && $data['category_id'] && $data['location_id'] && $data['name'] && $data['logo'] && $data['city'] && $data['short_description'] && $data['status_owner_manager'] && $data['opening_hrs'] && $data['closing_hrs'] && $data['working_days'] && $data['phone']){
-
 					//check if the email is already exist
     				$emailExists = ServiceProvider::get()->where('email',$data['email'])->count();
     				if($emailExists == 0){
@@ -692,14 +735,15 @@ class WebServiceController extends Controller
     					$insertData['short_description'] = $data['short_description'];
     					$insertData['status_owner_manager'] = $data['status_owner_manager'];
     					$insertData['owner_name'] = $data['owner_name'];
+    					$insertData['owner_phone'] = $data['owner_phone'];
     					$insertData['owner_designation'] = $data['owner_designation'];
     					$insertData['opening_hrs'] = $data['opening_hrs'];
     					$insertData['closing_hrs'] = $data['closing_hrs'];
     					$insertData['working_days'] = $data['working_days'];
     					$insertData['phone'] = $data['phone'];
     					$insertData['website_link'] = $data['website_link'];
-    					$insertData['latitude'] = $data['latitude'];
-    					$insertData['longitude'] = $data['longitude'];
+    					$insertData['googlemap_latitude'] = $data['latitude'];
+    					$insertData['googlemap_longitude'] = $data['longitude'];
     					$insertData['email'] = $data['email'];
     					$insertData['created_at'] = date('Y-m-d H:i:s');
 
@@ -716,7 +760,7 @@ class WebServiceController extends Controller
     					$registerStatus = ServiceProvider::create($insertData);
     					if($registerStatus){
 							$id = ServiceProvider::max('id');
-    						if($data['service_provider_images']){
+    						if(isset($data['service_provider_images']) && $data['service_provider_images']){
 								foreach ($data['service_provider_images'] as $row_photo) {
 						            $file = $row_photo['image_no'] . '.jpg';
 						            $dir = trans('main.provider_path') . $id . '/'; //file upload path  
@@ -739,7 +783,14 @@ class WebServiceController extends Controller
 						            }
 						        } 
 							}
-    						$resultData = array('status'=>true,'message'=>'registered successfully','result'=>'');	
+							$basePath = URL::to('/').'/..';
+							$imagePath = $basePath.trans('main.provider_path');	
+							$userData['id'] = $id;
+							$userData['name'] = $insertData['name_sp'];
+							$userData['email'] = $insertData['email'];
+							$userData['mobile'] = $insertData['phone'];
+							$userData['logo'] = ($insertData['logo']) ? $imagePath.$insertData['logo'] : ""; 
+							$resultData = array('status'=>true,'message'=>'registered successfully','result'=>$userData);	
     					} else {
     						$resultData = array('status'=>false,'message'=>'registration failed','result'=>'');
     					}
@@ -757,7 +808,7 @@ class WebServiceController extends Controller
     	}
     	return $resultData;
     }
-
+	
 	/**
 	 * To reset passwrod of the service provider
 	 *
@@ -856,19 +907,21 @@ class WebServiceController extends Controller
 			$basePath = URL::to('/').'/..';
 			$imagePath = $basePath.trans('main.category_path');
 			$categoryData 			= Category::get()->where('status','Active');
-
 			if($categoryData){
 				foreach ($categoryData as $index => $row) {
 					$services = CategoryService::getCategoryService($row->id);
+
 					$serviceArray = [];
 					if($services){
 						$categoryServices = Service::whereIn('id',[$services])->get();
+
 						if($categoryServices){
 							foreach ($categoryServices as $key => $value) {
 								$serviceArray[$key]['service_id'] = $value->id;
 								$serviceArray[$key]['service_name'] = ($value->service_name) ?  $value->service_name : "";								
 							}
 						}
+
 					}
 					$arrayData[$index]['id'] = $row->id;
 					$arrayData[$index]['category_name'] = ($row->category_name) ? $row->category_name : "";
@@ -978,8 +1031,9 @@ class WebServiceController extends Controller
 		try{
 			$data = $request->all();
 			if($data){
+			
 				//check if the required fields are filled out
-				if($data['id'] && $data['category_id'] && $data['location_id'] && $data['name'] && $data['logo'] && $data['city'] && $data['short_description'] && $data['status_owner_manager'] && $data['opening_hrs'] && $data['closing_hrs'] && $data['working_days'] && $data['phone']){
+				if($data['id'] && $data['category_id'] && $data['location_id'] && $data['name'] && $data['logo'] && $data['city'] && $data['short_description'] && $data['status_owner_manager'] && $data['opening_hrs'] && $data['closing_hrs'] && $data['working_days'] && $data['phone']){ 
 					$provider  = ServiceProvider::findorFail($data['id']);
 
 					$input['category_id'] = $data['category_id'];
@@ -991,6 +1045,7 @@ class WebServiceController extends Controller
 					$input['short_description'] = $data['short_description'];
 					$input['status_owner_manager'] = $data['status_owner_manager'];
 					$input['owner_name'] = $data['owner_name'];
+					$input['owner_phone'] = $data['owner_phone'];
 					$input['owner_designation'] = $data['owner_designation'];
 					$input['opening_hrs'] = $data['opening_hrs'];
 					$input['closing_hrs'] = $data['closing_hrs'];
@@ -1010,36 +1065,45 @@ class WebServiceController extends Controller
 							}
 						}  	
 					}
-					if($data['service_provider_images']){
+					if(isset($data['service_provider_images']) && $data['service_provider_images']){
 						foreach ($data['service_provider_images'] as $row_photo) {
-				            $file = $row_photo['image_no'] . '.jpg';
-				            $dir = trans('main.provider_path') . $provider->id . '/'; //file upload path  
-				            $checkImageExist = ServiceProviderImages::where('service_provider_id',$provider->id)->where('image_name',$file)->count();
-				            if($checkImageExist == 0){
-				                if (!filter_var($row_photo['name'], FILTER_VALIDATE_URL)) {
-				                    $imageData = base64_decode($row_photo['name']);
-				                    $photo = imagecreatefromstring($imageData);
-				                    if ($photo) {				                       
-				                        //create sub directory if not exist
-				                        if (!is_dir($dir)) {
-				                            @mkdir($dir);
-				                        }
-				                        $insert_data['service_provider_id'] = $provider->id;
-				                        $insert_data['image_name'] = KranHelper::uploadSPImage($row_photo['name'],$file,$dir);
-				                        $insert_photos = ServiceProviderImages::create($insert_data);
-
-				                        //insert photos details of rooms
-				                        //if (imagejpeg($photo, $dir . $file, 100)) {
-				                            //$insert_data['image_name'] = $file;
-				                        //}
-				                    }
-				                }
-				            }/*else{
-				                $delete_old_photo = $this->delete_images_by_path($path.$file);
-				                $delete_old_photo_from_db = $this->web_service_model->delete_room_photos_by_criteria($booking_id, $room_id, $file);
-				            }*/
+							if (!filter_var($row_photo['name'], FILTER_VALIDATE_URL)) {
+								$file = $row_photo['image_no'] . '.jpg';
+								$dir = trans('main.provider_path') . $provider->id . '/'; //file upload path  
+								$checkImageExist = ServiceProviderImages::where('service_provider_id',$provider->id)->where('image_name',$file)->count();
+								if($checkImageExist == 0){
+									$imageData = base64_decode($row_photo['name']);
+									$photo = imagecreatefromstring($imageData);
+									if ($photo) {				                       
+										//create sub directory if not exist
+										if (!is_dir($dir)) {
+											@mkdir($dir);
+										}
+										$insert_data['service_provider_id'] = $provider->id;
+										$insert_data['image_name'] = KranHelper::uploadSPImage($row_photo['name'],$file,$dir);
+										$insert_photos = ServiceProviderImages::create($insert_data);
+										 
+									}
+								}
+							}
 				        } 
 					}
+
+					if(isset($data['delete_provider_images']) && $data['delete_provider_images']){
+						//$file = $row_photo['image_no'] . '.jpg';
+				        $dir = trans('main.provider_path') . $provider->id . '/'; //file upload path  
+						$ids = explode(',', $data['delete_provider_images']);
+						foreach ($ids as $key => $value) {
+							$spImages = ServiceProviderImages::find($value);
+							if($spImages){
+								$file_name = $dir.$spImages->image_name;
+									if (is_file($file_name)) {
+			            				unlink($file_name);
+				        			}
+								}	
+								$spImages->delete();
+							}
+						}
 					$provider->fill($input);
 					if($provider->save()){
 						$resultData = array('status'=>true,'message'=>'service provider updated successfully','result'=>'');	
@@ -1047,10 +1111,10 @@ class WebServiceController extends Controller
 						$resultData = array('status'=>false,'message'=>'could not update service provider','result'=>'');
 					}
 
-				}else{
+				}else{  
 					$resultData = array('status'=>false,'message'=>'Invalid Input','result'=>'');
 				}	
-			}else{
+			}else{ 
 				$resultData = array('status'=>false,'message'=>'invalid request','result'=>'');
 			}	
 		} catch(Exception $e){
@@ -1072,7 +1136,7 @@ class WebServiceController extends Controller
 				$reviewData = $request->all();
 				$page = (isset($reviewData['page'])) ? $reviewData['page'] : "0";	
 				$recordLimit = (isset($reviewData['limit'])) ? $reviewData['limit'] : "20";	
-				$page = ($page > 0) ? $page - 1 : 0;
+				//$page = ($page > 0) ? $page - 1 : 0;
 				$start =  $page * $recordLimit + 1;
 				//$end = $page * $recordLimit + $recordLimit;
 				$end = $recordLimit;
@@ -1306,14 +1370,17 @@ class WebServiceController extends Controller
 						$data['locality']		= ($serviceProvider->locality->locality_name) ? $serviceProvider->locality->locality_name : "";
 						$data['name_sp']			= ($serviceProvider->name_sp) ? $serviceProvider->name_sp : "";
 						$data['logo']			= ($serviceProvider->logo) ? $imagePath.$serviceProvider->logo : "";
-						$data['city']			= ($serviceProvider->city) ? $serviceProvider->cities->city_name : "";
+						$data['city_id']			= ($serviceProvider->city) ? $serviceProvider->city : "";
+						$data['city_name']			= ($serviceProvider->city) ? $serviceProvider->cities->city_name : "";
 						$data['address']			= ($serviceProvider->address) ? $serviceProvider->address : "";				
 						$data['short_description']		= ($serviceProvider->short_description) ? $serviceProvider->short_description : "";
 						$data['status_owner_manager']	= ($serviceProvider->status_owner_manager) ? $serviceProvider->status_owner_manager : "";
 						$data['owner_name']				= ($serviceProvider->owner_name) ? $serviceProvider->owner_name : "";
 						$data['owner_designation']		= ($serviceProvider->owner_designation) ? $serviceProvider->owner_designation : "";
 						$data['owner_phone']				= ($serviceProvider->owner_phone) ? $serviceProvider->owner_phone : "";
+						$data['opening_hrs_id']				= ($serviceProvider->opening_hrs) ? $serviceProvider->opening_hrs : "";
 						$data['opening_hrs']				= ($serviceProvider->opening_hrs) ? KranHelper::getFormattedTime($serviceProvider->opening_hrs) : "";
+						$data['closing_hrs_id']				= ($serviceProvider->closing_hrs) ? $serviceProvider->closing_hrs : "";
 						$data['closing_hrs']				= ($serviceProvider->closing_hrs) ? KranHelper::getFormattedTime($serviceProvider->closing_hrs) : "";
 
 						$data['working_days']			= ($serviceProvider->working_days) ? $serviceProvider->working_days : "";
@@ -1332,8 +1399,8 @@ class WebServiceController extends Controller
 								$basePath = URL::to('/').'/..';
 								$imagePath = $basePath.trans('main.provider_path');	
 					            $file = $imagePath.$row['service_provider_id'].'/'.$row['image_name'];
-					            $arrayData[$index]['id'] = $row['id'];
-					            $arrayData[$index]['image_name'] = $file;
+					            $arrayData[$index]['image_no'] = $row['id'];
+					            $arrayData[$index]['name'] = $file;
 					        } 
 					    }
 					    $data['service_provider_images'] = $arrayData;
@@ -1420,7 +1487,15 @@ class WebServiceController extends Controller
 				if (isset($data['id'])) {
 					$user = User::find($data['id']);
 					if($user){
-						$reviewDetails = Review::where('status','Active')->where('user_id',$data['id'])->get();
+						$page = (isset($data['page'])) ? $data['page'] : "0";	
+						$recordLimit = (isset($data['limit'])) ? $data['limit'] : "20";	
+						//$page = ($page > 0) ? $page - 1 : 0;
+						
+						//$start =  $page * $recordLimit + 1;
+						//$end = $page * $recordLimit + $recordLimit;
+						//$end = $recordLimit;
+						//$reviewDetails = Review::where('status', 'Active')->skip($start)->take($end)->get();
+						$reviewDetails = Review::where('status','Active')->where('user_id',$data['id'])->skip($page)->take($recordLimit)->get();
 						if ($reviewDetails) {
 							$basePath = URL::to('/').'/..';
 							$imagePath = $basePath.trans('main.provider_path');	
@@ -1469,7 +1544,15 @@ class WebServiceController extends Controller
 				if (isset($data['id'])) {
 					$sp = ServiceProvider::find($data['id']);
 					if($sp){
-						$reviewDetails = Review::where('status','Active')->where('service_provider_id',$data['id'])->get();
+						$page = (isset($data['page'])) ? $data['page'] : "0";	
+						$recordLimit = (isset($data['limit'])) ? $data['limit'] : "20";	
+						//$page = ($page > 0) ? $page - 1 : 0;
+						//$start =  $page * $recordLimit + 1;
+						//$end = $page * $recordLimit + $recordLimit;
+						//$end = $recordLimit;
+						//$reviewDetails = Review::where('status', 'Active')->skip($start)->take($end)->get();
+						$reviewDetails = Review::where('status','Active')->where('service_provider_id',$data['id'])->skip($page)->take($recordLimit)->get();
+						//$reviewDetails = Review::where('status','Active')->where('service_provider_id',$data['id'])->get();
 						if ($reviewDetails) {
 							foreach ($reviewDetails as $index => $value) {
 								$user = User::find($value['user_id']);

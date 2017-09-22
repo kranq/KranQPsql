@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Storage;
 use Session;
 use Redirect;
 use App\User;
@@ -52,7 +53,18 @@ class HomeController extends Controller
 
         $input = $request->all();
         $userData = User::findorfail($id);
-
+		// To create a directory if not exists
+		if (!(Storage::disk('s3')->exists('/uploads/userProfile')))
+		{
+			Storage::disk('s3')->makeDirectory('/uploads/userProfile/');
+		}
+		// To upload object to amazon S3 
+		if ($request->file('updateprofile')) {
+			if (Storage::disk('s3')->exists('uploads/userProfile/'.$userData->profile_picture)) {
+				Storage::disk('s3')->delete('uploads/userProfile/'.$userData->profile_picture);
+			}
+	        $amazonImgUpload = Storage::disk('s3')->put('uploads/userProfile/'.$request->file('updateprofile')->getClientOriginalName(), file_get_contents($request->file('updateprofile')), 'public');
+		}
         // File Upload
         if ($request->hasFile('updateprofile')) {
             $oldFileName = $userData->profile_picture;

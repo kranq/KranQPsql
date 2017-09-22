@@ -23,14 +23,14 @@
             </li>
             <li>
                 <a data-toggle="tab" href="#contacts" class="contact-map">
-                    {{ trans('main.review.title') }}
+                    {{ trans('main.provider.reviews') }}
                 </a>
             </li>
-            <!--li>
+            <li>
                 <a data-toggle="tab" href="#settings">
                     {{ trans('main.provider.ratings') }}
                 </a>
-            </li-->
+            </li>
         </ul>
     </header>
     <div class="panel-body">
@@ -219,8 +219,7 @@
                             <thead>
                                 <tr>
                                     <th width="20%">User</th>
-                                    <th width="50%">Reviews</th>
-                                    <th width="10%">Rating</th>
+                                    <th width="60%">Reviews</th>
                                     <th width="20%">Posted On</th>
                                 </tr>
                             </thead>
@@ -230,7 +229,6 @@
                                         <tr>
                                             <td>{{ $review->username }}</td>
                                             <td>{{ $review->reviews }}</td>
-                                            <td>{{ $review->rating }}</td>
                                             <td>{{ $review->postted_on }}</td>
                                         </tr>
                                     @endforeach
@@ -240,7 +238,7 @@
                     </div>
                     </div>
                 </div>
-            <!--div id="settings" class="tab-pane ">
+            <div id="settings" class="tab-pane ">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover table-bordered" id="editable-sample">
                         <thead>
@@ -268,7 +266,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div-->
+            </div>
             <a href="{{ route('main.provider.index') }}" class="btn btn-default">Back</a>
         </div>
     </div>

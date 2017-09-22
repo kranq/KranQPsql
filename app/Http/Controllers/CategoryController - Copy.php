@@ -97,18 +97,16 @@ class CategoryController extends Controller
     {
         $input = $request->all();
         $input = $request->except('_token');
-		
-		// To create a directory if not exists
-		if (!(Storage::disk('s3')->exists('/uploads/category')))
-		{
-			Storage::disk('s3')->makeDirectory('/uploads/category/');
-		}
         // To upload the images into Amazon S3
-        $amazonImgUpload = Storage::disk('s3')->put('/uploads/category/'.$request->file('category_image')->getClientOriginalName(), file_get_contents($request->file('category_image')));
+<<<<<<< .mine
+        $amazonImgUpload = \Storage::disk('s3')->put($request->file('category_image')->getClientOriginalName(), file_get_contents($request->file('category_image')), 'uploads');
+=======
+        /*$amazonImgUpload = Storage::disk('s3')->put($request->file('category_image')->getClientOriginalName(), file_get_contents($request->file('category_image')), 'uploads');*/
+>>>>>>> .r859
         if($request->hasFile('category_image')){
            $input['category_image'] = Category::upload_file($request, 'category_image');
         }
-        $last = Category::create($input);  
+        $last = Category::create($input);
         // To get the Last Insert id and insert the value in the Category Service Table by Category Name
         $lastRecord = Category::where('category_name','=' ,$last->category_name)->get();
         $categoryInput['category_id'] = $lastRecord[0]->id;
@@ -126,12 +124,9 @@ class CategoryController extends Controller
     public function show($id)
     {
         $data['category'] = Category::findorFail($id);
-        if ($data['category']->service_id) {    
+        if ($data['category']->service_id) {
             $service = explode(',',$data['category']->service_id);
         }
-		// To get the image form the Amazon s3 account
-		$data['s3image']= \Storage::disk('s3')->url('uploads/category/'.$data['category']->category_image);
-		
         if (!empty($service)) {
             foreach ($service as $value) {
                 $data['services'][] = Service::where('id',$value)->pluck('service_name');
@@ -151,13 +146,12 @@ class CategoryController extends Controller
     {
         $data['category'] = Category::findorFail($id);
         $data['CategoryService'] = CategoryService::getCategoryService($id);
-        if (count($data['CategoryService'])>0) {    
+        if (count($data['CategoryService'])>0) {
             $service = explode(',',$data['CategoryService']);
         }
         if ($data['category']->category_image) {
-            $data['amazonImgUpload'] = \Storage::disk('s3')->url('uploads/category/'.$data['category']->category_image);
+            $data['amazonImgUpload'] = $data['category']->category_image;
         }
-		//print_r($data['amazonImgUpload']);exit;
         $data['status'] = DropdownHelper::where('group_code', '001')->orderBy('key_code', 'asc')->pluck('value', 'key_code');
         $data['services'] = Service::orderBy('service_name', 'asc')->pluck('service_name', 'id')->all();
         $data['service'] = Service::whereIn('id',$service)->pluck('id');
@@ -176,18 +170,10 @@ class CategoryController extends Controller
     {
         $input = $request->all();
         $category = Category::findorFail($id);
-		
-		// To update the Amazon S3 objects
-		if ($request->file('category_image')) {
-			// To check the object is exists or not
-			if (Storage::disk('s3')->exists('uploads/category/'.$category->category_image)) {
-				// To delete the object from Amazon S3 repository
-				Storage::disk('s3')->delete('uploads/category/'.$category->category_image);
-			}
-			// To upload the object to the particular path with the permission as (Public)
-	        $amazonImgUpload = Storage::disk('s3')->put('uploads/category/'.$request->file('category_image')->getClientOriginalName(), file_get_contents($request->file('category_image')), 'public');
-		}
-		
+        /*if (Storage::disk('s3')->exists($request->file('category_image')->getClientOriginalName())) {
+            Storage::disk('s3')->delete($request->file('category_image')->getClientOriginalName());
+        }*/
+        //$amazonImgUpload = Storage::disk('s3')->put($request->file('category_image')->getClientOriginalName(), file_get_contents($request->file('category_image')), 'uploads');
         if($request->hasFile('category_image')){
            $input['category_image'] = Category::upload_file($request, 'category_image', $id);
         }
@@ -196,11 +182,11 @@ class CategoryController extends Controller
         if (!empty($service)) {
             $categoryService = CategoryService::where('category_id', '=', $id)->get();
             if (count($categoryService) > 0) {
-                $result =  DB::statement('UPDATE category_services set service_id="'.$service.'" where category_id='.$id);    
+                $result =  DB::statement('UPDATE category_services set service_id="'.$service.'" where category_id='.$id);
             } else {
                 $categoryInput['category_id'] = $id;
                 $categoryInput['service_id'] = $service;
-                CategoryService::create($categoryInput);   
+                CategoryService::create($categoryInput);
             }
         }
         $category->fill($input);
@@ -221,12 +207,6 @@ class CategoryController extends Controller
             return Redirect::route($this->route)->with($this->success, trans($this->referencemsg));
         } else {
             $category = Category::findorFail($id);
-			// To delete the image from the Amazon S3 account
-			if (!empty($category->category_image)) {
-				if (Storage::disk('s3')->exists('uploads/category/'.$category->category_image)) {
-					Storage::disk('s3')->delete('uploads/category/'.$category->category_image);
-				}
-			}
             $category->delete();
             return Redirect::route($this->route)->with($this->success, trans($this->deletemsg));
         }
