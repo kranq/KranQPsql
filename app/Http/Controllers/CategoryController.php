@@ -104,7 +104,7 @@ class CategoryController extends Controller
 			Storage::disk('s3')->makeDirectory('/uploads/category/');
 		}
         // To upload the images into Amazon S3
-        $amazonImgUpload = Storage::disk('s3')->put('/uploads/category/'.$request->file('category_image')->getClientOriginalName(), file_get_contents($request->file('category_image')));
+        $amazonImgUpload = Storage::disk('s3')->put('/uploads/category/'.$request->file('category_image')->getClientOriginalName(), file_get_contents($request->file('category_image')), 'pubilc');
         if($request->hasFile('category_image')){
            $input['category_image'] = Category::upload_file($request, 'category_image');
         }

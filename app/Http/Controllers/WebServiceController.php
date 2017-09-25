@@ -157,7 +157,7 @@ class WebServiceController extends Controller
 							if(isset($data['profile_url']) && $data['profile_url']){
 								if (!filter_var($data['profile_url'], FILTER_VALIDATE_URL)) { 
 									$input['profile_picture'] = KranHelper::convertStringToImage($data['profile_url'],$data['fullname'],$logoPath);		
-									$userData['image'] = $imagePath.$Input['profile_picture'];
+									$userData['image'] = $imagePath.$input['profile_picture'];
 								}
 
 							}
@@ -226,7 +226,7 @@ class WebServiceController extends Controller
 							if(isset($data['profile_url']) && $data['profile_url']){
 								if (!filter_var($data['profile_url'], FILTER_VALIDATE_URL)) { 
 									$input['profile_picture'] = KranHelper::convertStringToImage($data['profile_url'],$data['fullname'],$logoPath);
-									$userData['image'] = $imagePath.$Input['profile_picture'];								
+									$userData['image'] = $imagePath.$input['profile_picture'];								
 								}	
 							}
 							$registerStatus = User::create($data);
@@ -524,6 +524,7 @@ class WebServiceController extends Controller
 							$serviceProviderData[$index]['location_id']		= $serviceProvider->location_id;
 							$serviceProviderData[$index]['locality']		= $serviceProvider->locality->locality_name;
 							$serviceProviderData[$index]['name_sp']			= $serviceProvider->name_sp;
+							$serviceProviderData[$index]['city']			= $serviceProvider->cities->city_name;
 							$serviceProviderData[$index]['logo']			= ($serviceProvider->logo) ? $imagePath.$serviceProvider->logo : "";
 							$serviceProviderData[$index]['address']			= ($serviceProvider->address) ? $serviceProvider->address : "";				
 							
