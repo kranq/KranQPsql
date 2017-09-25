@@ -109,7 +109,7 @@ class UserController extends Controller
 			Storage::disk('s3')->makeDirectory('/uploads/user/');
 		}
 		// To upload the images into Amazon S3
-        $amazonImgUpload = Storage::disk('s3')->put('/uploads/user/'.$request->file('profile_picture')->getClientOriginalName(), file_get_contents($request->file('profile_picture')));
+        $amazonImgUpload = Storage::disk('s3')->put('/uploads/user/'.$request->file('profile_picture')->getClientOriginalName(), file_get_contents($request->file('profile_picture')), 'public');
         if($request->hasFile('profile_picture')){
            $input['profile_picture'] = User::fileUpload($request, 'profile_picture');
         }
