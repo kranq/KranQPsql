@@ -31,7 +31,7 @@ class Grid{
 	public $advancedSearchOpened = false;
 	public $advancedSearchFields = [];
 	public $rowsPerPage = [];
-	public $currentRowsPerPage = 10;
+	public $currentRowsPerPage = 50;
 	public $processLineClosure;
 	public $export = true;
 	public $showTrashedLines = false;

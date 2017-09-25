@@ -1,8 +1,8 @@
 <?php
 return [
 	'allowExport'=>true, //if true, show the export option, maybe not a good idea for big grids or low server
-	'rowsPerPage'=>[10,25,50,100,500,1000], //the options to select
-	'currentRowsPerPage'=>10, //the initial value by default - must exists in rowsPerPage
+	'rowsPerPage'=>[50,100,150,250,500,1000], //the options to select
+	'currentRowsPerPage'=>50, //the initial value by default - must exists in rowsPerPage
 	'advancedSearch'=>[
 		'formats'=>[
 			'date'=>[

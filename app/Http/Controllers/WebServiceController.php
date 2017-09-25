@@ -210,8 +210,9 @@ class WebServiceController extends Controller
 								$resultData = array('status'=>false,'message'=>'facebook id is mandatory','result'=>'');
 								return $resultData;
 						}
-						$facebookExists = User::get()->where('facebook_id',$data['facebook_id'])->count();
-						if($facebookExists == 0){
+						$facebookAndEmailExists = User::get()->where('facebook_id',$data['facebook_id'])->orWhere('email',$data['email'])->count();
+						if($facebookAndEmailExists == 0){
+
 							$data['password'] = bcrypt($data['fullname']);
 							$data['register_mode'] = $this->getRegisterMode($data['register_mode']);
 							//$data['been_there_status'] = ($data['been_there_status']=='Yes') ? 1 : 2;
@@ -238,7 +239,11 @@ class WebServiceController extends Controller
 								$resultData = array('status'=>false,'message'=>'registration failed','result'=>'');
 							}
 						} else {
-							$resultData = array('status'=>false,'message'=>'Facebook id exists already','result'=>'');
+							$user = User::get()->where('facebook_id',$data['facebook_id'])->where('email',$data['email'])->first();
+							
+							$userData['id'] =  $user->id;
+							$userData['image'] = ($user->profile_picture) ? $imagePath.$user->profile_picture : "";
+							$resultData = array('status'=>false,'message'=>'You already have an account with the given details','result'=>$userData);
 						}
 					} else {
 					}
