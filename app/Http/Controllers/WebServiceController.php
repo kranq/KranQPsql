@@ -513,28 +513,32 @@ class WebServiceController extends Controller
 					//$start =  $page * $recordLimit + 1;
 					//$end = $page * $recordLimit + $recordLimit;
 					//$end = $recordLimit;
-					$serviceProviderResult	= ServiceProvider::where('status','1')->where('category_id',$data['id'])->skip($page)->take($recordLimit)->get();
+					$serviceProviderResult	= ServiceProvider::where('status','2')->where('category_id',$data['id'])->skip($page)->take($recordLimit)->get();
 					$basePath = URL::to('/').'/..';
 					$imagePath = $basePath.trans('main.provider_path');
-					$serviceProviderData = [];
-					foreach($serviceProviderResult as $index => $serviceProvider){
-						$serviceProviderData[$index]['id']				= $serviceProvider->id;						
-						$serviceProviderData[$index]['location_id']		= $serviceProvider->location_id;
-						$serviceProviderData[$index]['locality']		= $serviceProvider->locality->locality_name;
-						$serviceProviderData[$index]['name_sp']			= $serviceProvider->name_sp;
-						$serviceProviderData[$index]['logo']			= ($serviceProvider->logo) ? $imagePath.$serviceProvider->logo : "";
-						$serviceProviderData[$index]['address']			= ($serviceProvider->address) ? $serviceProvider->address : "";				
-						
-						$serviceProviderData[$index]['googlemap_latitude']		= ($serviceProvider->googlemap_latitude) ? $serviceProvider->googlemap_latitude : "";
-						$serviceProviderData[$index]['googlemap_longitude']		= ($serviceProvider->googlemap_longitude) ? $serviceProvider->googlemap_longitude : "";
-						$serviceProviderData[$index]['ratings'] = Review::getRatingsOfServiceProviderById($serviceProvider->id);
-						$serviceProviderData[$index]['reviews'] = Review::where('service_provider_id',$serviceProvider->id)->count();
+					if (count($serviceProviderResult)) {
+						$serviceProviderData = [];
+						foreach($serviceProviderResult as $index => $serviceProvider){
+							$serviceProviderData[$index]['id']				= $serviceProvider->id;						
+							$serviceProviderData[$index]['location_id']		= $serviceProvider->location_id;
+							$serviceProviderData[$index]['locality']		= $serviceProvider->locality->locality_name;
+							$serviceProviderData[$index]['name_sp']			= $serviceProvider->name_sp;
+							$serviceProviderData[$index]['logo']			= ($serviceProvider->logo) ? $imagePath.$serviceProvider->logo : "";
+							$serviceProviderData[$index]['address']			= ($serviceProvider->address) ? $serviceProvider->address : "";				
+							
+							$serviceProviderData[$index]['googlemap_latitude']		= ($serviceProvider->googlemap_latitude) ? $serviceProvider->googlemap_latitude : "";
+							$serviceProviderData[$index]['googlemap_longitude']		= ($serviceProvider->googlemap_longitude) ? $serviceProvider->googlemap_longitude : "";
+							$serviceProviderData[$index]['ratings'] = Review::getRatingsOfServiceProviderById($serviceProvider->id);
+							$serviceProviderData[$index]['reviews'] = Review::where('service_provider_id',$serviceProvider->id)->count();
 
-				//$serviceProviderData[$index]['category_service_data']	= $this->getCategoryServices($category->id);
-					}
-					$resultData['id']			= $data['id'];	
-					$resultData['serviceProviderData']			= $serviceProviderData;	
-					$resultData = array('status'=>true,'message'=>'request success','result'=>$resultData);
+					//$serviceProviderData[$index]['category_service_data']	= $this->getCategoryServices($category->id);
+						}
+						$resultData['id']			= $data['id'];	
+						$resultData['serviceProviderData']			= $serviceProviderData;	
+						$resultData = array('status'=>true,'message'=>'request success','result'=>$resultData);
+				} else {
+					$resultData = array('status'=>false,'message'=>'No Records Found','result'=>'');
+				}
 				} else {
 					$resultData = array('status'=>false,'message'=>'Invalid Input','result'=>'');
 				}				

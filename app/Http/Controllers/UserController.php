@@ -51,6 +51,10 @@ class UserController extends Controller
               'fullname'=>'Full Name',
               'email'=>'Email',
               'status' => 'Status',
+              'register_mode' => [
+                'label' => 'Registered Mode',
+                'field' =>  "case when register_mode = '1' then 'Mobile' else 'Facebook' end"
+              ],
               'registered_on' => 'Registered On'
         ])
         ->actionFields([

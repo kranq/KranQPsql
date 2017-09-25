@@ -269,7 +269,11 @@
                     </table>
                 </div>
             </div-->
-            <a href="{{ route('main.provider.index') }}" class="btn btn-default">Back</a>
+            <div class="form-group">
+                <div class="col-lg-offset-3 col-lg-6">
+                    <a href="{{ route('main.provider.index') }}" class="btn btn-default">Back</a>
+                </div>
+            </div>
         </div>
     </div>
 </section>                  
