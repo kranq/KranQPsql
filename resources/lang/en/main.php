@@ -166,7 +166,7 @@ $lang['city.updatesuccess'] = 'City has been updated successfully';
 $lang['city.deletesuccess'] = 'City has been deleted successfully';
 
 // CMS
-$lang['cms.header_title'] = 'Cms';
+$lang['cms.header_title'] = 'CMS';
 $lang['cms.title'] = 'Title';
 $lang['cms.slug'] = 'Slug';
 $lang['cms.description'] = 'Description';

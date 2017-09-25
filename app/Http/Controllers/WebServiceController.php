@@ -506,14 +506,15 @@ class WebServiceController extends Controller
 			$data = $request->all();
 			if($data){
 				if($data['id']){
-					$page = (isset($data['page'])) ? $data['page'] : "0";	
-					$recordLimit = (isset($data['limit'])) ? $data['limit'] : "20";	
+					//$page = (isset($data['page'])) ? $data['page'] : "0";	
+					//$recordLimit = (isset($data['limit'])) ? $data['limit'] : "20";	
 
 					//$page = ($page > 0) ? $page - 1 : 0;
 					//$start =  $page * $recordLimit + 1;
 					//$end = $page * $recordLimit + $recordLimit;
 					//$end = $recordLimit;
-					$serviceProviderResult	= ServiceProvider::where('status','2')->where('category_id',$data['id'])->skip($page)->take($recordLimit)->get();
+					//$serviceProviderResult	= ServiceProvider::where('status','2')->where('category_id',$data['id'])->skip($page)->take($recordLimit)->get();
+					$serviceProviderResult	= ServiceProvider::where('status','2')->where('category_id',$data['id'])->get();
 					$basePath = URL::to('/').'/..';
 					$imagePath = $basePath.trans('main.provider_path');
 					if (count($serviceProviderResult)) {
@@ -1491,15 +1492,15 @@ class WebServiceController extends Controller
 				if (isset($data['id'])) {
 					$user = User::find($data['id']);
 					if($user){
-						$page = (isset($data['page'])) ? $data['page'] : "0";	
-						$recordLimit = (isset($data['limit'])) ? $data['limit'] : "20";	
+						//$page = (isset($data['page'])) ? $data['page'] : "0";	
+						//$recordLimit = (isset($data['limit'])) ? $data['limit'] : "20";	
 						//$page = ($page > 0) ? $page - 1 : 0;
 						
 						//$start =  $page * $recordLimit + 1;
 						//$end = $page * $recordLimit + $recordLimit;
 						//$end = $recordLimit;
-						//$reviewDetails = Review::where('status', 'Active')->skip($start)->take($end)->get();
-						$reviewDetails = Review::where('status','Active')->where('user_id',$data['id'])->skip($page)->take($recordLimit)->get();
+						//$reviewDetails = Review::where('status','Active')->where('user_id',$data['id'])->skip($page)->take($recordLimit)->get();
+						$reviewDetails = Review::where('status','Active')->where('user_id',$data['id'])->get();
 						if ($reviewDetails) {
 							$basePath = URL::to('/').'/..';
 							$imagePath = $basePath.trans('main.provider_path');	
@@ -1548,15 +1549,14 @@ class WebServiceController extends Controller
 				if (isset($data['id'])) {
 					$sp = ServiceProvider::find($data['id']);
 					if($sp){
-						$page = (isset($data['page'])) ? $data['page'] : "0";	
-						$recordLimit = (isset($data['limit'])) ? $data['limit'] : "20";	
+						//$page = (isset($data['page'])) ? $data['page'] : "0";	
+						//$recordLimit = (isset($data['limit'])) ? $data['limit'] : "20";	
 						//$page = ($page > 0) ? $page - 1 : 0;
 						//$start =  $page * $recordLimit + 1;
 						//$end = $page * $recordLimit + $recordLimit;
 						//$end = $recordLimit;
-						//$reviewDetails = Review::where('status', 'Active')->skip($start)->take($end)->get();
-						$reviewDetails = Review::where('status','Active')->where('service_provider_id',$data['id'])->skip($page)->take($recordLimit)->get();
-						//$reviewDetails = Review::where('status','Active')->where('service_provider_id',$data['id'])->get();
+						//$reviewDetails = Review::where('status','Active')->where('service_provider_id',$data['id'])->skip($page)->take($recordLimit)->get();
+						$reviewDetails = Review::where('status','Active')->where('service_provider_id',$data['id'])->get();
 						if ($reviewDetails) {
 							foreach ($reviewDetails as $index => $value) {
 								$user = User::find($value['user_id']);
