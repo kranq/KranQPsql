@@ -85,9 +85,10 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME', 'mail.php@boscoits.com'),
-
-    'password' => env('MAIL_PASSWORD', 'php!#nets15'),
+    //'username' => env('MAIL_USERNAME', 'mail.php@boscoits.com'),
+	'username' => env('MAIL_USERNAME', 'customercare.kranq@gmail.com'),
+    //'password' => env('MAIL_PASSWORD', 'php!#nets15'),
+    'password' => env('MAIL_PASSWORD', 'MLtech@2017'),
 
     /*
     |--------------------------------------------------------------------------
