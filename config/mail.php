@@ -57,8 +57,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'mail.php@boscoits.com'),
-        'name' => env('MAIL_FROM_NAME', 'PHP'),
+        'address' => env('MAIL_FROM_ADDRESS', 'customercare.kranq@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'Kranq'),
     ],
 
     /*
