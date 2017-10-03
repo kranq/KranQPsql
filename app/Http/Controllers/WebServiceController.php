@@ -638,6 +638,8 @@ class WebServiceController extends Controller
 		}
 		return $resultData;
 	}
+
+	
 	/**
 	 * To get the feedback data from mobile end and send feedback mail
 	 *
@@ -657,8 +659,7 @@ class WebServiceController extends Controller
 					Mail::send('email.feedback', ['data' => $data], function($message)
 					{
 						//$message->to('logu@boscosofttech.com', 'Loganathan')->subject('Feedback');
-						$message->to('vijayfelixraj@gmail.com', 'Felix')->subject('Feedback');
-						//$message->to('joanbritto18@gmail.com', 'Loganathan')->subject('Feedback');
+						$message->to('joanbritto18@gmail.com', 'Loganathan')->subject('Feedback');
 					});
 					$feedbackStatus = Feedback::create($data);
 					if($feedbackStatus){
@@ -908,8 +909,9 @@ class WebServiceController extends Controller
 	public function spForgotPassword(Request $request)
 	{
 		try{
-			$data = $request->all();
-			if($data){
+			//$data = $request->all();
+			//if($data){
+				$data['email'] = 'test@gmail.com';
 				if($data['email']){	
 					$emailExists = ServiceProvider::get()->where('email',$data['email'])->count();
 					if($emailExists != 0){
@@ -917,6 +919,7 @@ class WebServiceController extends Controller
 						//$cryptedPassword = bcrypt($password);
 						//$updateQuery = ServiceProvider::where('email',$data['email'])->update(['password' => $cryptedPassword]);
 						$data['content'] = 'Click here to reset your password <a href="#">Reset Password</a>';
+						return view('email.forgot-password',['data' => $data]);
 						Mail::send('email.forgot-password', ['data' => $data], function($message) use ($data)
 						{
 							$message->to($data['email'])->subject('Feedback');
@@ -930,9 +933,9 @@ class WebServiceController extends Controller
 				}else{
 					$resultData = array('status'=>false,'message'=>'Invalid Input','result'=>'');
 				}
-			}else{
-				$resultData = array('status'=>false,'message'=>'invalid request','result'=>'');
-			}
+			//}else{
+			//	$resultData = array('status'=>false,'message'=>'invalid request','result'=>'');
+			//}
 		}catch(Exception $e){
 			$resultData = array('status'=>false,'message'=>'invalid request','result'=>'');
 		}
