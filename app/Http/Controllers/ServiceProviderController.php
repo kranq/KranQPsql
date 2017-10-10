@@ -199,7 +199,7 @@ class ServiceProviderController extends Controller
 		
 echo 'Service - ';
 print_r($service);
-if($service){
+if(!empty($service)){
 	echo '<br />Enter If';
 } else {
 	echo '<br />Enter Else';
