@@ -198,8 +198,8 @@ class ServiceProviderController extends Controller
         $data['services'] = Service::orderBy('service_name', 'asc')->pluck('service_name', 'id')->all();
 		
 echo 'Service - ';
-print_r($service);
-if(!empty($service)){
+print_r(array_filter($service));
+if(!empty(array_filter($service))){
 	echo '<br />Enter If';
 } else {
 	echo '<br />Enter Else';
