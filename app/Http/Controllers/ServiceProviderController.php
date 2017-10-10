@@ -172,9 +172,9 @@ class ServiceProviderController extends Controller
     public function edit($id)
     {
         $data['provider'] = ServiceProvider::findorFail($id);
-		if ($data['provider']->logo) {
+		/*if ($data['provider']->logo) {
             $data['amazonImgUpload'] = \Storage::disk('s3')->url('uploads/provider/'.$data['provider']->logo);
-        }
+        }*/
         $data['categories'] = Category::orderBy('category_name','asc')->pluck('category_name', 'id');
         $data['cities'] = City::orderBy('city_name','asc')->pluck('city_name', 'id');
         $data['localities'] = Location::orderBy('locality_name','asc')->pluck('locality_name', 'id');
@@ -197,7 +197,7 @@ class ServiceProviderController extends Controller
         }
         $data['services'] = Service::orderBy('service_name', 'asc')->pluck('service_name', 'id')->all();
         if ($service) {
-            $data['service'] = Service::whereIn('id',$service)->pluck('id');
+            $data['service'] = Service::whereIn('id',$service[0])->pluck('id');
         } else {
             $data['service'] = '';
         }
