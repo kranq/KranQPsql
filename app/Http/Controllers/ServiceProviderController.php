@@ -196,6 +196,15 @@ class ServiceProviderController extends Controller
             $service = explode(',',$services[0]->service_id);
         }
         $data['services'] = Service::orderBy('service_name', 'asc')->pluck('service_name', 'id')->all();
+		
+echo 'Service - ';
+print_r($service);
+if($service){
+	echo '<br />Enter If';
+} else {
+	echo '<br />Enter Else';
+}
+exit;
         if ($service) {
             $data['service'] = Service::whereIn('id',$service)->pluck('id');
         } else {
