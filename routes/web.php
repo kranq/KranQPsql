@@ -10,9 +10,17 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
+/*Route::get('/', function () {
     return Redirect::to('login');
-});
+});*/
+//Route::get('/', function () {
+  //  return view('site.index');
+    //return Redirect::to('Site/index');
+//});
+
+Route::get('/', 'SiteController@index');
+
+
 Route::get('/clear-cache', function() {
     $clearCache = Artisan::call('cache:clear');
     $clearConfig = Artisan::call('config:clear');
@@ -37,10 +45,10 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
             'rating' => 'RatingController',
             'user' => 'UserController',
             'bookmark' => 'BookmarkController',
-            'provider' => 'ServiceProviderController',			
+            'provider' => 'ServiceProviderController',
             'review' => 'ReviewController',
 			'cms' => 'CmsPagesController',
-            'address' => 'AddressController'
+            'address' => 'AddressController',
 		);
 	foreach ($controllers as $key => $controller){
         //Will generates Crud functions (index,create, edit, delete, update, store)
@@ -49,7 +57,7 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
         Route::post($key . '/index', array('as' => $key . '.search', 'uses' => $controller . '@index'));
         Route::post($key . '/rest', array('as' => $key . '.rest')); // here applied rest route
     }
-		
+
     // Employee
     Route::get('employee/edit/{id}', array('as' => 'employee.edit', 'uses' => 'EmployeeController@edit'));
     Route::delete('employee/destroy/{id}', array('as' => 'employee.destroy', 'uses' => 'EmployeeController@destroy'));
@@ -76,11 +84,11 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
     Route::get('city/edit/{id}', array('as' => 'city.edit', 'uses' => 'CityController@edit'));
     Route::get('city/show/{id}', array('as' => 'city.show', 'uses' => 'CityController@show'));
     Route::delete('city/destroy/{id}', array('as' => 'city.destroy', 'uses' => 'CityController@destroy'));
-	
+
 	// Cms
 	Route::get('cms/show/{id}', array('as' => 'cms.show', 'uses' => 'CmsPagesController@show'));
 	Route::get('cms/edit/{id}', array('as' => 'cms.edit', 'uses' => 'CmsPagesController@edit'));
-	
+
     // Location
     Route::get('location/edit/{id}', array('as' => 'location.edit', 'uses' => 'LocationController@edit'));
     Route::get('location/show/{id}', array('as' => 'location.show', 'uses' => 'LocationController@show'));
@@ -104,12 +112,13 @@ Route::group(['middleware' => 'auth', 'as' => 'main.'], function (){
 
     // To upload the S3 Image into Amazon bucket
     Route::get('s3-image-upload','S3ImageController@imageUpload');
-	Route::post('s3-image-upload','S3ImageController@imageUploadPost');
+	  Route::post('s3-image-upload','S3ImageController@imageUploadPost');
 
     // Address
     Route::get('address/edit/{id}', array('as' => 'address.edit', 'uses' => 'AddressController@edit'));
     Route::get('address/show/{id}', array('as' => 'address.show', 'uses' => 'AddressController@show'));
     Route::delete('address/destroy/{id}', array('as' => 'address.destroy', 'uses' => 'AddressController@destroy'));
+
 });
 
 //Route::resource('webservice', 'WebServiceController');
@@ -143,10 +152,24 @@ Route::post('webservice/sp-reviews', array('as' => 'webservice.sp-reviews', 'use
 Route::post('webservice/review-add', array('as' => 'webservice.review-add', 'uses' => 'WebServiceController@addReview'));
 Route::post('webservice/review-update', array('as' => 'webservice.review-update', 'uses' => 'WebServiceController@updateReview'));
 
+// To reset password
+Route::get('reset-password/{id}', array('as' => 'provider.reset-password', 'uses' => 'ServiceProviderController@resetPassword'));
+Route::post('update-sppassword/{id}', array('as' => 'provider.update-sppassword', 'uses' => 'ServiceProviderController@UpdateServicePassword'));
 
+// Frontend
+//Route::resource('Site', 'SiteController');
+//Route::resource('site', 'SiteController@index');
+Route::get('services', 'SiteController@getServices');
+Route::get('contact', 'SiteController@getContact');
+//Route::post('contact/contact_store', array('as' => 'webservice.contact_store', 'uses' => 'WebServiceController@contactStore'));
+Route::post('contact_store', 'SiteController@contactStore');
 // Route::post('store', 'EmployeeController@store');
 Route::get('/logout', 'Auth\LoginController@logout');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+//Route::resource('site','SiteController');
+Route::get('site/index','SiteController@index');
+Route::resource('site','SiteController');
+//Route::get('site/show','SiteController@show');
